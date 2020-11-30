@@ -44,6 +44,7 @@ Item {
                 radius: itemIcon.adaptative ? 20 : 15
             }
         }
+
         Image {
             id: image
             width: parent.width * (itemIcon.adaptative ? 1.5 : 1)
