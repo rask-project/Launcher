@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>qml/themes/Default.qml</file>
+        <file>qml/main.qml</file>
+        <file>img/qc-icon.png</file>
+        <file>img/wallpaper.jpg</file>
+        <file>qml/components/ScrollablePage.qml</file>
+        <file>qml/components/ScrollableGrid.qml</file>
+        <file>qml/components/ItemIcon.qml</file>
+    </qresource>
+</RCC>
