@@ -1,5 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
+import QtGraphicalEffects 1.0
 
 import QtRask.Launcher 1.0
 import "./themes"
@@ -11,7 +12,7 @@ ApplicationWindow {
     height: 873
     visible: true
 
-    //flags: Qt.Window | Qt.MaximizeUsingFullscreenGeometryHint
+    flags: Qt.Window | Qt.MaximizeUsingFullscreenGeometryHint
     title: qsTr("Rask Launcher")
 
     background: Rectangle {
@@ -30,6 +31,37 @@ ApplicationWindow {
         anchors.fill: parent
         initialItem: Default {
             id: themeDefault
+        }
+    }
+
+    Dialog {
+        id: modal
+
+        modal: true
+        closePolicy: Popup.NoAutoClose
+
+        parent: ApplicationWindow.contentItem
+        width: 300
+        height: 400
+        anchors.centerIn: parent
+
+        background: Rectangle {
+            color: "#fff"
+
+            FastBlur {
+                id: fastBlur
+
+                anchors.fill: modal.background
+                radius: 60
+                opacity: 0.5
+
+                source: ShaderEffectSource {
+                    anchors.fill: parent
+                    sourceItem: ApplicationWindow.contentItem
+                    sourceRect: Qt.rect(modal.x, modal.y, modal.width,
+                                        modal.height)
+                }
+            }
         }
     }
 

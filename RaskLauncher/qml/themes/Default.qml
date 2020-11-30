@@ -6,81 +6,62 @@ import QtGraphicalEffects 1.0
 import QtRask.Launcher 1.0
 import "../components"
 
-Page {
+ScrollablePage {
     id: page
 
     //onWidthChanged: console.log("Width", width)
     //onHeightChanged: console.log("Height", height)
+    padding: 20
+
     background: Image {
         source: "file:///home/marssola/Pictures/P00613-120151.jpg"
         fillMode: Image.PreserveAspectCrop
     }
 
-    ColumnLayout {
-        width: parent.width
-        height: parent.height
+    topPadding: 60
+    bottomPadding: 60
 
-        Item {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 50
-        }
+    Flow {
+        id: grid
 
-        ScrollablePage {
-            id: scrollablePage
+        width: parent.width - page.padding * 2
 
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            padding: 10
+        property int itemWidth: 55
+        property int columnsAvailable: ((grid.width / grid.itemWidth) | 0) - 1
+        spacing: (grid.width - (grid.itemWidth * grid.columnsAvailable)) / grid.columnsAvailable
+        leftPadding: spacing / 2
 
-            Grid {
-                id: grid
+        Repeater {
+            //model: page.applications
+            model: RaskLauncher.applications
 
-                property int itemWidth: 50
-                property int spaceAvailable: (scrollablePage.width / grid.itemWidth) - 2
+            ItemIcon {
+                id: itemIcon
 
-                columns: (grid.spaceAvailable | 0)
-                columnSpacing: ((scrollablePage.width - scrollablePage.padding * 2)
-                                - (grid.itemWidth * grid.columns)) / grid.columns
+                width: grid.itemWidth
 
-                Repeater {
-                    //model: page.applications
-                    model: RaskLauncher.applications
-
-                    ItemIcon {
-                        width: grid.itemWidth
-                        height: 110
-                        iconWidth: 50
-                        iconHeight: 50
-
-                        appName: modelData.name
-                        packageName: modelData.packageName
-                        adaptative: modelData.adaptativeIcon
-                    }
-                }
+                appName: modelData.name
+                packageName: modelData.packageName
+                adaptative: modelData.adaptativeIcon
             }
-        }
-
-        Item {
-            Layout.fillWidth: true
-            Layout.preferredHeight: 50
         }
     }
 
     property var applications: [{
             "name": "Adobe Acrobat",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "com.adobe.reader"
         }, {
             "name": "Agenda",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "com.google.android.calendar"
         }, {
             "name": "AliExpress",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "com.alibaba.aliexpresshd"
         }, {
             "name": "Anotações",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "com.miui.notes"
         }, {
             "name": "Assistente",
@@ -112,11 +93,11 @@ Page {
             "packageName": "br.gov.serpro.cnhe"
         }, {
             "name": "Chrome",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "com.android.chrome"
         }, {
             "name": "Clima",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "com.miui.weather2"
         }, {
             "name": "Configurações",
@@ -124,7 +105,7 @@ Page {
             "packageName": "com.android.settings"
         }, {
             "name": "Contatos",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "com.google.android.contacts"
         }, {
             "name": "Câmera",
@@ -132,7 +113,7 @@ Page {
             "packageName": "com.android.camera"
         }, {
             "name": "Câmera",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "org.codeaurora.snapcam"
         }, {
             "name": "Digitalizador",
@@ -148,7 +129,7 @@ Page {
             "packageName": "com.google.android.calendar"
         }, {
             "name": "AliExpress",
-            "adaptativeIcon": true,
+            "adaptativeIcon": false,
             "packageName": "com.alibaba.aliexpresshd"
         }, {
             "name": "Anotações",
