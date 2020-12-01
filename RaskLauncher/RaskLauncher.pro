@@ -1,4 +1,4 @@
-QT += qml quick quickcontrols2 svg
+QT += qml quick quickcontrols2 svg sql
 
 CONFIG += c++17
 
@@ -40,6 +40,7 @@ android {
 HEADERS += \
     cpp/imageprovider.h \
     cpp/rasklauncher.h \
+    cpp/singleton.h \
     cpp/utilsJni.h
 
 DISTFILES += \

@@ -52,6 +52,9 @@ Item {
             cache: true
             anchors.centerIn: parent
 
+            sourceSize.width: image.width
+            sourceSize.height: image.height
+
             //source: "file:///home/marssola/.local/share/icons/hicolor/128x128/apps/QtProject-qtcreator.png"
             source: "image://systemImage/" + itemIcon.packageName
 

@@ -50,14 +50,13 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        kNewIntent(qtObject)
+        newIntent()
     }
 
     companion object {
         private val TAG = "RaskLauncher"
         var instance: RaskLauncher? = null
             private set
-        private var qtObject: Long = 0
         private var m_iconDpi: Int = 0
         private var m_wallpaperManager: WallpaperManager? = null
         private var m_packageManager: PackageManager? = null
@@ -104,6 +103,36 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
 
             applications.sort()
             return applications.toTypedArray()
+        }
+
+        @JvmStatic
+        fun getApplicationData(packageName: String): Application {
+            Log.d(TAG, "Get Application data: " + packageName)
+
+            try {
+                val app = m_packageManager!!.getApplicationInfo(packageName, 0)
+                val resources = m_packageManager!!.getResourcesForApplication(app)
+                val resolveInfo = m_packageManager!!.resolveActivity(m_packageManager!!.getLaunchIntentForPackage(packageName), 0)
+
+                val application = Application(
+                    resolveInfo.loadLabel(m_packageManager).toString(),
+                    packageName,
+                    getIconType(packageName)
+                )
+
+                if (application.name.isNotEmpty() &&
+                    (Character.isSpaceChar(application.name[0]) ||
+                     Character.isWhitespace(application.name[0]))) {
+                    val charToReplace = application.name[0]
+                    application.name = application.name.replace(charToReplace, ' ').trim { it <= ' ' }
+                    application.name = application.name.trim { it <= ' ' }
+                }
+
+                return application
+            } catch (e: Exception) {
+                Log.e(TAG, "getApplicationData", e)
+                return Application("", "", "")
+            }
         }
 
         @JvmStatic
@@ -215,12 +244,17 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         val defaultApplicationIcon: Drawable
             get() = instance!!.getResources().getDrawable(android.R.mipmap.sym_def_app_icon)
 
-        @JvmStatic
-        fun setQtObject(qtObject: Long) {
-            RaskLauncher.qtObject = qtObject
+        fun isAppLaunchable(packageName: String): Boolean {
+            return m_packageManager!!.getLaunchIntentForPackage(packageName) != null
         }
 
         @JvmStatic
-        private external fun kNewIntent(qtObject: Long)
+        private external fun newIntent()
+
+        @JvmStatic
+        external fun packageAdded(packageName: String)
+
+        @JvmStatic
+        external fun packageRemoved(packageName: String)
     }
 }

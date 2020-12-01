@@ -4,6 +4,9 @@
 
 class ImageProvider : public QQuickImageProvider
 {
+    ImageProvider(const ImageProvider &) = delete;
+    ImageProvider& operator=(const ImageProvider &) = delete;
+
 public:
     explicit ImageProvider();
 

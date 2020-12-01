@@ -1,5 +1,7 @@
 #include "rasklauncher.h"
+#include "singleton.h"
 
+#include <algorithm>
 #include <QDebug>
 
 #ifdef Q_OS_ANDROID
@@ -8,21 +10,36 @@
 #endif
 
 #ifdef Q_OS_ANDROID
-static void newIntent(JNIEnv */*env*/, jobject /*obj*/, jlong /*qtObject*/)
+static void nativeNewIntent(JNIEnv */*env*/, jobject /*obj*/)
 {
-    qDebug() << "New Intent C++";
+    qDebug() << "New Intent";
+}
+
+static void nativePackageAdded(JNIEnv */*env*/, jobject /*obj*/, jstring packageName)
+{
+    qDebug() << "Emit package added" << packageName;
+    Singleton<RaskLauncher>::getInstance().newApplication(UtilsJni::jstringToQString(packageName));
+}
+
+static void nativePackageRemoved(JNIEnv */*env*/, jobject /*obj*/, jstring packageName)
+{
+    qDebug() << "Emit package removed" << packageName;
+    Singleton<RaskLauncher>::getInstance().removedApplication(UtilsJni::jstringToQString(packageName));
 }
 #endif
 
 RaskLauncher::RaskLauncher(QObject *parent) :
     QObject(parent)
 #ifdef Q_OS_ANDROID
-    , m_activity(QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;"))
+    , m_activityLauncher(QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;"))
     , m_intentFilter(QAndroidJniObject("android/content/IntentFilter"))
-//    , m_broadcastReceiver(QAndroidJniObject("com/QtRask/Launcher/PackageBroadcast"))
+    , m_activityBroadcastReceiver(QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;"))
+    , m_intentFilterBroadcastReceiver(QAndroidJniObject("android/content/IntentFilter"))
+    , m_broadcastReceiver(QAndroidJniObject("com/QtRask/Launcher/PackageBroadcast"))
 #endif
 {
     registerNativeMethods();
+    registerBroadcastMethods();
 }
 
 void RaskLauncher::retrievePackages()
@@ -52,6 +69,7 @@ void RaskLauncher::retrievePackages()
         qDebug() << "Application" << "name:" << name << "package:" << package;
     }
 #else
+    /*
     m_applications << QVariantMap({ { "name","Adobe Acrobat" }, { "packageName", "com.adobe.reader" } });
     m_applications << QVariantMap({ { "name","Agenda" }, { "packageName", "com.google.android.calendar" } });
     m_applications << QVariantMap({ { "name","AliExpress" }, { "packageName", "com.alibaba.aliexpresshd" } });
@@ -70,8 +88,45 @@ void RaskLauncher::retrievePackages()
     m_applications << QVariantMap({ { "name","Câmera" }, { "packageName", "com.android.camera" } });
     m_applications << QVariantMap({ { "name","Câmera" }, { "packageName", "org.codeaurora.snapcam" } });
     m_applications << QVariantMap({ { "name","Digitalizador" }, { "packageName", "com.xiaomi.scanner" } });
+    */
 #endif
 
+    emit applicationsChanged();
+}
+
+void RaskLauncher::newApplication(const QString &packageName)
+{
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject application = QAndroidJniObject::callStaticObjectMethod("com/QtRask/Launcher/RaskLauncher",
+                                                                              "getApplicationData",
+                                                                              "(Ljava/lang/String;)Lcom/QtRask/Launcher/Application;",
+                                                                              QAndroidJniObject::fromString(packageName).object<jstring>());
+
+    QString name = UtilsJni::jstringToQString((application.callObjectMethod<jstring>("getName")).object<jstring>());
+    QString package = UtilsJni::jstringToQString((application.callObjectMethod<jstring>("getPackageName")).object<jstring>());
+    QString iconType = UtilsJni::jstringToQString((application.callObjectMethod<jstring>("getIconType")).object<jstring>());
+
+    qDebug() << "Applications" << m_applications.size();
+    qDebug() << "Added" << name << package << iconType;
+
+    m_applications << QVariantMap({
+                                      { "name", name },
+                                      { "packageName", package },
+                                      { "adaptativeIcon", iconType == "Adaptative" }
+                                  });
+
+    qDebug().noquote() << QJsonDocument::fromVariant(m_applications).toJson(QJsonDocument::Indented);
+    std::sort(m_applications.begin(), m_applications.end(), [](const QVariant &a, const QVariant &b) -> bool { return a.toMap()["name"] < b.toMap()["name"]; });
+    emit applicationsChanged();
+#endif
+}
+
+void RaskLauncher::removedApplication(const QString &packageName)
+{
+    qDebug() << "Pacote removido" << packageName << m_applications.size();
+
+    const auto &it = std::find_if(m_applications.begin(), m_applications.end(), [packageName](const QVariant &it) { return it.toMap()["packageName"] == packageName; });
+    m_applications.erase(it);
     emit applicationsChanged();
 }
 
@@ -112,30 +167,47 @@ QVariantList RaskLauncher::applications()
     return m_applications;
 }
 
-
 void RaskLauncher::registerNativeMethods()
 {
 #ifdef Q_OS_ANDROID
-    JNINativeMethod methods[] {{ "kNewIntent", "(J)V", reinterpret_cast<void *>(newIntent) }};
-
-    QAndroidJniObject::callStaticMethod<void>("com/QtRask/Launcher/RaskLauncher",
-                                              "setQtObject", "(J)V",
-                                              "(J)V", reinterpret_cast<long>(this));
+    qDebug() << "Register Native methods";
+    JNINativeMethod methods[] {
+        { "newIntent", "()V", reinterpret_cast<void *>(nativeNewIntent) },
+        { "packageAdded", "(Ljava/lang/String;)V", reinterpret_cast<void *>(nativePackageAdded) },
+        { "packageRemoved", "(Ljava/lang/String;)V", reinterpret_cast<void *>(nativePackageRemoved) }
+    };
 
     QAndroidJniEnvironment env;
-    jclass objectClass = env->GetObjectClass(m_activity.object<jobject>());
-
+    jclass objectClass = env->GetObjectClass(m_activityLauncher.object<jobject>());
     if (env->ExceptionCheck())
         env->ExceptionClear();
 
     env->RegisterNatives(objectClass, methods, sizeof (methods) / sizeof (methods[0]));
-
     if (env->ExceptionCheck())
         env->ExceptionClear();
 
     env->DeleteLocalRef(objectClass);
-
     if (env->ExceptionCheck())
         env->ExceptionClear();
+#endif
+}
+
+void RaskLauncher::registerBroadcastMethods()
+{
+#ifdef Q_OS_ANDROID
+    qDebug() << "Register Broadcast methods";
+
+    QAndroidJniObject addActionString = QAndroidJniObject::fromString("android.intent.action.PACKAGE_ADDED");
+    QAndroidJniObject removeActionString = QAndroidJniObject::fromString("android.intent.action.PACKAGE_REMOVED");
+    QAndroidJniObject dataSchemeString = QAndroidJniObject::fromString("package");
+
+    m_intentFilterBroadcastReceiver.callMethod<void>("addAction", "(Ljava/lang/String;)V", addActionString.object<jstring>());
+    m_intentFilterBroadcastReceiver.callMethod<void>("addAction", "(Ljava/lang/String;)V", removeActionString.object<jstring>());
+    m_intentFilterBroadcastReceiver.callMethod<void>("addDataScheme", "(Ljava/lang/String;)V", dataSchemeString.object<jstring>());
+
+    m_activityBroadcastReceiver.callObjectMethod("registerReceiver",
+                                "(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;",
+                                m_broadcastReceiver.object<jobject>(),
+                                m_intentFilterBroadcastReceiver.object<jobject>());
 #endif
 }

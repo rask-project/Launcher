@@ -4,14 +4,11 @@
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include <QQmlContext>
+#include <memory>
 
+#include "cpp/singleton.h"
 #include "cpp/rasklauncher.h"
 #include "cpp/imageprovider.h"
-
-static QObject *raskLauncher(QQmlEngine */*engine*/, QJSEngine */*scriptEngine*/)
-{
-    return new RaskLauncher;
-}
 
 int main(int argc, char *argv[])
 {
@@ -25,9 +22,12 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    qmlRegisterSingletonType<RaskLauncher>("QtRask.Launcher", 1, 0, "RaskLauncher", raskLauncher);
+    qmlRegisterSingletonType<RaskLauncher>("QtRask.Launcher", 1, 0, "RaskLauncher", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
+        return &Singleton<RaskLauncher>::getInstance(engine, scriptEngine);
+    });
 
-    engine.addImageProvider(QLatin1String("systemImage"), new ImageProvider());
+    std::unique_ptr<ImageProvider> imageProvider = std::make_unique<ImageProvider>();
+    engine.addImageProvider(QStringLiteral("systemImage"), imageProvider.get());
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

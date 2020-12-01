@@ -22,18 +22,26 @@ public slots:
     bool isLaunchableApplication(const QString &application);
     void registerMethods();
 
+    void newApplication(const QString &packageName);
+    void removedApplication(const QString &packageName);
+
 signals:
     void applicationsChanged();
+
+private slots:
 
 private:
     QVariantList m_applications;
 
 #ifdef Q_OS_ANDROID
-    QAndroidJniObject m_activity;
+    QAndroidJniObject m_activityLauncher;
     QAndroidJniObject m_intentFilter;
-//    QAndroidJniObject m_broadcastReceiver;
+    QAndroidJniObject m_activityBroadcastReceiver;
+    QAndroidJniObject m_intentFilterBroadcastReceiver;
+    QAndroidJniObject m_broadcastReceiver;
 #endif
 
     void registerNativeMethods();
+    void registerBroadcastMethods();
 };
 
