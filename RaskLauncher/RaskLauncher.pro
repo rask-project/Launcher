@@ -10,7 +10,8 @@ SOURCES += \
         cpp/imageprovider.cpp \
         cpp/rasklauncher.cpp
 
-RESOURCES += $$PWD/qml.qrc
+RESOURCES += $$PWD/qml.qrc \
+             $$PWD/icons/material-round.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =

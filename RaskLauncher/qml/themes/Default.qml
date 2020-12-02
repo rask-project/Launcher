@@ -1,25 +1,22 @@
-import QtQuick 2.15
+﻿import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 import QtGraphicalEffects 1.0
-
 import QtRask.Launcher 1.0
+
 import "../components"
 
 ScrollablePage {
     id: page
 
-    //onWidthChanged: console.log("Width", width)
-    //onHeightChanged: console.log("Height", height)
     padding: 20
+    topPadding: 60
+    bottomPadding: 60
 
     background: Image {
         source: "file:///home/marssola/Pictures/P00613-120151.jpg"
         fillMode: Image.PreserveAspectCrop
     }
-
-    topPadding: 60
-    bottomPadding: 60
 
     Flow {
         id: grid
@@ -50,10 +47,35 @@ ScrollablePage {
                 }
 
                 click.onPressAndHold: {
-                    //RaskLauncher.openApplicationDetailsSettings(itemIcon.packageName)
-                    RaskLauncher.uninstallApplication(itemIcon.packageName)
+                    ballon.visible = true
                     AndroidVibrate.vibrate(100,
                                            AndroidVibrate.EFFECT_HEAVY_CLICK)
+                }
+
+                AppBalloon {
+                    id: ballon
+
+                    delay: Qt.styleHints.mousePressAndHoldInterval
+                    options: [
+                        ItemDelegate {
+                            text: qsTr("Information")
+                            icon.name: "info"
+                            onClicked: {
+                                RaskLauncher.openApplicationDetailsSettings(
+                                            itemIcon.packageName)
+                                ballon.visible = false
+                            }
+                        },
+                        ItemDelegate {
+                            text: qsTr("Uninstall")
+                            icon.name: "delete"
+                            onClicked: {
+                                RaskLauncher.uninstallApplication(
+                                            itemIcon.packageName)
+                                ballon.visible = false
+                            }
+                        }
+                    ]
                 }
             }
         }

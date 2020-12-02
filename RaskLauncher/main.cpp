@@ -4,6 +4,7 @@
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include <QQmlContext>
+#include <QIcon>
 #include <memory>
 
 #include "cpp/singleton.h"
@@ -40,6 +41,10 @@ int main(int argc, char *argv[])
         if ((obj == nullptr) && url == objUrl)
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
+
+    QIcon::setThemeSearchPaths({":/"});
+    QIcon::setThemeName("material-round");
+
     engine.load(url);
 
     return QGuiApplication::exec();

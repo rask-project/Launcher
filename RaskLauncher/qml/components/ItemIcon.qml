@@ -1,7 +1,6 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
-
 import QtRask.Launcher 1.0
 
 Item {
@@ -24,8 +23,8 @@ Item {
 
         //#4dffffff
         //#4d000000
-        color: "#6dffffff"
-        border.color: "#7dffffff"
+        color: "#4bFFFFFF"
+        border.color: "#6dffffff"
         border.width: 1
         radius: 15
 
@@ -36,38 +35,53 @@ Item {
             }
         }
 
-        layer.enabled: true
-        layer.effect: OpacityMask {
-            maskSource: Rectangle {
-                x: image.x
-                y: image.y
-                width: image.width
-                height: image.height
-                radius: itemIcon.adaptative ? 20 : 15
-            }
+        layer.enabled: !itemIcon.adaptative
+        layer.effect: DropShadow {
+            horizontalOffset: 0
+            verticalOffset: 0
+            radius: 5
+            samples: 5
+            color: "#222"
         }
 
-        Image {
-            id: image
-            width: parent.width * (itemIcon.adaptative ? 1.5 : 1)
-            height: parent.height * (itemIcon.adaptative ? 1.5 : 1)
-            cache: true
-            anchors.centerIn: parent
-
-            sourceSize.width: image.width
-            sourceSize.height: image.height
-
-            //source: "file:///home/marssola/.local/share/icons/hicolor/128x128/apps/QtProject-qtcreator.png"
-            source: "image://systemImage/" + itemIcon.packageName
+        Rectangle {
+            anchors.fill: parent
+            radius: parent.radius
+            color: "transparent"
 
             layer.enabled: true
-            layer.effect: DropShadow {
-                verticalOffset: 0
-                horizontalOffset: 0
-                color: "#6d000000"
-                radius: 30
-                samples: 61
-                spread: 0.1
+            layer.effect: OpacityMask {
+                maskSource: Rectangle {
+                    x: rectangle.x
+                    y: rectangle.y
+                    width: rectangle.width
+                    height: rectangle.height
+                    radius: 15
+                }
+            }
+
+            Image {
+                id: image
+                width: parent.width * (itemIcon.adaptative ? 1.5 : 1)
+                height: parent.height * (itemIcon.adaptative ? 1.5 : 1)
+                cache: true
+                anchors.centerIn: parent
+
+                sourceSize.width: image.width
+                sourceSize.height: image.height
+
+                //source: "file:///home/marssola/.local/share/icons/hicolor/128x128/apps/QtProject-qtcreator.png"
+                source: "image://systemImage/" + itemIcon.packageName
+
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    horizontalOffset: 0
+                    verticalOffset: 0
+                    radius: 1
+                    samples: 3
+                    color: "#999"
+                    opacity: 0.2
+                }
             }
         }
 
