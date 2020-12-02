@@ -10,25 +10,17 @@ Item {
     width: 60
     height: 100
 
-    opacity: areaClick.pressed ? 0.5 : 1
-
     property string appName
     property string packageName
     property bool adaptative: false
 
-    signal clicked
-    signal pressAndHold
-
-    Behavior on opacity {
-        NumberAnimation {
-            duration: 200
-        }
-    }
+    property alias click: areaClick
 
     Rectangle {
         id: rectangle
         width: itemIcon.width * 0.9
         height: width
+        z: 2
 
         //#4dffffff
         //#4d000000
@@ -36,6 +28,13 @@ Item {
         border.color: "#7dffffff"
         border.width: 1
         radius: 15
+
+        scale: areaClick.pressed ? 1.5 : 1
+        Behavior on scale {
+            NumberAnimation {
+                duration: 200
+            }
+        }
 
         layer.enabled: true
         layer.effect: OpacityMask {
@@ -71,11 +70,28 @@ Item {
                 spread: 0.1
             }
         }
+
+        Rectangle {
+            visible: areaClick.pressed
+            opacity: visible ? 1 : 0
+            anchors.fill: parent
+            z: 3
+
+            radius: parent.radius
+            color: "#4d000000"
+
+            Behavior on opacity {
+                NumberAnimation {
+                    duration: 200
+                }
+            }
+        }
     }
 
     Label {
         width: parent.width
         height: 36
+        z: 1
 
         anchors.top: rectangle.bottom
 
@@ -100,9 +116,5 @@ Item {
     MouseArea {
         id: areaClick
         anchors.fill: parent
-
-        onClicked: itemIcon.clicked()
-
-        onPressAndHold: itemIcon.pressAndHold()
     }
 }

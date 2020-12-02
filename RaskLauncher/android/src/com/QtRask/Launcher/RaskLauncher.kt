@@ -5,6 +5,7 @@ import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.provider.Settings
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.AdaptiveIconDrawable
@@ -13,6 +14,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.LayerDrawable
 import android.net.ConnectivityManager
 import android.net.Uri
+import android.net.Uri.fromParts
 import android.os.Build
 import android.os.Bundle
 import android.os.Vibrator
@@ -140,16 +142,6 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         }
 
         @JvmStatic
-        fun launchApplication(packageName: String) {
-            val intent = m_packageManager!!.getLaunchIntentForPackage(packageName)
-            if (intent != null) {
-                instance!!.startActivity(intent)
-            } else {
-                Log.e(TAG, "Erro trying launch application $packageName")
-            }
-        }
-
-        @JvmStatic
         fun getApplicationIcon(packageName: String): ByteArray {
             Log.d(TAG, "getApplicationIcon")
 
@@ -250,6 +242,36 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
 
         fun isAppLaunchable(packageName: String): Boolean {
             return m_packageManager!!.getLaunchIntentForPackage(packageName) != null
+        }
+
+        @JvmStatic
+        fun launchApplication(packageName: String) {
+            val intent = m_packageManager!!.getLaunchIntentForPackage(packageName)
+            if (intent != null) {
+                instance!!.startActivity(intent)
+            } else {
+                Log.e(TAG, "Error trying launch application $packageName")
+            }
+        }
+
+        @JvmStatic
+        fun applicationDetailsSettings(packageName: String) {
+            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, fromParts("package", packageName, null))
+            if (intent != null) {
+                instance!!.startActivity(intent)
+            } else {
+                Log.e(TAG, "Error trying open Application Details Settings $packageName")
+            }
+        }
+
+        @JvmStatic
+        fun uninstallApplication(packageName: String) {
+            val intent = Intent(Intent.ACTION_DELETE, fromParts("package", packageName, null))
+            if (intent != null) {
+                instance!!.startActivity(intent)
+            } else {
+                Log.e(TAG, "Error trying delete Application $packageName")
+            }
         }
 
         @JvmStatic

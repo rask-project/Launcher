@@ -44,12 +44,14 @@ ScrollablePage {
                 packageName: modelData.packageName
                 adaptative: modelData.adaptativeIcon
 
-                onClicked: {
+                click.onClicked: {
                     RaskLauncher.launchApplication(itemIcon.packageName)
                     AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
                 }
 
-                onPressAndHold: {
+                click.onPressAndHold: {
+                    //RaskLauncher.openApplicationDetailsSettings(itemIcon.packageName)
+                    RaskLauncher.uninstallApplication(itemIcon.packageName)
                     AndroidVibrate.vibrate(100,
                                            AndroidVibrate.EFFECT_HEAVY_CLICK)
                 }

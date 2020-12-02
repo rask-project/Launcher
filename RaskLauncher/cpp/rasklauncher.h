@@ -18,10 +18,12 @@ public:
 
 public slots:
     void retrievePackages();
-    void launchApplication(const QString &application);
-    bool isLaunchableApplication(const QString &application);
-    void registerMethods();
 
+    void launchApplication(const QString &application);
+    void openApplicationDetailsSettings(const QString &application);
+    void uninstallApplication(const QString &application);
+
+    void registerMethods();
     void newApplication(const QString &packageName);
     void removedApplication(const QString &packageName);
 

@@ -132,29 +132,36 @@ void RaskLauncher::removedApplication(const QString &packageName)
 
 void RaskLauncher::launchApplication(const QString &application)
 {
+    qDebug() << "Launch Application" << application;
 #ifdef Q_OS_ANDROID
     qDebug() << "Launch Application" << application;
     QAndroidJniObject::callStaticMethod<void>("com/QtRask/Launcher/RaskLauncher",
                                               "launchApplication",
                                               "(Ljava/lang/String;)V",
                                               QAndroidJniObject::fromString(application).object<jstring>());
-#else
-    qDebug() << "Launche Application" << application;
 #endif
 }
 
-bool RaskLauncher::isLaunchableApplication(const QString &/*application*/)
+void RaskLauncher::openApplicationDetailsSettings(const QString &application)
 {
-//#ifdef Q_OS_ANDROID
-//    qDebug() << "Launchable Application" << application;
-//    QAndroidJniObject objIsLaunchable = QAndroidJniObject::callStaticObjectMethod("com/QtRask/Launcher/RaskLauncher",
-//                                                                                  "isLaunchableApplication",
-//                                                                                  "(Ljava/lang/String;)Z",
-//                                                                                  QAndroidJniObject::fromString(application).object<jstring>());
-//    jboolean isLaunchable = objIsLaunchable.object<jboolean>();
-////    return isLaunchable;
-//#endif
-    return true;
+    qDebug() << "Launch Application Details Settings" << application;
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject::callStaticMethod<void>("com/QtRask/Launcher/RaskLauncher",
+                                              "applicationDetailsSettings",
+                                              "(Ljava/lang/String;)V",
+                                              QAndroidJniObject::fromString(application).object<jstring>());
+#endif
+}
+
+void RaskLauncher::uninstallApplication(const QString &application)
+{
+    qDebug() << "Uninstall Application" << application;
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject::callStaticMethod<void>("com/QtRask/Launcher/RaskLauncher",
+                                              "uninstallApplication",
+                                              "(Ljava/lang/String;)V",
+                                              QAndroidJniObject::fromString(application).object<jstring>());
+#endif
 }
 
 void RaskLauncher::registerMethods()
