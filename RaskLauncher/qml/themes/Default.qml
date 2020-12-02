@@ -43,6 +43,16 @@ ScrollablePage {
                 appName: modelData.name
                 packageName: modelData.packageName
                 adaptative: modelData.adaptativeIcon
+
+                onClicked: {
+                    RaskLauncher.launchApplication(itemIcon.packageName)
+                    AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
+                }
+
+                onPressAndHold: {
+                    AndroidVibrate.vibrate(100,
+                                           AndroidVibrate.EFFECT_HEAVY_CLICK)
+                }
             }
         }
     }

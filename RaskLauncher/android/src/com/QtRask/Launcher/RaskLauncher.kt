@@ -15,6 +15,8 @@ import android.net.ConnectivityManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Vibrator
+import android.os.VibrationEffect
 import android.util.Log
 import android.view.View
 import java.io.ByteArrayOutputStream
@@ -45,6 +47,7 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         val activityManager = instance!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         m_iconDpi = activityManager.launcherLargeIconDensity
         m_packageManager = instance!!.getPackageManager() as PackageManager
+        m_vibratorService = instance!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         m_wallpaperManager = WallpaperManager.getInstance(this)
     }
 
@@ -60,6 +63,7 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         private var m_iconDpi: Int = 0
         private var m_wallpaperManager: WallpaperManager? = null
         private var m_packageManager: PackageManager? = null
+        private var m_vibratorService: Vibrator? = null
 
         val dpi: Int
             get() {
@@ -246,6 +250,21 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
 
         fun isAppLaunchable(packageName: String): Boolean {
             return m_packageManager!!.getLaunchIntentForPackage(packageName) != null
+        }
+
+        @JvmStatic
+        fun vibrate(vibe: Long = 80, amplitude: Int = -1) {
+            Log.d(TAG, "Vibration service: " + vibe + ", " + amplitude)
+            val amplitudeEffect = when (amplitude) {
+                1 -> VibrationEffect.EFFECT_DOUBLE_CLICK
+                2 -> VibrationEffect.EFFECT_TICK
+                5 -> VibrationEffect.EFFECT_HEAVY_CLICK
+                else -> VibrationEffect.DEFAULT_AMPLITUDE
+            }
+
+            if (Build.VERSION.SDK_INT >= 26) {
+                m_vibratorService!!.vibrate(VibrationEffect.createOneShot(vibe, amplitudeEffect))
+            }
         }
 
         @JvmStatic

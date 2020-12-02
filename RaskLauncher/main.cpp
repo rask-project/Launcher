@@ -9,6 +9,7 @@
 #include "cpp/singleton.h"
 #include "cpp/rasklauncher.h"
 #include "cpp/imageprovider.h"
+#include "cpp/androidvibrate.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,6 +25,10 @@ int main(int argc, char *argv[])
 
     qmlRegisterSingletonType<RaskLauncher>("QtRask.Launcher", 1, 0, "RaskLauncher", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
         return &Singleton<RaskLauncher>::getInstance(engine, scriptEngine);
+    });
+
+    qmlRegisterSingletonType<AndroidVibrate>("QtRask.Launcher", 1, 0, "AndroidVibrate", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
+        return &Singleton<AndroidVibrate>::getInstance(engine, scriptEngine);
     });
 
     std::unique_ptr<ImageProvider> imageProvider = std::make_unique<ImageProvider>();

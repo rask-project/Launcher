@@ -6,6 +6,7 @@ TARGET = RaskLauncher
 
 SOURCES += \
         $$PWD/main.cpp \
+        cpp/androidvibrate.cpp \
         cpp/imageprovider.cpp \
         cpp/rasklauncher.cpp
 
@@ -38,6 +39,7 @@ android {
 }
 
 HEADERS += \
+    cpp/androidvibrate.h \
     cpp/imageprovider.h \
     cpp/rasklauncher.h \
     cpp/singleton.h \

@@ -16,6 +16,9 @@ Item {
     property string packageName
     property bool adaptative: false
 
+    signal clicked
+    signal pressAndHold
+
     Behavior on opacity {
         NumberAnimation {
             duration: 200
@@ -24,7 +27,7 @@ Item {
 
     Rectangle {
         id: rectangle
-        width: itemIcon.width
+        width: itemIcon.width * 0.9
         height: width
 
         //#4dffffff
@@ -98,6 +101,8 @@ Item {
         id: areaClick
         anchors.fill: parent
 
-        onClicked: RaskLauncher.launchApplication(itemIcon.packageName)
+        onClicked: itemIcon.clicked()
+
+        onPressAndHold: itemIcon.pressAndHold()
     }
 }
