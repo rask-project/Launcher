@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <style name="Theme.Transparent" parent="android:Theme">
-    <item name="android:navigationBarColor">@android:color/transparent</item>
-    <item name="android:windowShowWallpaper">true</item>
-    <item name="android:statusBarColor">@android:color/transparent</item>
-  </style>
+    <style name="RaskTheme" parent="android:Theme.Material">
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:colorBackgroundCacheHint">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowShowWallpaper">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
 </resources>

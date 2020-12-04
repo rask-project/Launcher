@@ -4,7 +4,7 @@ import QtGraphicalEffects 1.0
 import QtRask.Launcher 1.0
 
 Item {
-    id: itemIcon
+    id: appItem
 
     width: 60
     height: 100
@@ -17,7 +17,7 @@ Item {
 
     Rectangle {
         id: rectangle
-        width: itemIcon.width * 0.9
+        width: appItem.width * 0.9
         height: width
         z: 2
 
@@ -26,7 +26,7 @@ Item {
         color: "#4bFFFFFF"
         border.color: "#6dffffff"
         border.width: 1
-        radius: 15
+        radius: 10
 
         scale: areaClick.pressed ? 1.5 : 1
         Behavior on scale {
@@ -35,13 +35,13 @@ Item {
             }
         }
 
-        layer.enabled: !itemIcon.adaptative
+        layer.enabled: !appItem.adaptative
         layer.effect: DropShadow {
             horizontalOffset: 0
             verticalOffset: 0
             radius: 5
-            samples: 5
-            color: "#222"
+            samples: 11
+            color: "#999"
         }
 
         Rectangle {
@@ -56,14 +56,14 @@ Item {
                     y: rectangle.y
                     width: rectangle.width
                     height: rectangle.height
-                    radius: 15
+                    radius: rectangle.radius
                 }
             }
 
             Image {
                 id: image
-                width: parent.width * (itemIcon.adaptative ? 1.5 : 1)
-                height: parent.height * (itemIcon.adaptative ? 1.5 : 1)
+                width: parent.width * (appItem.adaptative ? 1.5 : 1)
+                height: parent.height * (appItem.adaptative ? 1.5 : 1)
                 cache: true
                 anchors.centerIn: parent
 
@@ -71,7 +71,7 @@ Item {
                 sourceSize.height: image.height
 
                 //source: "file:///home/marssola/.local/share/icons/hicolor/128x128/apps/QtProject-qtcreator.png"
-                source: "image://systemImage/" + itemIcon.packageName
+                source: "image://systemImage/" + appItem.packageName
 
                 layer.enabled: true
                 layer.effect: DropShadow {
@@ -109,7 +109,7 @@ Item {
 
         anchors.top: rectangle.bottom
 
-        text: itemIcon.appName
+        text: appItem.appName
         font.pixelSize: 12
         color: "#fff"
 

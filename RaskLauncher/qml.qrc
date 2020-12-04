@@ -6,8 +6,9 @@
         <file>img/wallpaper.jpg</file>
         <file>qml/components/ScrollablePage.qml</file>
         <file>qml/components/ScrollableGrid.qml</file>
-        <file>qml/components/ItemIcon.qml</file>
+        <file>qml/components/AppItem.qml</file>
+        <file>qml/components/AppActions.qml</file>
+        <file>qml/components/AppSearch.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>qml/components/AppBalloon.qml</file>
     </qresource>
 </RCC>

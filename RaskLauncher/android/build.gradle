@@ -44,14 +44,18 @@ android {
      * Changing them manually might break the compilation!
      *******************************************************/
 
+    /**
+     * Uncomment the following lines and remove minsdk from manifest to sync inside IntelliJ:
+     *
+     * String androidBuildToolsVersion = "28.0.3"
+     * String androidCompileSdkVersion = "28"
+     * String qt5AndroidDir = ""
+     */
+
+
     compileSdkVersion androidCompileSdkVersion.toInteger()
 
-    buildToolsVersion '29.0.2'
-
-    defaultConfig {
-        applicationId "com.qtrask.launcher"
-        targetSdkVersion 28
-    }
+    buildToolsVersion androidBuildToolsVersion
 
     sourceSets {
         main {
@@ -59,7 +63,7 @@ android {
             java.srcDirs = [qt5AndroidDir + '/src', 'src', 'java']
             aidl.srcDirs = [qt5AndroidDir + '/src', 'src', 'aidl']
             res.srcDirs = [qt5AndroidDir + '/res', 'res']
-            resources.srcDirs = ['resources']
+            resources.srcDirs = ['src']
             renderscript.srcDirs = ['src']
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
@@ -68,16 +72,5 @@ android {
 
     lintOptions {
         abortOnError false
-    }
-
-    // Do not compress Qt binary resources file
-    aaptOptions {
-        noCompress 'rcc'
-    }
-
-    defaultConfig {
-        resConfig "en"
-        minSdkVersion = 21
-        targetSdkVersion = 29
     }
 }

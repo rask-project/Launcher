@@ -8,7 +8,8 @@ SOURCES += \
         $$PWD/main.cpp \
         cpp/androidvibrate.cpp \
         cpp/imageprovider.cpp \
-        cpp/rasklauncher.cpp
+        cpp/rasklauncher.cpp \
+        cpp/screenmanager.cpp
 
 RESOURCES += $$PWD/qml.qrc \
              $$PWD/icons/material-round.qrc
@@ -29,7 +30,11 @@ android {
         $$PWD/android/gradle/wrapper/gradle-wrapper.properties \
         $$PWD/android/gradlew \
         $$PWD/android/gradlew.bat \
-        $$PWD/android/res/values/libs.xml
+        $$PWD/android/res/values/libs.xml \
+        $$PWD/android/res/values/screen_data.xml \
+        $$PWD/android/res/values/styles.xml \
+        $$PWD/android/src/com/QtRask/Launcher/Application.kt \
+        $$PWD/android/src/com/QtRask/Launcher/RaskLauncher.kt
 
     OTHER_FILES += \
         $$PWD/android/src/com/QtRask/Launcher/*kt
@@ -43,13 +48,10 @@ HEADERS += \
     cpp/androidvibrate.h \
     cpp/imageprovider.h \
     cpp/rasklauncher.h \
+    cpp/screenmanager.h \
     cpp/singleton.h \
     cpp/utilsJni.h
 
-DISTFILES += \
-    android/res/values/styles.xml \
-    android/src/com/QtRask/Launcher/Application.kt \
-    android/src/com/QtRask/Launcher/RaskLauncher.kt
 
 contains(ANDROID_TARGET_ARCH,) {
     ANDROID_ABIS = \
