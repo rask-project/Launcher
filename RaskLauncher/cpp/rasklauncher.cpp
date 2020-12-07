@@ -65,33 +65,12 @@ void RaskLauncher::retrievePackages()
         QString package = UtilsJni::jstringToQString((obj.callObjectMethod<jstring>("getPackageName")).object<jstring>());
         QString iconType = UtilsJni::jstringToQString((obj.callObjectMethod<jstring>("getIconType")).object<jstring>());
 
-        m_applications << QVariantMap({ { "name", name }, { "packageName", package }, { "adaptativeIcon", iconType == "Adaptative" } });
+        m_applications << QVariantMap({ { "name", name }, { "packageName", package }, { "iconAdaptative", iconType == "Adaptative" } });
         qDebug() << "Application" << "name:" << name << "package:" << package;
     }
-#else
-    /*
-    m_applications << QVariantMap({ { "name","Adobe Acrobat" }, { "packageName", "com.adobe.reader" } });
-    m_applications << QVariantMap({ { "name","Agenda" }, { "packageName", "com.google.android.calendar" } });
-    m_applications << QVariantMap({ { "name","AliExpress" }, { "packageName", "com.alibaba.aliexpresshd" } });
-    m_applications << QVariantMap({ { "name","Anotações" }, { "packageName", "com.miui.notes" } });
-    m_applications << QVariantMap({ { "name","Assistente" }, { "packageName", "com.google.android.apps.googleassistant" } });
-    m_applications << QVariantMap({ { "name","Bradesco" }, { "packageName", "com.bradesco" } });
-    m_applications << QVariantMap({ { "name","Bússola" }, { "packageName", "com.miui.compass" } });
-    m_applications << QVariantMap({ { "name","CAIXA Tem" }, { "packageName", "br.gov.caixa.tem" } });
-    m_applications << QVariantMap({ { "name","Calculadora Mi" }, { "packageName", "com.miui.calculator" } });
-    m_applications << QVariantMap({ { "name","Carteira de Trabalho Digital" }, { "packageName", "br.gov.dataprev.carteiradigital" } });
-    m_applications << QVariantMap({ { "name","Carteira Digital de Trânsito" }, { "packageName", "br.gov.serpro.cnhe" } });
-    m_applications << QVariantMap({ { "name","Chrome" }, { "packageName", "com.android.chrome" } });
-    m_applications << QVariantMap({ { "name","Clima" }, { "packageName", "com.miui.weather2" } });
-    m_applications << QVariantMap({ { "name","Configurações" }, { "packageName", "com.android.settings" } });
-    m_applications << QVariantMap({ { "name","Contatos" }, { "packageName", "com.google.android.contacts" } });
-    m_applications << QVariantMap({ { "name","Câmera" }, { "packageName", "com.android.camera" } });
-    m_applications << QVariantMap({ { "name","Câmera" }, { "packageName", "org.codeaurora.snapcam" } });
-    m_applications << QVariantMap({ { "name","Digitalizador" }, { "packageName", "com.xiaomi.scanner" } });
-    */
-#endif
 
     emit applicationsChanged();
+#endif
 }
 
 void RaskLauncher::newApplication(const QString &packageName)

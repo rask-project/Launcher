@@ -3,7 +3,8 @@ import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
 import QtRask.Launcher 1.0
-import "./themes"
+
+import "./themes/default"
 
 ApplicationWindow {
     id: window
@@ -35,6 +36,8 @@ ApplicationWindow {
 
         initialItem: Default {
             id: themeDefault
+
+            //applications: RaskLauncher.applications
         }
     }
 

@@ -26,6 +26,8 @@ public slots:
     void vibrate(long milliseconds, VibrationEffect effect = AndroidVibrate::VibrationEffect::DEFAULT_AMPLITUDE);
 
 private:
+#ifdef Q_OS_ANDROID
     QAndroidJniObject m_activity;
+#endif
 };
 

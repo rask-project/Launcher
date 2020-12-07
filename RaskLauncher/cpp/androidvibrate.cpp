@@ -2,8 +2,10 @@
 #include <QDebug>
 
 AndroidVibrate::AndroidVibrate(QObject *parent) :
-    QObject(parent),
-    m_activity(QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;"))
+    QObject(parent)
+#ifdef Q_OS_ANDROID
+    , m_activity(QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;"))
+#endif
 {}
 
 void AndroidVibrate::vibrate(long milliseconds, AndroidVibrate::VibrationEffect effect)

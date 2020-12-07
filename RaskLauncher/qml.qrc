@@ -1,6 +1,5 @@
 <RCC>
     <qresource prefix="/">
-        <file>qml/themes/Default.qml</file>
         <file>qml/main.qml</file>
         <file>img/qc-icon.png</file>
         <file>img/wallpaper.jpg</file>
@@ -10,5 +9,12 @@
         <file>qml/components/AppActions.qml</file>
         <file>qml/components/AppSearch.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>qml/themes/default/Default.qml</file>
+        <file>qml/themes/default/AppDock.qml</file>
+        <file>qml/themes/default/AppGrid.qml</file>
+        <file>qml/themes/default/AppItem.qml</file>
+        <file>qml/themes/default/AppActions.qml</file>
+        <file>js/Database.js</file>
+        <file>js/ListSQLiteModel.qml</file>
     </qresource>
 </RCC>

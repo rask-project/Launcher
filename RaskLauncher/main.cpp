@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
 
     QIcon::setThemeSearchPaths({":/"});
-    QIcon::setThemeName("material-round");
+    QIcon::setThemeName(QStringLiteral("material-round"));
 
     engine.load(url);
 

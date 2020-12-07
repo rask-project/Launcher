@@ -1,8 +1,8 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
-import QtRask.Launcher 1.0
 
+//import QtRask.Launcher 1.0
 Item {
     id: appItem
 
@@ -70,8 +70,8 @@ Item {
                 sourceSize.width: image.width
                 sourceSize.height: image.height
 
-                //source: "file:///home/marssola/.local/share/icons/hicolor/128x128/apps/QtProject-qtcreator.png"
-                source: "image://systemImage/" + appItem.packageName
+                //source: "image://systemImage/" + appItem.packageName
+                source: "file:///home/marssola/.local/share/icons/hicolor/128x128/apps/QtProject-qtcreator.png"
 
                 layer.enabled: true
                 layer.effect: DropShadow {
