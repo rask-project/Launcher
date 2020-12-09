@@ -35,14 +35,14 @@ Item {
                 AppItem {
                     id: appItem
 
-                    icon: modelData.icon
-                    //icon: "image://systemImage/" + modelData.packageName
+                    icon: icon
+                    //icon: "image://systemImage/" + packageName
                     showAppName: false
                     anchors.centerIn: parent
                     scaleForClick: 1.2
 
                     click.onClicked: {
-                        RaskLauncher.launchApplication(modelData.packageName)
+                        RaskLauncher.launchApplication(packageName)
                         AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
                     }
                 }

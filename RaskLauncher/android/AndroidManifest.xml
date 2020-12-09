@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<manifest package="com.qtask.launcher" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.01" android:versionCode="1" android:installLocation="auto">
+<manifest package="com.qtrask.launcher" xmlns:android="http://schemas.android.com/apk/res/android" android:versionName="0.01" android:versionCode="1" android:installLocation="auto">
     <application android:hardwareAccelerated="true" android:name="org.qtproject.qt5.android.bindings.QtApplication" android:label="RaskLauncher" android:extractNativeLibs="true" android:theme="@style/RaskTheme">
         <activity android:configChanges="orientation|uiMode|screenLayout|screenSize|smallestScreenSize|layoutDirection|locale|fontScale|keyboard|keyboardHidden|navigation|mcc|mnc|density" android:name="com.QtRask.Launcher.RaskLauncher" android:label="RaskLauncher" android:screenOrientation="unspecified" android:launchMode="singleInstance">
             <intent-filter>

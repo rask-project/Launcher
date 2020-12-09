@@ -22,19 +22,20 @@ Flickable {
         rightPadding: leftPadding
 
         Repeater {
+            id: repeater
+
             model: scrollGrid.model
 
             AppItem {
                 width: scrollGrid.iconSize + scrollGrid.iconSpacing
 
-                applicationName: modelData.name
-                packageName: modelData.packageName
-                icon: modelData.icon
-                //icon: "image://systemImage/" + modelData.packageName
-                iconAdaptative: modelData.iconAdaptative
+                applicationName: model.name
+                packageName: model.packageName
+                icon: "image://systemImage/" + packageName
+                adaptativeIcon: model.adaptativeIcon
 
                 click.onClicked: {
-                    RaskLauncher.launchApplication(modelData.packageName)
+                    RaskLauncher.launchApplication(packageName)
                     AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
                 }
 
@@ -47,7 +48,7 @@ Flickable {
                 AppActions {
                     id: actions
 
-                    name: modelData.name
+                    name: name
                     parent: scrollGrid
 
                     options: ListModel {
@@ -71,7 +72,7 @@ Flickable {
 
                             property var func: function () {
                                 RaskLauncher.openApplicationDetailsSettings(
-                                            modelData.packageName)
+                                            packageName)
                             }
                         }
 
@@ -80,8 +81,7 @@ Flickable {
                             iconName: "delete"
 
                             property var func: function () {
-                                RaskLauncher.uninstallApplication(
-                                            modelData.packageName)
+                                RaskLauncher.uninstallApplication(packageName)
                             }
                         }
                     }

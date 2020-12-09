@@ -7,7 +7,10 @@ TARGET = RaskLauncher
 SOURCES += \
         $$PWD/main.cpp \
         cpp/androidvibrate.cpp \
+        cpp/applications.cpp \
+        cpp/connectiondb.cpp \
         cpp/imageprovider.cpp \
+        cpp/jsonabstractlistmodel.cpp \
         cpp/rasklauncher.cpp \
         cpp/screenmanager.cpp
 
@@ -35,18 +38,23 @@ android {
         $$PWD/android/res/values/styles.xml \
         $$PWD/android/src/com/QtRask/Launcher/Application.kt \
         $$PWD/android/src/com/QtRask/Launcher/RaskLauncher.kt
-
     OTHER_FILES += \
         $$PWD/android/src/com/QtRask/Launcher/*kt
 
     ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android
 
     ANDROID_ABIS = arm64-v8a
+} else {
+    RESOURCES +=  \
+                $$PWD/icons/applications.qrc
 }
 
 HEADERS += \
     cpp/androidvibrate.h \
+    cpp/applications.h \
+    cpp/connectiondb.h \
     cpp/imageprovider.h \
+    cpp/jsonabstractlistmodel.h \
     cpp/rasklauncher.h \
     cpp/screenmanager.h \
     cpp/singleton.h \
@@ -57,3 +65,5 @@ contains(ANDROID_TARGET_ARCH,) {
     ANDROID_ABIS = \
         arm64-v8a
 }
+
+ANDROID_ABIS = arm64-v8a

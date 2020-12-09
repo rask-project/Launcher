@@ -66,6 +66,7 @@ Item {
                 height: parent.height * (appItem.adaptative ? 1.5 : 1)
                 cache: true
                 anchors.centerIn: parent
+                asynchronous: true
 
                 sourceSize.width: image.width
                 sourceSize.height: image.height

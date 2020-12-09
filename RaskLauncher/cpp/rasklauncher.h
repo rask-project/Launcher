@@ -2,6 +2,7 @@
 
 #include <QObject>
 #include <QVariantList>
+#include "applications.h"
 
 #ifdef Q_OS_ANDROID
 #include <QAndroidJniObject>
@@ -9,31 +10,23 @@
 
 class RaskLauncher : public QObject
 {
-    Q_PROPERTY(QVariantList applications READ applications NOTIFY applicationsChanged)
     Q_OBJECT
 public:
     explicit RaskLauncher(QObject *parent = nullptr);
 
-    QVariantList applications();
-
 public slots:
     void retrievePackages();
 
-    void launchApplication(const QString &application);
-    void openApplicationDetailsSettings(const QString &application);
+    static void launchApplication(const QString &application);
+    static void openApplicationDetailsSettings(const QString &application);
     void uninstallApplication(const QString &application);
 
     void registerMethods();
     void newApplication(const QString &packageName);
     void removedApplication(const QString &packageName);
 
-signals:
-    void applicationsChanged();
-
-private slots:
-
 private:
-    QVariantList m_applications;
+    Applications &applications;
 
 #ifdef Q_OS_ANDROID
     QAndroidJniObject m_activityLauncher;

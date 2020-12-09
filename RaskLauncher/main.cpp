@@ -5,13 +5,13 @@
 #include <QQmlComponent>
 #include <QQmlContext>
 #include <QIcon>
-#include <memory>
 
 #include "cpp/singleton.h"
 #include "cpp/rasklauncher.h"
 #include "cpp/imageprovider.h"
 #include "cpp/androidvibrate.h"
 #include "cpp/screenmanager.h"
+#include "cpp/applications.h"
 
 int main(int argc, char *argv[])
 {
@@ -26,19 +26,22 @@ int main(int argc, char *argv[])
     QQmlApplicationEngine engine;
 
     qmlRegisterSingletonType<RaskLauncher>("QtRask.Launcher", 1, 0, "RaskLauncher", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
-        return &Singleton<RaskLauncher>::getInstance(engine, scriptEngine);
+        return &Singleton<RaskLauncher>::getInstanceQML(engine, scriptEngine);
     });
 
     qmlRegisterSingletonType<AndroidVibrate>("QtRask.Launcher", 1, 0, "AndroidVibrate", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
-        return &Singleton<AndroidVibrate>::getInstance(engine, scriptEngine);
+        return &Singleton<AndroidVibrate>::getInstanceQML(engine, scriptEngine);
     });
 
     qmlRegisterSingletonType<ScreenManager>("QtRask.Launcher", 1, 0, "ScreenManager", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
-        return &Singleton<ScreenManager>::getInstance(engine, scriptEngine);
+        return &Singleton<ScreenManager>::getInstanceQML(engine, scriptEngine);
     });
 
-    std::unique_ptr<ImageProvider> imageProvider = std::make_unique<ImageProvider>();
-    engine.addImageProvider(QStringLiteral("systemImage"), imageProvider.get());
+    qmlRegisterSingletonType<Applications>("QtRask.Launcher", 1, 0, "Applications", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
+        return &Singleton<Applications>::getInstanceQML(engine, scriptEngine);
+    });
+
+    engine.addImageProvider(QStringLiteral("systemImage"), &Singleton<ImageProvider>::getInstance());
 
     const QUrl url(QStringLiteral("qrc:/qml/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,

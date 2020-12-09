@@ -5,11 +5,17 @@ template<typename MyClass>
 class Singleton final
 {
 public:
-    static MyClass& getInstance(QQmlEngine *qmlEngine = nullptr, QJSEngine *qjsEngine = nullptr)
+    static MyClass& getInstanceQML(QQmlEngine *qmlEngine = nullptr, QJSEngine *qjsEngine = nullptr)
     {
         Q_UNUSED(qmlEngine);
         Q_UNUSED(qjsEngine);
 
+        static MyClass instance;
+        return instance;
+    }
+
+    static MyClass& getInstance()
+    {
         static MyClass instance;
         return instance;
     }

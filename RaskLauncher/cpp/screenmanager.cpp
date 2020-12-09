@@ -111,5 +111,8 @@ int ScreenManager::getResourceSize(const QString &value)
 
     qDebug() << "Resource" << value << size;
     return size;
+#else
+    Q_UNUSED(value)
+    return 0;
 #endif
 }

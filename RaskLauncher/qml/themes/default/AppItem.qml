@@ -9,7 +9,7 @@ Item {
     property string packageName
     property string icon
     property int iconSize: 60
-    property bool iconAdaptative
+    property bool adaptativeIcon
 
     property bool showAppName: true
     property alias click: areaClick
@@ -74,9 +74,10 @@ Item {
                 }
 
                 Image {
-                    width: parent.width * (root.iconAdaptative ? 1.5 : 1)
+                    width: parent.width * (root.adaptativeIcon ? 1.5 : 1)
                     height: width
 
+                    //asynchronous: true
                     anchors.centerIn: parent
 
                     sourceSize.width: width

@@ -38,10 +38,13 @@ ApplicationWindow {
             id: themeDefault
 
             //applications: RaskLauncher.applications
+            applications: Applications
         }
     }
 
-    Component.onCompleted: RaskLauncher.retrievePackages()
+    Component.onCompleted: {
+        RaskLauncher.retrievePackages()
+    }
 
     onActiveScreenChanged: if (activeScreen)
                                ScreenManager.updateScreenValues()
