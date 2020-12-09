@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>applications/0ad.svg</file>
+        <file>applications/acroread.svg</file>
+        <file>applications/AdobeAfterEffect.svg</file>
+        <file>applications/AdobePhotoshop.svg</file>
+        <file>applications/anatine.svg</file>
+        <file>applications/android-studio.svg</file>
+        <file>applications/anjuta.svg</file>
+        <file>applications/calligrastage.svg</file>
+        <file>applications/chromium-browser.svg</file>
+        <file>applications/cpu-amd.svg</file>
+        <file>applications/cpuinfo.svg</file>
+        <file>applications/display.svg</file>
+        <file>applications/file-manager.svg</file>
+        <file>applications/firefox.svg</file>
+        <file>applications/geany.svg</file>
+        <file>applications/gnome-books.svg</file>
+        <file>applications/kodi.svg</file>
+        <file>applications/libreoffice-calc.svg</file>
+        <file>applications/libreoffice-draw.svg</file>
+        <file>applications/libreoffice-writer.svg</file>
+        <file>applications/luminance-hdr.svg</file>
+        <file>applications/message.svg</file>
+        <file>applications/minitube.svg</file>
+        <file>applications/mongodb-compass.svg</file>
+        <file>applications/ms-excel.svg</file>
+        <file>applications/ms-office.svg</file>
+        <file>applications/ms-onenote.svg</file>
+        <file>applications/ms-outlook.svg</file>
+        <file>applications/ms-powerpoint.svg</file>
+        <file>applications/ms-word.svg</file>
+        <file>applications/okular.svg</file>
+        <file>applications/opera.svg</file>
+        <file>applications/pcsxr.svg</file>
+        <file>applications/pgadmin3.svg</file>
+        <file>applications/pitivi.svg</file>
+        <file>applications/plasma.svg</file>
+        <file>applications/postman.svg</file>
+        <file>applications/preferences-system-privacy.svg</file>
+        <file>applications/preferences-tweaks-anim.svg</file>
+        <file>applications/qtransmission.svg</file>
+    </qresource>
+</RCC>
