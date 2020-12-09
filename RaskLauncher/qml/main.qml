@@ -37,8 +37,7 @@ ApplicationWindow {
         initialItem: Default {
             id: themeDefault
 
-            //applications: RaskLauncher.applications
-            applications: Applications
+            applications: Applications.data
         }
     }
 

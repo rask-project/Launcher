@@ -7,33 +7,11 @@
 #include <QDebug>
 
 Applications::Applications(QObject *parent) :
-    QAbstractListModel(parent),
+    QObject(parent),
     jsonModel(QStringLiteral("applications")),
     m_fields({ QStringLiteral("name"), QStringLiteral("packageName"), QStringLiteral("visible"), QStringLiteral("adaptativeIcon") })
 {
     m_data << jsonModel.getJSONData().toList();
-}
-
-int Applications::rowCount(const QModelIndex &/*parent*/) const
-{
-    return m_data.size();
-}
-
-QVariant Applications::data(const QModelIndex &index, int role) const
-{
-    if (index.row() < 0 || index.row() >= m_data.size())
-        return QVariant();
-    return m_data.at(index.row()).toMap()[m_fields[role - Qt::UserRole]];
-}
-
-QHash<int, QByteArray> Applications::roleNames() const
-{
-    QHash<int, QByteArray> roleNames;
-    roleNames[Name] = "name";
-    roleNames[Package] = "packageName";
-    roleNames[Visible] = "visible";
-    roleNames[AdaptativeIcon] = "adaptativeIcon";
-    return roleNames;
 }
 
 void Applications::addApplications(const QVariantList &list)
@@ -91,6 +69,11 @@ void Applications::sort(int column, Qt::SortOrder order)
     });
 }
 
+QVariantList Applications::getData() const
+{
+    return m_data;
+}
+
 void Applications::newApplication(const QVariantMap &application)
 {
     const auto &app = std::find_if(m_data.begin(), m_data.end(), [application](const QVariant &it)
@@ -109,8 +92,6 @@ void Applications::newApplication(const QVariantMap &application)
 void Applications::refreshApplicationsList()
 {
     sort(Name, Qt::AscendingOrder);
-    beginResetModel();
-    endResetModel();
-
+    emit dataChanged();
     jsonModel.setJSONData(m_data);
 }

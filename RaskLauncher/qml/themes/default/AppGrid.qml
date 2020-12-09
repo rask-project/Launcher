@@ -29,10 +29,10 @@ Flickable {
             AppItem {
                 width: scrollGrid.iconSize + scrollGrid.iconSpacing
 
-                applicationName: model.name
-                packageName: model.packageName
+                applicationName: modelData.name
+                packageName: modelData.packageName
                 icon: "image://systemImage/" + packageName
-                adaptativeIcon: model.adaptativeIcon
+                adaptativeIcon: modelData.adaptativeIcon
 
                 click.onClicked: {
                     RaskLauncher.launchApplication(packageName)

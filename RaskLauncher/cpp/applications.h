@@ -5,8 +5,9 @@
 #include <QVariant>
 #include "jsonabstractlistmodel.h"
 
-class Applications : public QAbstractListModel
+class Applications : public QObject
 {
+    Q_PROPERTY(QVariantList data READ getData NOTIFY dataChanged)
     Q_OBJECT
 public:
     explicit Applications(QObject *parent = nullptr);
@@ -18,18 +19,16 @@ public:
         AdaptativeIcon
     };
 
-    int rowCount(const QModelIndex &parent) const override;
-    QVariant data(const QModelIndex &index, int role) const override;
-    QHash<int, QByteArray> roleNames() const override;
-
     void addApplications(const QVariantList &list);
     void addApplication(const QVariantMap &application);
     void removeApplication(const QString &packageName);
 
-    void sort(int column, Qt::SortOrder order) override;
+    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+
+    QVariantList getData() const;
 
 signals:
-    void countChanged(int count);
+    void dataChanged();
 
 private:
     JSONAbstractListModel jsonModel;

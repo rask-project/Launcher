@@ -66,7 +66,7 @@ void RaskLauncher::retrievePackages()
         QString package = UtilsJni::jstringToQString((obj.callObjectMethod<jstring>("getPackageName")).object<jstring>());
         QString iconType = UtilsJni::jstringToQString((obj.callObjectMethod<jstring>("getIconType")).object<jstring>());
 
-        listApplications << QVariantMap({ { "name", name }, { "packageName", package }, { "iconAdaptative", iconType == QStringLiteral("Adaptative") } });
+        listApplications << QVariantMap({ { "name", name }, { "packageName", package }, { "adaptativeIcon", iconType == QStringLiteral("Adaptative") } });
     }
 #else
     listApplications << QVariantMap({ { "name", "0ad" }, { "packageName", "0ad" }, { "adaptativeIcon", 0 } });
