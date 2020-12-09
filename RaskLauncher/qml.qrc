@@ -3,11 +3,6 @@
         <file>qml/main.qml</file>
         <file>img/qc-icon.png</file>
         <file>img/wallpaper.jpg</file>
-        <file>qml/components/ScrollablePage.qml</file>
-        <file>qml/components/ScrollableGrid.qml</file>
-        <file>qml/components/AppItem.qml</file>
-        <file>qml/components/AppActions.qml</file>
-        <file>qml/components/AppSearch.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>qml/themes/default/Default.qml</file>
         <file>qml/themes/default/AppDock.qml</file>
