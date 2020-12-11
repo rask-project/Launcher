@@ -37,7 +37,8 @@ ApplicationWindow {
         initialItem: Default {
             id: themeDefault
 
-            applications: Applications.data
+            applications: Applications.list
+            applicationsHidden: Applications.hidden
         }
     }
 

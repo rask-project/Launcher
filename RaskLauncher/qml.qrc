@@ -11,5 +11,7 @@
         <file>qml/themes/default/AppActions.qml</file>
         <file>js/Database.js</file>
         <file>js/ListSQLiteModel.qml</file>
+        <file>qml/themes/default/AppHidden.qml</file>
+        <file>qml/themes/default/components/BlurOverlay.qml</file>
     </qresource>
 </RCC>

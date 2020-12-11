@@ -7,7 +7,9 @@
 
 class Applications : public QObject
 {
-    Q_PROPERTY(QVariantList data READ getData NOTIFY dataChanged)
+    Q_PROPERTY(QVariantList list READ getList NOTIFY listChanged)
+    Q_PROPERTY(QVariantList hidden READ getHidden NOTIFY hiddenChanged)
+    Q_PROPERTY(QVariantList dock READ getDock NOTIFY dockChanged)
     Q_OBJECT
 public:
     explicit Applications(QObject *parent = nullptr);
@@ -19,23 +21,45 @@ public:
         AdaptativeIcon
     };
 
-    void addApplications(const QVariantList &list);
+    void addApplications(QVariantList &list);
     void addApplication(const QVariantMap &application);
     void removeApplication(const QString &packageName);
 
-    void sort(int column, Qt::SortOrder order = Qt::AscendingOrder);
+    void sort(QVariantList &value, int column, Qt::SortOrder order = Qt::AscendingOrder);
 
-    QVariantList getData() const;
+    QVariantList getList() const;
+    QVariantList getHidden() const;
+    QVariantList getDock() const;
+
+public slots:
+    void hideApplication(const QString &packageName);
+    void showApplication(const QString &packageName);
 
 signals:
     void dataChanged();
 
+    void listChanged();
+    void hiddenChanged();
+    void dockChanged();
+
 private:
     JSONAbstractListModel jsonModel;
     const QStringList m_fields;
-    QVariantList m_data;
+    bool m_modifiedList;
+
+    QVariantList m_applications;
+    QVariantList m_applicationsHidden;
+    QVariantList m_applicationsDock;
+
+    const QString m_fieldApplications;
+    const QString m_fieldHidden;
+    const QString m_fieldDock;
 
     void newApplication(const QVariantMap &application);
     void refreshApplicationsList();
+
+    QVariantList::iterator find(QVariantList &list, const QString &searchFor, ModelRoles field = ModelRoles::Package);
+    bool findAndRemove(QVariantList &listSource, QVariantList &listTarget);
+    bool findAndRemove(const QString &packageName, QVariantList &listTarget);
 };
 

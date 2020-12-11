@@ -24,7 +24,7 @@ Item {
         Rectangle {
             id: iconGlass
 
-            width: root.iconSize
+            width: root.iconSize * 0.85
             height: width
             z: 2
 
@@ -55,7 +55,7 @@ Item {
             Rectangle {
                 id: iconBackground
 
-                width: parent.width * 0.85
+                width: parent.width
                 height: width
                 z: 3
 
@@ -77,7 +77,7 @@ Item {
                     width: parent.width * (root.adaptativeIcon ? 1.5 : 1)
                     height: width
 
-                    //asynchronous: true
+                    asynchronous: true
                     anchors.centerIn: parent
 
                     sourceSize.width: width

@@ -47,6 +47,14 @@ QVariant JSONAbstractListModel::getJSONData()
         return {};
     }
 
+    int version = 0;
+    in >> version;
+    if (version != fileVersion) {
+        qInfo() << "File version not allowed" << version << "Expected" << fileVersion;
+        m_fileData.close();
+        return {};
+    }
+
     QByteArray data;
     in >> data;
 
@@ -71,6 +79,7 @@ void JSONAbstractListModel::setJSONData(const QVariant &value)
 
     QDataStream out(&m_fileData);
     out << fileType;
+    out << fileVersion;
     out << qCompress(QJsonDocument::fromVariant(value).toJson(QJsonDocument::Compact), compressionLevel);
 
     m_fileData.close();

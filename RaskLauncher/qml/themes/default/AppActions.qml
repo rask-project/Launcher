@@ -2,17 +2,16 @@ import QtQuick 2.12
 import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
 
+import "components"
+
 Popup {
     id: control
 
-    x: parent.width / 2 - width / 2
-    y: parent.height / 2 - height / 2
-
-    width: parent.width > 300 ? parent.width : 300
+    width: parent.width > 250 ? parent.width : 250
     padding: 0
     margins: 0
     horizontalPadding: 0
-    modal: true
+    modal: false
 
     property string name
     property ListModel options
@@ -53,28 +52,19 @@ Popup {
         }
     }
 
-    background: Item {}
+    background: Rectangle {
+        color: "#ef333333"
 
-    Overlay.modal: Rectangle {
-        id: overlay
-        width: control.parent.width
-        height: control.parent.height
+        radius: 15
 
-        color: "#333"
-
-        FastBlur {
-            id: fastBlur
-
-            anchors.fill: parent
-            radius: 100
-            opacity: 0.7
-
-            source: ShaderEffectSource {
-                id: shader
-                anchors.fill: parent
-                sourceItem: ApplicationWindow.contentItem
-                sourceRect: Qt.rect(overlay.x, overlay.y, overlay.width,
-                                    overlay.height)
+        layer.enabled: true
+        layer.effect: OpacityMask {
+            maskSource: Rectangle {
+                x: control.x
+                y: control.y
+                width: control.width
+                height: control.height
+                radius: control.background.radius
             }
         }
     }

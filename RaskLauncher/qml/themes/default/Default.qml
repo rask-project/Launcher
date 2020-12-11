@@ -10,6 +10,7 @@ Page {
     rightPadding: 10
 
     property alias applications: appGrid.model
+    property alias applicationsHidden: appHidden.model
 
     background: Item {}
 
@@ -25,15 +26,27 @@ Page {
 
         width: parent.width
         height: parent.height
+
+        onFlickBeforeStart: console.log("Show Search Page")
+        onFlickAfterEnd: {
+            if (appHidden.model.length > 0)
+                appHidden.open()
+        }
     }
 
-    footer: AppDock {
-        visible: model.length > 0
+    AppHidden {
+        id: appHidden
+
         width: parent.width
-        height: 100
-
-        anchors.bottom: parent.bottom
-        shadderSource: appGrid
-        //model: page.applications.splice(10, 10)
+        height: parent.height
     }
+
+    //footer: AppDock {
+    //    visible: model.length > 0
+    //    width: parent.width
+    //    height: 100
+    //    anchors.bottom: parent.bottom
+    //    shadderSource: appGrid
+    //    //model: page.applications.splice(10, 10)
+    //}
 }

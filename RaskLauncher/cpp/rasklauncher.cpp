@@ -69,46 +69,46 @@ void RaskLauncher::retrievePackages()
         listApplications << QVariantMap({ { "name", name }, { "packageName", package }, { "adaptativeIcon", iconType == QStringLiteral("Adaptative") } });
     }
 #else
-    listApplications << QVariantMap({ { "name", "0ad" }, { "packageName", "0ad" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Microsoft Office Excel" }, { "packageName", "ms-excel" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Microsoft Office" }, { "packageName", "ms-office" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Microsoft Office One Note" }, { "packageName", "ms-onenote" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Microsoft Office Outlook" }, { "packageName", "ms-outlook" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Adobe After Effects" }, { "packageName", "AdobeAfterEffect" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Adobe Photoshop" }, { "packageName", "AdobePhotoshop" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Android Studio" }, { "packageName", "android-studio" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Anatine" }, { "packageName", "anatine" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Anjuta" }, { "packageName", "anjuta" }, { "adaptativeIcon", 1 } });
-    listApplications << QVariantMap({ { "name", "Calligra" }, { "packageName", "calligrastage" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "CPU AMD" }, { "packageName", "cpu-amd" }, { "adaptativeIcon", 1 } });
-    listApplications << QVariantMap({ { "name", "CPU Info" }, { "packageName", "cpuinfo" }, { "adaptativeIcon", 1 } });
-    listApplications << QVariantMap({ { "name", "Display" }, { "packageName", "display" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Finder" }, { "packageName", "file-manager" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Geany" }, { "packageName", "geany" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Gnome Books" }, { "packageName", "gnome-books" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Libre Office Calc" }, { "packageName", "libreoffice-calc" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Libre Office Draw" }, { "packageName", "libreoffice-draw" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Luminance HDR" }, { "packageName", "luminance-hdr" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Message" }, { "packageName", "message" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Minitube" }, { "packageName", "minitube" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "mongodb Compass" }, { "packageName", "mongodb-compass" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "pgadmin3" }, { "packageName", "pgadmin3" }, { "adaptativeIcon", 1 } });
-    listApplications << QVariantMap({ { "name", "PCSXR" }, { "packageName", "pcsxr" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Pitivi" }, { "packageName", "pitivi" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Plasma" }, { "packageName", "plasma" }, { "adaptativeIcon", 1 } });
-    listApplications << QVariantMap({ { "name", "Postman" }, { "packageName", "postman" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Preferences System Privacy" }, { "packageName", "preferences-system-privacy" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Preferences Tweaks" }, { "packageName", "preferences-tweaks-anim" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "qTransmission" }, { "packageName", "qtransmission" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Microsoft Office PowerPoint" }, { "packageName", "ms-powerpoint" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Microsoft Office Word" }, { "packageName", "ms-word" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Adobe Acrobat Reader" }, { "packageName", "acroread" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Chromium" }, { "packageName", "chromium-browser" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Firefox" }, { "packageName", "firefox" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Kodi" }, { "packageName", "kodi" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Libre Office Writer" }, { "packageName", "libreoffice-writer" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Okular" }, { "packageName", "okular" }, { "adaptativeIcon", 0 } });
-    listApplications << QVariantMap({ { "name", "Opera" }, { "packageName", "opera" }, { "adaptativeIcon", 1 } });
+    listApplications << QVariantMap({ { "name", "0ad" }, { "packageName", "0ad" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Microsoft Office Excel" }, { "packageName", "ms-excel" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Microsoft Office" }, { "packageName", "ms-office" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Microsoft Office One Note" }, { "packageName", "ms-onenote" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Microsoft Office Outlook" }, { "packageName", "ms-outlook" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Adobe After Effects" }, { "packageName", "AdobeAfterEffect" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Adobe Photoshop" }, { "packageName", "AdobePhotoshop" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Android Studio" }, { "packageName", "android-studio" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Anatine" }, { "packageName", "anatine" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Anjuta" }, { "packageName", "anjuta" }, { "adaptativeIcon", true } });
+    listApplications << QVariantMap({ { "name", "Calligra" }, { "packageName", "calligrastage" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "CPU AMD" }, { "packageName", "cpu-amd" }, { "adaptativeIcon", true } });
+    listApplications << QVariantMap({ { "name", "CPU Info" }, { "packageName", "cpuinfo" }, { "adaptativeIcon", true } });
+    listApplications << QVariantMap({ { "name", "Display" }, { "packageName", "display" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Finder" }, { "packageName", "file-manager" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Geany" }, { "packageName", "geany" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Gnome Books" }, { "packageName", "gnome-books" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Libre Office Calc" }, { "packageName", "libreoffice-calc" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Libre Office Draw" }, { "packageName", "libreoffice-draw" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Luminance HDR" }, { "packageName", "luminance-hdr" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Message" }, { "packageName", "message" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Minitube" }, { "packageName", "minitube" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "mongodb Compass" }, { "packageName", "mongodb-compass" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "pgadmin3" }, { "packageName", "pgadmin3" }, { "adaptativeIcon", true } });
+    listApplications << QVariantMap({ { "name", "PCSXR" }, { "packageName", "pcsxr" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Pitivi" }, { "packageName", "pitivi" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Plasma" }, { "packageName", "plasma" }, { "adaptativeIcon", true } });
+    listApplications << QVariantMap({ { "name", "Postman" }, { "packageName", "postman" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Preferences System Privacy" }, { "packageName", "preferences-system-privacy" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Preferences Tweaks" }, { "packageName", "preferences-tweaks-anim" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "qTransmission" }, { "packageName", "qtransmission" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Microsoft Office PowerPoint" }, { "packageName", "ms-powerpoint" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Microsoft Office Word" }, { "packageName", "ms-word" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Adobe Acrobat Reader" }, { "packageName", "acroread" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Chromium" }, { "packageName", "chromium-browser" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Firefox" }, { "packageName", "firefox" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Kodi" }, { "packageName", "kodi" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Libre Office Writer" }, { "packageName", "libreoffice-writer" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Okular" }, { "packageName", "okular" }, { "adaptativeIcon", false } });
+    listApplications << QVariantMap({ { "name", "Opera" }, { "packageName", "opera" }, { "adaptativeIcon", true } });
 #endif
 
     applications.addApplications(listApplications);
@@ -139,7 +139,7 @@ void RaskLauncher::newApplication(const QString &packageName)
     application = QVariantMap({
                                   { "name", packageName },
                                   { "packageName", packageName },
-                                  { "adaptativeIcon", 1 }
+                                  { "adaptativeIcon", true }
                               });
 #endif
     applications.addApplication(application);
