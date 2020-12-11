@@ -13,5 +13,6 @@
         <file>js/ListSQLiteModel.qml</file>
         <file>qml/themes/default/AppHidden.qml</file>
         <file>qml/themes/default/components/BlurOverlay.qml</file>
+        <file>qml/themes/default/components/OverlaySheet.qml</file>
     </qresource>
 </RCC>

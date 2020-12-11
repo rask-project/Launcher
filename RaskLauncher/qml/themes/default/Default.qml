@@ -27,6 +27,7 @@ Page {
         width: parent.width
         height: parent.height
 
+        //        model: page.applications
         onFlickBeforeStart: console.log("Show Search Page")
         onFlickAfterEnd: {
             if (appHidden.model.length > 0)
@@ -37,8 +38,7 @@ Page {
     AppHidden {
         id: appHidden
 
-        width: parent.width
-        height: parent.height
+        //        model: page.applications
     }
 
     //footer: AppDock {
@@ -49,4 +49,165 @@ Page {
     //    shadderSource: appGrid
     //    //model: page.applications.splice(10, 10)
     //}
+    property var applications: [{
+            "adaptativeIcon": false,
+            "name": "0ad",
+            "packageName": "0ad"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Adobe Acrobat Reader",
+            "packageName": "acroread"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Adobe After Effects",
+            "packageName": "AdobeAfterEffect"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Adobe Photoshop",
+            "packageName": "AdobePhotoshop"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Anatine",
+            "packageName": "anatine"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Android Studio",
+            "packageName": "android-studio"
+        }, {
+            "adaptativeIcon": true,
+            "name": "Anjuta",
+            "packageName": "anjuta"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Calligra",
+            "packageName": "calligrastage"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Chromium",
+            "packageName": "chromium-browser"
+        }, {
+            "adaptativeIcon": true,
+            "name": "CPU AMD",
+            "packageName": "cpu-amd"
+        }, {
+            "adaptativeIcon": true,
+            "name": "CPU Info",
+            "packageName": "cpuinfo"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Display",
+            "packageName": "display"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Finder",
+            "packageName": "file-manager"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Firefox",
+            "packageName": "firefox"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Geany",
+            "packageName": "geany"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Gnome Books",
+            "packageName": "gnome-books"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Kodi",
+            "packageName": "kodi"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Libre Office Calc",
+            "packageName": "libreoffice-calc"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Libre Office Draw",
+            "packageName": "libreoffice-draw"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Libre Office Writer",
+            "packageName": "libreoffice-writer"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Luminance HDR",
+            "packageName": "luminance-hdr"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Message",
+            "packageName": "message"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Microsoft Office",
+            "packageName": "ms-office"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Microsoft Office Excel",
+            "packageName": "ms-excel"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Microsoft Office One Note",
+            "packageName": "ms-onenote"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Microsoft Office Outlook",
+            "packageName": "ms-outlook"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Microsoft Office PowerPoint",
+            "packageName": "ms-powerpoint"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Microsoft Office Word",
+            "packageName": "ms-word"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Minitube",
+            "packageName": "minitube"
+        }, {
+            "adaptativeIcon": false,
+            "name": "mongodb Compass",
+            "packageName": "mongodb-compass"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Okular",
+            "packageName": "okular"
+        }, {
+            "adaptativeIcon": true,
+            "name": "Opera",
+            "packageName": "opera"
+        }, {
+            "adaptativeIcon": false,
+            "name": "PCSXR",
+            "packageName": "pcsxr"
+        }, {
+            "adaptativeIcon": true,
+            "name": "pgadmin3",
+            "packageName": "pgadmin3"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Pitivi",
+            "packageName": "pitivi"
+        }, {
+            "adaptativeIcon": true,
+            "name": "Plasma",
+            "packageName": "plasma"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Postman",
+            "packageName": "postman"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Preferences System Privacy",
+            "packageName": "preferences-system-privacy"
+        }, {
+            "adaptativeIcon": false,
+            "name": "Preferences Tweaks",
+            "packageName": "preferences-tweaks-anim"
+        }, {
+            "adaptativeIcon": false,
+            "name": "qTransmission",
+            "packageName": "qtransmission"
+        }]
 }

@@ -1,138 +1,81 @@
 import QtQuick 2.12
 import QtQuick.Window 2.12
 import QtQuick.Controls 2.12
-import QtRask.Launcher 1.0
 
+//import QtRask.Launcher 1.0
 import "components"
 
-Dialog {
+OverlaySheet {
     id: control
-
-    property int posY: Screen.height
-
-    width: parent.width
-    onHeightChanged: console.log("Dialog", height)
-
-    padding: 0
-    margins: 0
-    horizontalPadding: 0
-    modal: true
 
     property int widthAvailable: width - leftMargin - rightMargin
     property var model: []
     property int iconSize: 45
     property int iconSpacing: 25
 
-    Flickable {
-        id: flickable
+    Flow {
+        id: applicationFlow
 
         width: parent.width
-        height: parent.height
-        contentHeight: applicationFlow.implicitHeight
 
-        Flow {
-            id: applicationFlow
+        leftPadding: (control.widthAvailable % (control.iconSize + control.iconSpacing)) / 2
+        rightPadding: leftPadding
 
-            width: parent.width
+        Repeater {
+            id: repeater
 
-            leftPadding: (control.widthAvailable % (control.iconSize + control.iconSpacing)) / 2
-            rightPadding: leftPadding
+            model: control.model
 
-            Repeater {
-                id: repeater
+            AppItem {
+                width: control.iconSize + control.iconSpacing
 
-                model: control.model
+                applicationName: modelData.name
+                packageName: modelData.packageName
+                //icon: "file:///home/marssola/.local/share/icons/Os-Catalina-icons/128x128/apps/" + packageName + ".svg"
+                icon: "image://systemImage/" + packageName
+                adaptativeIcon: modelData.adaptativeIcon
 
-                AppItem {
-                    width: control.iconSize + control.iconSpacing
+                click.onClicked: {
+                    control.visible = false
+                    RaskLauncher.launchApplication(packageName)
+                    AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
+                }
 
-                    applicationName: modelData.name
-                    packageName: modelData.packageName
-                    icon: "image://systemImage/" + packageName
-                    adaptativeIcon: modelData.adaptativeIcon
+                click.onPressAndHold: {
+                    actions.visible = true
+                    AndroidVibrate.vibrate(200,
+                                           AndroidVibrate.EFFECT_HEAVY_CLICK)
+                }
 
-                    click.onClicked: {
-                        control.visible = false
-                        RaskLauncher.launchApplication(packageName)
-                        AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
-                    }
+                AppActions {
+                    id: actions
 
-                    click.onPressAndHold: {
-                        actions.visible = true
-                        AndroidVibrate.vibrate(
-                                    200, AndroidVibrate.EFFECT_HEAVY_CLICK)
-                    }
+                    name: modelData.name
 
-                    AppActions {
-                        id: actions
+                    options: ListModel {
+                        ListElement {
+                            label: qsTr("Show App in grid")
+                            iconName: "visibility"
 
-                        name: modelData.name
-
-                        options: ListModel {
-                            ListElement {
-                                label: qsTr("Show App in grid")
-                                iconName: "visibility"
-
-                                property var func: function () {
-                                    control.visible = false
-                                    Applications.showApplication(
-                                                modelData.packageName)
-                                }
+                            property var func: function () {
+                                control.visible = false
+                                Applications.showApplication(
+                                            modelData.packageName)
                             }
+                        }
 
-                            ListElement {
-                                label: qsTr("Uninstall")
-                                iconName: "delete"
+                        ListElement {
+                            label: qsTr("Uninstall")
+                            iconName: "delete"
 
-                                property var func: function () {
-                                    control.visible = false
-                                    RaskLauncher.uninstallApplication(
-                                                packageName)
-                                }
+                            property var func: function () {
+                                control.visible = false
+                                RaskLauncher.uninstallApplication(packageName)
                             }
                         }
                     }
                 }
             }
-        }
-    }
-
-    background: Item {}
-
-    Overlay.modal: BlurOverlay {}
-
-    enter: Transition {
-        NumberAnimation {
-            property: "y"
-            from: Screen.height / 2
-            to: 0
-            easing.type: Easing.OutQuint
-            duration: 500
-        }
-        NumberAnimation {
-            property: "opacity"
-            from: 0.0
-            to: 1.0
-            easing.type: Easing.OutCubic
-            duration: 800
-        }
-    }
-
-    exit: Transition {
-        NumberAnimation {
-            property: "y"
-            from: 0
-            to: Screen.height / 2
-            easing.type: Easing.OutQuint
-            duration: 200
-        }
-
-        NumberAnimation {
-            property: "opacity"
-            from: 1.0
-            to: 0.0
-            easing.type: Easing.OutCubic
-            duration: 500
         }
     }
 }

@@ -7,16 +7,19 @@ import "components"
 Popup {
     id: control
 
-    width: parent.width > 250 ? parent.width : 250
+    width: parent.width > 200 ? parent.width : 200
     padding: 0
+    bottomPadding: 15
     margins: 0
     horizontalPadding: 0
+
     modal: false
+    clip: true
 
     property string name
     property ListModel options
 
-    contentItem: Column {
+    Column {
         width: control.width
         padding: 0
 
@@ -53,7 +56,7 @@ Popup {
     }
 
     background: Rectangle {
-        color: "#ef333333"
+        color: "#cf333333"
 
         radius: 15
 

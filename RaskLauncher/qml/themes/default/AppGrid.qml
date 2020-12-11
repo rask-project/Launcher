@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
+
 import QtRask.Launcher 1.0
 
 Flickable {
@@ -128,6 +129,7 @@ Flickable {
 
                 applicationName: modelData.name
                 packageName: modelData.packageName
+                //icon: "file:///home/marssola/.local/share/icons/Os-Catalina-icons/128x128/apps/" + packageName + ".svg"
                 icon: "image://systemImage/" + packageName
                 adaptativeIcon: modelData.adaptativeIcon
 

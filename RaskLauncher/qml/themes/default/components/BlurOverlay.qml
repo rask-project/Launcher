@@ -4,8 +4,6 @@ import QtGraphicalEffects 1.0
 
 Rectangle {
     id: overlay
-    width: control.parent.width
-    height: control.parent.height
 
     color: "#333"
 

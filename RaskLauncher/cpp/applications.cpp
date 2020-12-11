@@ -140,6 +140,9 @@ void Applications::refreshApplicationsList()
                                                { m_fieldHidden, m_applicationsHidden },
                                                { m_fieldDock, m_applicationsDock }
                                            });
+
+    //qDebug().noquote() << QJsonDocument::fromVariant(m_applications).toJson(QJsonDocument::Indented);
+
     jsonModel.setJSONData(applications);
     m_modifiedList = false;
 }
