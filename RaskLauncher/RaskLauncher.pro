@@ -1,4 +1,4 @@
-QT += qml quick quickcontrols2 svg sql
+QT += qml quick quickcontrols2 svg
 
 CONFIG += c++17
 
@@ -8,7 +8,6 @@ SOURCES += \
         $$PWD/main.cpp \
         cpp/androidvibrate.cpp \
         cpp/applications.cpp \
-        cpp/connectiondb.cpp \
         cpp/imageprovider.cpp \
         cpp/jsonabstractlistmodel.cpp \
         cpp/rasklauncher.cpp \
@@ -52,7 +51,6 @@ android {
 HEADERS += \
     cpp/androidvibrate.h \
     cpp/applications.h \
-    cpp/connectiondb.h \
     cpp/imageprovider.h \
     cpp/jsonabstractlistmodel.h \
     cpp/rasklauncher.h \

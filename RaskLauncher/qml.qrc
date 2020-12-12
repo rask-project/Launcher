@@ -14,5 +14,8 @@
         <file>qml/themes/default/AppHidden.qml</file>
         <file>qml/themes/default/components/BlurOverlay.qml</file>
         <file>qml/themes/default/components/OverlaySheet.qml</file>
+        <file>qml/themes/default/AppSearch.qml</file>
+        <file>qml/themes/default/components/FlickableOptions.qml</file>
+        <file>qml/themes/default/components/InputSearch.qml</file>
     </qresource>
 </RCC>

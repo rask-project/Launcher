@@ -1,9 +1,9 @@
 import QtQuick 2.15
-import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
 import QtRask.Launcher 1.0
+import "./components"
 
 Page {
     id: page
@@ -31,107 +31,37 @@ Page {
         }
 
         children: [
-            Item {
-                id: itemChildren
+            FlickableOptions {
+                id: flickableOptions
 
-                Item {
-                    id: itemSearch
+                flickableItem: appGrid
+                contentTop: Button {
+                    anchors.centerIn: parent
+                    flat: true
 
-                    y: appGrid.contentY >= 0 ? -height - 30 : -height - appGrid.contentY - 30
+                    icon.name: "search"
+                    text: qsTr("Search Apps")
+                }
 
-                    parent: itemChildren.parent
-                    width: parent.width
-                    height: buttonSearchPage.height * 1.2
+                contentBottom: Button {
+                    anchors.centerIn: parent
+                    flat: true
 
-                    Button {
-                        id: buttonSearchPage
+                    icon.name: "visibility"
+                    text: qsTr("Hidden Apps")
+                }
 
-                        anchors.centerIn: parent
-                        flat: true
-
-                        icon.name: "search"
-                        text: qsTr("Search Apps")
+                onTriggerToTop: {
+                    if (appGrid.contentY <= flickableOptions.flickData.beforeHeight) {
+                        appGrid.flickBeforeStart()
+                        AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
                     }
                 }
 
-                Item {
-                    y: (Screen.height
-                        > appGrid.contentHeight ? Screen.height : appGrid.contentHeight)
-                       + height - appGrid.contentY
-
-                    parent: itemChildren.parent
-                    width: parent.width
-                    height: buttonHiddenApps.height * 1.2
-
-                    Button {
-                        id: buttonHiddenApps
-
-                        anchors.centerIn: parent
-                        flat: true
-
-                        icon.name: "visibility"
-                        text: qsTr("Hidden Apps")
-                    }
-                }
-
-                QtObject {
-                    id: flickData
-
-                    property int beforeHeight: -70
-                    property int afterHeight: 150
-                    property bool flickedStart: false
-                    property bool flickedEnd: false
-                }
-
-                Timer {
-                    id: flickAndHoldStart
-                    interval: 1000
-
-                    onTriggered: {
-                        if (appGrid.contentY <= flickData.beforeHeight) {
-                            appGrid.flickBeforeStart()
-                            AndroidVibrate.vibrate(50,
-                                                   AndroidVibrate.EFFECT_TICK)
-                        }
-                    }
-                }
-
-                Timer {
-                    id: flickAndHoldEnd
-                    interval: 1000
-
-                    onTriggered: {
-                        if (appGrid.contentY >= flickData.afterHeight) {
-                            appGrid.flickAfterEnd()
-                            AndroidVibrate.vibrate(50,
-                                                   AndroidVibrate.EFFECT_TICK)
-                        }
-                    }
-                }
-
-                Connections {
-                    target: appGrid
-
-                    function onContentYChanged() {
-                        if (!flickData.flickedStart && target.atYBeginning
-                                && target.contentY < flickData.beforeHeight) {
-                            flickData.flickedStart = true
-                            flickAndHoldStart.running = true
-                            return
-                        }
-
-                        if (!flickData.flickedEnd && target.atYEnd
-                                && (target.contentY > flickData.afterHeight)) {
-                            flickData.flickedEnd = true
-                            flickAndHoldEnd.running = true
-                        }
-                    }
-
-                    function onMovementEnded() {
-                        flickData.flickedStart = false
-                        flickData.flickedEnd = false
-                        flickAndHoldStart.running = false
-                        flickAndHoldEnd.running = false
+                onTriggerToBottom: {
+                    if (appGrid.contentY >= flickableOptions.flickData.afterHeight) {
+                        appGrid.flickAfterEnd()
+                        AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
                     }
                 }
             }
@@ -181,12 +111,16 @@ Page {
             }
         }
 
-        onFlickBeforeStart: console.log("Show Search Page")
+        onFlickBeforeStart: appSearch.open()
 
         onFlickAfterEnd: {
             if (appHidden.model.length > 0)
                 appHidden.open()
         }
+    }
+
+    AppSearch {
+        id: appSearch
     }
 
     AppHidden {

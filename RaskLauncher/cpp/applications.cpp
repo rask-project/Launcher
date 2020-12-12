@@ -1,5 +1,4 @@
 #include "applications.h"
-#include "connectiondb.h"
 #include "imageprovider.h"
 #include "singleton.h"
 
