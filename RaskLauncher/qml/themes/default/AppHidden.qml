@@ -1,5 +1,4 @@
 import QtQuick 2.15
-import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 
 import QtRask.Launcher 1.0
@@ -30,24 +29,29 @@ OverlaySheet {
             AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
         }
 
-        actionOptions: ListModel {
-            ListElement {
-                label: qsTr("Show App in grid")
-                iconName: "visibility"
+        actions: AppActions {
+            id: actions
 
-                property var func: function () {
-                    control.visible = false
-                    Applications.showApplication(modelData.packageName)
+            name: modelData ? modelData.name : ""
+            options: ListModel {
+                ListElement {
+                    label: qsTr("Show App in grid")
+                    iconName: "visibility"
+
+                    property var func: function () {
+                        Applications.showApplication(
+                                    actions.modelData.packageName)
+                    }
                 }
-            }
 
-            ListElement {
-                label: qsTr("Uninstall")
-                iconName: "delete"
+                ListElement {
+                    label: qsTr("Uninstall")
+                    iconName: "delete"
 
-                property var func: function () {
-                    control.visible = false
-                    RaskLauncher.uninstallApplication(packageName)
+                    property var func: function () {
+                        RaskLauncher.uninstallApplication(
+                                    actions.modelData.packageName)
+                    }
                 }
             }
         }

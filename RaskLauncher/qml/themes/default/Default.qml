@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Window 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
@@ -16,13 +17,6 @@ Page {
 
     background: Item {}
 
-    //background: Rectangle {
-    //    Image {
-    //        anchors.fill: parent
-    //        source: "file:///home/marssola/Pictures/P00613-120151.jpg"
-    //        fillMode: Image.PreserveAspectCrop
-    //    }
-    //}
     AppGrid {
         id: appGrid
 
@@ -36,38 +30,153 @@ Page {
             AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
         }
 
-        actionOptions: ListModel {
-            ListElement {
-                label: qsTr("Add to Dock")
-                iconName: "bookmark"
+        children: [
+            Item {
+                id: itemChildren
 
-                property var func: function () {}
-            }
+                Item {
+                    id: itemSearch
 
-            ListElement {
-                label: qsTr("Hide App")
-                iconName: "visibility-off"
+                    y: appGrid.contentY >= 0 ? -height - 30 : -height - appGrid.contentY - 30
 
-                property var func: function () {
-                    Applications.hideApplication(modelData.packageName)
+                    parent: itemChildren.parent
+                    width: parent.width
+                    height: buttonSearchPage.height * 1.2
+
+                    Button {
+                        id: buttonSearchPage
+
+                        anchors.centerIn: parent
+                        flat: true
+
+                        icon.name: "search"
+                        text: qsTr("Search Apps")
+                    }
+                }
+
+                Item {
+                    y: (Screen.height
+                        > appGrid.contentHeight ? Screen.height : appGrid.contentHeight)
+                       + height - appGrid.contentY
+
+                    parent: itemChildren.parent
+                    width: parent.width
+                    height: buttonHiddenApps.height * 1.2
+
+                    Button {
+                        id: buttonHiddenApps
+
+                        anchors.centerIn: parent
+                        flat: true
+
+                        icon.name: "visibility"
+                        text: qsTr("Hidden Apps")
+                    }
+                }
+
+                QtObject {
+                    id: flickData
+
+                    property int beforeHeight: -70
+                    property int afterHeight: 150
+                    property bool flickedStart: false
+                    property bool flickedEnd: false
+                }
+
+                Timer {
+                    id: flickAndHoldStart
+                    interval: 1000
+
+                    onTriggered: {
+                        if (appGrid.contentY <= flickData.beforeHeight) {
+                            appGrid.flickBeforeStart()
+                            AndroidVibrate.vibrate(50,
+                                                   AndroidVibrate.EFFECT_TICK)
+                        }
+                    }
+                }
+
+                Timer {
+                    id: flickAndHoldEnd
+                    interval: 1000
+
+                    onTriggered: {
+                        if (appGrid.contentY >= flickData.afterHeight) {
+                            appGrid.flickAfterEnd()
+                            AndroidVibrate.vibrate(50,
+                                                   AndroidVibrate.EFFECT_TICK)
+                        }
+                    }
+                }
+
+                Connections {
+                    target: appGrid
+
+                    function onContentYChanged() {
+                        if (!flickData.flickedStart && target.atYBeginning
+                                && target.contentY < flickData.beforeHeight) {
+                            flickData.flickedStart = true
+                            flickAndHoldStart.running = true
+                            return
+                        }
+
+                        if (!flickData.flickedEnd && target.atYEnd
+                                && (target.contentY > flickData.afterHeight)) {
+                            flickData.flickedEnd = true
+                            flickAndHoldEnd.running = true
+                        }
+                    }
+
+                    function onMovementEnded() {
+                        flickData.flickedStart = false
+                        flickData.flickedEnd = false
+                        flickAndHoldStart.running = false
+                        flickAndHoldEnd.running = false
+                    }
                 }
             }
+        ]
 
-            ListElement {
-                label: qsTr("Information")
-                iconName: "info"
+        actions: AppActions {
+            id: actions
 
-                property var func: function () {
-                    RaskLauncher.openApplicationDetailsSettings(packageName)
+            name: modelData ? modelData.name : ""
+            options: ListModel {
+                ListElement {
+                    label: qsTr("Add to Dock")
+                    iconName: "bookmark"
+
+                    property var func: function () {}
                 }
-            }
 
-            ListElement {
-                label: qsTr("Uninstall")
-                iconName: "delete"
+                ListElement {
+                    label: qsTr("Hide App")
+                    iconName: "visibility-off"
 
-                property var func: function () {
-                    RaskLauncher.uninstallApplication(packageName)
+                    property var func: function () {
+                        Applications.hideApplication(
+                                    actions.modelData.packageName)
+                    }
+                }
+
+                ListElement {
+                    label: qsTr("Information")
+                    iconName: "info"
+
+                    property var func: function () {
+                        RaskLauncher.openApplicationDetailsSettings(
+                                    actions.modelData.packageName)
+                    }
+                }
+
+                ListElement {
+                    label: qsTr("Uninstall")
+                    iconName: "delete"
+
+                    property var func: function () {
+                        RaskLauncher.uninstallApplication(
+                                    actions.modelData.packageName)
+                    }
                 }
             }
         }
@@ -93,6 +202,14 @@ Page {
     //    anchors.bottom: parent.bottom
     //    shadderSource: appGrid
     //    //model: page.applications.splice(10, 10)
+    //}
+
+    //background: Rectangle {
+    //    Image {
+    //        anchors.fill: parent
+    //        source: "file:///home/marssola/Pictures/P00613-120151.jpg"
+    //        fillMode: Image.PreserveAspectCrop
+    //    }
     //}
     property var applications: [{
             "adaptativeIcon": false,

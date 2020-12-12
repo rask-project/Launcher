@@ -7,7 +7,9 @@ import "components"
 Popup {
     id: control
 
-    width: parent.width > 200 ? parent.width : 200
+    property var modelData
+
+    width: parent && parent.width > 200 ? parent.width : 200
     padding: 0
     bottomPadding: 15
     margins: 0
