@@ -13,7 +13,6 @@ OverlaySheet {
     property int iconSize: 45
     property int iconSpacing: 25
 
-    padding: 30
     leftPadding: 10
     rightPadding: 10
 

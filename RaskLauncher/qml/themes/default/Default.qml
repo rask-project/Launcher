@@ -8,7 +8,7 @@ import "./components"
 Page {
     id: page
 
-    padding: 30
+    padding: 50
     leftPadding: 10
     rightPadding: 10
 

@@ -10,7 +10,7 @@ Drawer {
 
     padding: 0
     margins: 0
-    topPadding: 30
+    topPadding: 50
     horizontalPadding: 0
 
     edge: Qt.BottomEdge

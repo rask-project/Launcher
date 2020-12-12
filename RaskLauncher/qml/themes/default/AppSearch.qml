@@ -10,7 +10,7 @@ OverlaySheet {
     edge: Qt.TopEdge
 
     padding: 10
-    topPadding: 30
+    topPadding: 50
 
     ColumnLayout {
         anchors.fill: parent
