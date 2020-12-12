@@ -10,6 +10,10 @@ Flickable {
 
     contentHeight: applicationFlow.implicitHeight
 
+    property var onClicked: function (packageName) {}
+    property var onPressAndHold: function (app) {}
+    property ListModel actionOptions
+
     property int widthAvailable: width - leftMargin - rightMargin
     property var model: []
     property int iconSize: 45
@@ -129,15 +133,12 @@ Flickable {
 
                 applicationName: modelData.name
                 packageName: modelData.packageName
-                //icon: "file:///home/marssola/.local/share/icons/Os-Catalina-icons/128x128/apps/" + packageName + ".svg"
-                icon: "image://systemImage/" + packageName
+                icon: "file:///home/marssola/.local/share/icons/Os-Catalina-icons/128x128/apps/"
+                      + packageName + ".svg"
+                //icon: "image://systemImage/" + packageName
                 adaptativeIcon: modelData.adaptativeIcon
 
-                click.onClicked: {
-                    RaskLauncher.launchApplication(packageName)
-                    AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
-                }
-
+                click.onClicked: scrollGrid.onClicked(packageName)
                 click.onPressAndHold: {
                     actions.visible = true
                     AndroidVibrate.vibrate(200,
@@ -148,44 +149,7 @@ Flickable {
                     id: actions
 
                     name: modelData.name
-
-                    options: ListModel {
-                        ListElement {
-                            label: qsTr("Add to Dock")
-                            iconName: "bookmark"
-
-                            property var func: function () {}
-                        }
-
-                        ListElement {
-                            label: qsTr("Hide App")
-                            iconName: "visibility-off"
-
-                            property var func: function () {
-                                Applications.hideApplication(
-                                            modelData.packageName)
-                            }
-                        }
-
-                        ListElement {
-                            label: qsTr("Information")
-                            iconName: "info"
-
-                            property var func: function () {
-                                RaskLauncher.openApplicationDetailsSettings(
-                                            packageName)
-                            }
-                        }
-
-                        ListElement {
-                            label: qsTr("Uninstall")
-                            iconName: "delete"
-
-                            property var func: function () {
-                                RaskLauncher.uninstallApplication(packageName)
-                            }
-                        }
-                    }
+                    options: scrollGrid.actionOptions
                 }
             }
         }

@@ -2,6 +2,8 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
+import QtRask.Launcher 1.0
+
 Page {
     id: page
 
@@ -27,8 +29,51 @@ Page {
         width: parent.width
         height: parent.height
 
-        //        model: page.applications
+        model: page.applications
+
+        onClicked: function (packageName) {
+            RaskLauncher.launchApplication(packageName)
+            AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
+        }
+
+        actionOptions: ListModel {
+            ListElement {
+                label: qsTr("Add to Dock")
+                iconName: "bookmark"
+
+                property var func: function () {}
+            }
+
+            ListElement {
+                label: qsTr("Hide App")
+                iconName: "visibility-off"
+
+                property var func: function () {
+                    Applications.hideApplication(modelData.packageName)
+                }
+            }
+
+            ListElement {
+                label: qsTr("Information")
+                iconName: "info"
+
+                property var func: function () {
+                    RaskLauncher.openApplicationDetailsSettings(packageName)
+                }
+            }
+
+            ListElement {
+                label: qsTr("Uninstall")
+                iconName: "delete"
+
+                property var func: function () {
+                    RaskLauncher.uninstallApplication(packageName)
+                }
+            }
+        }
+
         onFlickBeforeStart: console.log("Show Search Page")
+
         onFlickAfterEnd: {
             if (appHidden.model.length > 0)
                 appHidden.open()
@@ -38,7 +83,7 @@ Page {
     AppHidden {
         id: appHidden
 
-        //        model: page.applications
+        model: page.applications
     }
 
     //footer: AppDock {
