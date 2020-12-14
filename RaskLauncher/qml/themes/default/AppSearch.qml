@@ -37,19 +37,13 @@ OverlaySheet {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            property var listSearched: Applications.list.concat(
-                                           Applications.hidden).filter(
-                                           function (app) {
-                                               return app["name"].toLowerCase(
-                                                           ).match(
-                                                           inputSearch.text.toLowerCase(
-                                                               ))
-                                           }).sort(function (a, b) {
-                                               return a["name"].toLowerCase(
-                                                           ) < b["name"].toLowerCase()
-                                           })
-
-            model: inputSearch.text.length === 0 ? [] : listSearched
+            model: inputSearch.text.length === 0 ? [] : Applications.searchList.filter(
+                                                       function (app) {
+                                                           return app["name"].toLowerCase(
+                                                                       ).match(
+                                                                       inputSearch.text.toLowerCase(
+                                                                           ))
+                                                       })
 
             onClicked: function (packageName) {
                 control.close()

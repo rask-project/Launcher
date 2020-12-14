@@ -20,6 +20,8 @@ Applications::Applications(QObject *parent) :
     m_applications << map[m_fieldApplications].toList();
     m_applicationsHidden << map[m_fieldHidden].toList();
     m_applicationsDock << map[m_fieldDock].toList();
+
+    connect(this, &Applications::listChanged, this, &Applications::searchListChanged);
 }
 
 void Applications::addApplications(QVariantList &list)
@@ -71,6 +73,15 @@ QVariantList Applications::getHidden() const
 QVariantList Applications::getDock() const
 {
     return m_applicationsDock;
+}
+
+QVariantList Applications::getSearchList()
+{
+    QVariantList searchList = m_applications;
+    std::copy_n(m_applicationsHidden.begin(), m_applicationsHidden.size(), std::back_inserter(searchList));
+
+    sort(searchList, Name, Qt::AscendingOrder);
+    return searchList;
 }
 
 void Applications::hideApplication(const QString &packageName)

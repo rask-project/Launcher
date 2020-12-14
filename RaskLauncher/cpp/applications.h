@@ -10,6 +10,7 @@ class Applications : public QObject
     Q_PROPERTY(QVariantList list READ getList NOTIFY listChanged)
     Q_PROPERTY(QVariantList hidden READ getHidden NOTIFY hiddenChanged)
     Q_PROPERTY(QVariantList dock READ getDock NOTIFY dockChanged)
+    Q_PROPERTY(QVariantList searchList READ getSearchList NOTIFY searchListChanged)
     Q_OBJECT
 public:
     explicit Applications(QObject *parent = nullptr);
@@ -30,17 +31,17 @@ public:
     QVariantList getList() const;
     QVariantList getHidden() const;
     QVariantList getDock() const;
+    QVariantList getSearchList();
 
 public slots:
     void hideApplication(const QString &packageName);
     void showApplication(const QString &packageName);
 
 signals:
-    void dataChanged();
-
     void listChanged();
     void hiddenChanged();
     void dockChanged();
+    void searchListChanged();
 
 private:
     JSONAbstractListModel jsonModel;
