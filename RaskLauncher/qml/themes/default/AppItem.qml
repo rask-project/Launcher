@@ -144,6 +144,11 @@ Item {
             height: 36
             z: 1
 
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.leftMargin: 5
+            anchors.rightMargin: 5
+
             text: root.applicationName
             font.pixelSize: 12
             color: RaskTheme.getColor(

@@ -38,12 +38,14 @@ OverlaySheet {
                 id: column
 
                 width: parent.width
-                spacing: 15
+                spacing: 20
 
                 ItemLabel {
                     label: qsTr("Theme")
                     item: ComboBox {
                         width: parent.width
+                        flat: true
+
                         model: [qsTr("Light"), qsTr("Dark"), qsTr("System")]
                         currentIndex: raskSettings.theme
                         onCurrentIndexChanged: if (currentIndex !== raskSettings.theme)
@@ -62,16 +64,104 @@ OverlaySheet {
                                             raskSettings.iconRadius = value
 
                         from: 5
-                        to: 30
+                        to: raskSettings.iconSize / 2
                         stepSize: 5
                         snapMode: Slider.SnapOnRelease
 
                         ToolTip {
-                            parent: sliderBorderRadius.handle
+                            parent: sliderBorderRadius
                             visible: sliderBorderRadius.pressed
 
                             contentItem: AppItem {
-                                showAppName: false
+                                width: raskSettings.iconSize + raskSettings.iconSpacing
+                                iconSize: raskSettings.iconSize
+                                applicationName: "Rask Launcher"
+                            }
+                        }
+                    }
+                }
+
+                ItemLabel {
+                    label: qsTr("Icon size")
+                    item: Slider {
+                        id: sliderIconSize
+
+                        width: parent.width
+                        value: raskSettings.iconSize
+                        onValueChanged: if (value !== raskSettings.iconSize)
+                                            raskSettings.iconSize = value
+
+                        from: 35
+                        to: 80
+                        stepSize: 5
+                        snapMode: Slider.SnapOnRelease
+
+                        ToolTip {
+                            parent: sliderIconSize
+                            visible: sliderIconSize.pressed
+
+                            contentItem: AppItem {
+                                applicationName: "Rask Launcher"
+                                width: raskSettings.iconSize + raskSettings.iconSpacing
+                                iconSize: raskSettings.iconSize
+                            }
+                        }
+                    }
+                }
+
+                ItemLabel {
+                    id: itemLabelIconSpacing
+
+                    label: qsTr("Icon spacing")
+                    item: Slider {
+                        id: sliderIconSpacing
+
+                        width: parent.width
+                        value: raskSettings.iconSpacing
+                        onValueChanged: if (value !== raskSettings.iconSpacing)
+                                            raskSettings.iconSpacing = value
+
+                        from: 10
+                        to: 40
+                        stepSize: 5
+                        snapMode: Slider.SnapOnRelease
+
+                        ToolTip {
+                            width: 250
+                            parent: sliderIconSpacing
+                            visible: sliderIconSpacing.pressed
+
+                            contentItem: Flow {
+                                width: parent.width
+
+                                topPadding: 15
+                                leftPadding: (width % (raskSettings.iconSize
+                                                       + raskSettings.iconSpacing)) / 2
+                                rightPadding: leftPadding
+
+                                AppItem {
+                                    width: raskSettings.iconSize + raskSettings.iconSpacing
+                                    iconSize: raskSettings.iconSize
+                                    applicationName: "Rask Launcher"
+                                }
+
+                                AppItem {
+                                    width: raskSettings.iconSize + raskSettings.iconSpacing
+                                    iconSize: raskSettings.iconSize
+                                    applicationName: "Rask Launcher"
+                                }
+
+                                AppItem {
+                                    width: raskSettings.iconSize + raskSettings.iconSpacing
+                                    iconSize: raskSettings.iconSize
+                                    applicationName: "Rask Launcher"
+                                }
+
+                                AppItem {
+                                    width: raskSettings.iconSize + raskSettings.iconSpacing
+                                    iconSize: raskSettings.iconSize
+                                    applicationName: "Rask Launcher"
+                                }
                             }
                         }
                     }
