@@ -1,4 +1,5 @@
 #include "rasklauncher.h"
+#include "rasktheme.h"
 #include "singleton.h"
 
 #include <algorithm>
@@ -10,6 +11,13 @@
 #endif
 
 #ifdef Q_OS_ANDROID
+
+static void nativeSystemTheme(JNIEnv */*env*/, jobject /*obj*/, jint theme)
+{
+    qDebug() << "System theme" << theme;
+    emit Singleton<RaskTheme>::getInstanceQML().setSystemTheme(static_cast<RaskTheme::Theme>(theme));
+}
+
 static void nativeNewIntent(JNIEnv */*env*/, jobject /*obj*/)
 {
     qDebug() << "New Intent";
@@ -154,7 +162,6 @@ void RaskLauncher::launchApplication(const QString &application)
 {
     qDebug() << "Launch Application" << application;
 #ifdef Q_OS_ANDROID
-    qDebug() << "Launch Application" << application;
     QAndroidJniObject::callStaticMethod<void>("com/QtRask/Launcher/RaskLauncher",
                                               "launchApplication",
                                               "(Ljava/lang/String;)V",
@@ -196,6 +203,7 @@ void RaskLauncher::registerNativeMethods()
 #ifdef Q_OS_ANDROID
     qDebug() << "Register Native methods";
     JNINativeMethod methods[] {
+        { "systemTheme", "(I)V", reinterpret_cast<void *>(nativeSystemTheme) },
         { "newIntent", "()V", reinterpret_cast<void *>(nativeNewIntent) },
         { "packageAdded", "(Ljava/lang/String;)V", reinterpret_cast<void *>(nativePackageAdded) },
         { "packageRemoved", "(Ljava/lang/String;)V", reinterpret_cast<void *>(nativePackageRemoved) }
@@ -233,5 +241,13 @@ void RaskLauncher::registerBroadcastMethods()
                                 "(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;",
                                 m_broadcastReceiver.object<jobject>(),
                                 m_intentFilterBroadcastReceiver.object<jobject>());
+#endif
+}
+
+void RaskLauncher::getSystemResources()
+{
+    qDebug() << "Get system resources";
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject::callStaticMethod<void>("com/QtRask/Launcher/RaskLauncher", "identifySystemTheme", "()V");
 #endif
 }

@@ -14,6 +14,8 @@ class RaskLauncher : public QObject
 public:
     explicit RaskLauncher(QObject *parent = nullptr);
 
+    void registerMethods();
+
 public slots:
     void retrievePackages();
 
@@ -21,7 +23,7 @@ public slots:
     static void openApplicationDetailsSettings(const QString &application);
     void uninstallApplication(const QString &application);
 
-    void registerMethods();
+    void getSystemResources();
     void newApplication(const QString &packageName);
     void removedApplication(const QString &packageName);
 

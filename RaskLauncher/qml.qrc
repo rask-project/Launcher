@@ -3,7 +3,6 @@
         <file>qml/main.qml</file>
         <file>img/qc-icon.png</file>
         <file>img/wallpaper.jpg</file>
-        <file>qtquickcontrols2.conf</file>
         <file>qml/themes/default/Default.qml</file>
         <file>qml/themes/default/AppDock.qml</file>
         <file>qml/themes/default/AppGrid.qml</file>
@@ -17,5 +16,9 @@
         <file>qml/themes/default/AppSearch.qml</file>
         <file>qml/themes/default/components/FlickableOptions.qml</file>
         <file>qml/themes/default/components/InputSearch.qml</file>
+        <file>qml/themes/default/components/ItemOptionFlickable.qml</file>
+        <file>qml/themes/default/AppSettings.qml</file>
+        <file>img/app-icon.png</file>
+        <file>qml/themes/default/components/ItemLabel.qml</file>
     </qresource>
 </RCC>

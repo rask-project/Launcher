@@ -1,6 +1,9 @@
 import QtQuick 2.15
 import QtQuick.Controls 2.15
+import QtQuick.Controls.Material 2.15
+import QtQuick.Controls.Material.impl 2.15
 import QtGraphicalEffects 1.0
+import QtRask.Launcher 1.0
 
 Item {
     id: root
@@ -15,6 +18,8 @@ Item {
     property alias click: areaClick
     property double scaleForClick: 1.5
 
+    property bool textNegative: false
+
     width: 60
     height: width + (root.showAppName ? 36 : 0)
 
@@ -24,16 +29,16 @@ Item {
         Rectangle {
             id: iconGlass
 
-            width: root.iconSize * 0.85
+            width: root.iconSize
             height: width
             z: 2
 
             anchors.horizontalCenter: parent.horizontalCenter
 
-            color: "#8d333333"
-            border.color: "#8d222222"
+            color: RaskTheme.iconBackground
+            border.color: RaskTheme.iconBorderColor
             border.width: 1
-            radius: 15
+            radius: raskSettings.iconRadius
 
             layer.enabled: true
             layer.effect: DropShadow {
@@ -41,7 +46,7 @@ Item {
                 verticalOffset: 0
                 radius: 3
                 samples: 7
-                color: "#999"
+                color: RaskTheme.iconShadow
                 opacity: 0.2
             }
 
@@ -90,23 +95,38 @@ Item {
                         verticalOffset: 0
                         radius: 4
                         samples: 9
-                        color: "#ccc"
+                        color: RaskTheme.iconImageShadow
                     }
                 }
             }
 
             Rectangle {
-                visible: areaClick.pressed
-                opacity: visible ? 1 : 0
-                anchors.fill: parent
+                id: iconPressedBackground
                 z: 4
 
+                anchors.fill: parent
                 radius: parent.radius
-                color: "#4d000000"
+                color: "transparent"
 
-                Behavior on opacity {
-                    NumberAnimation {
-                        duration: 50
+                Ripple {
+
+                    anchors.fill: parent
+                    clipRadius: iconPressedBackground.radius
+                    anchor: iconPressedBackground
+                    active: areaClick.pressed
+                    pressed: areaClick.pressed
+
+                    color: RaskTheme.iconPressed
+                }
+
+                layer.enabled: true
+                layer.effect: OpacityMask {
+                    maskSource: Rectangle {
+                        x: iconPressedBackground.x
+                        y: iconPressedBackground.y
+                        width: iconPressedBackground.width
+                        height: iconPressedBackground.height
+                        radius: iconPressedBackground.radius
                     }
                 }
             }
@@ -126,17 +146,18 @@ Item {
 
             text: root.applicationName
             font.pixelSize: 12
-            color: "#fff"
+            color: RaskTheme.getColor(
+                       root.textNegative ? RaskTheme.Black : RaskTheme.White)
 
             elide: Label.ElideRight
             wrapMode: Label.WordWrap
             horizontalAlignment: Label.AlignHCenter
             verticalAlignment: Label.AlignVCenter
 
-            layer.enabled: true
+            layer.enabled: !root.textNegative
             layer.effect: DropShadow {
                 verticalOffset: 0
-                color: "#000000"
+                color: RaskTheme.getColor(RaskTheme.Black)
                 radius: 10
                 samples: 32
             }

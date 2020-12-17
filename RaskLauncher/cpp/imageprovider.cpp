@@ -18,7 +18,6 @@ ImageProvider::ImageProvider():
     m_waitToSave(false)
 {
     m_images = jsonModel.getJSONData().toMap();
-    qDebug() << "Images Cached" << m_images.keys();
 }
 
 QImage ImageProvider::requestImage(const QString &id, QSize */*size*/, const QSize &/*requestedSize*/)

@@ -2,6 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
+import QtRask.Launcher 1.0
 import "components"
 
 Popup {
@@ -58,7 +59,7 @@ Popup {
     }
 
     background: Rectangle {
-        color: "#cf333333"
+        color: RaskTheme.popupBackground
 
         radius: 15
 

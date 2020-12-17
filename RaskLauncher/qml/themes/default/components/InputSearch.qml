@@ -4,14 +4,12 @@ import QtQuick.Templates 2.15 as T
 import QtQuick.Controls.impl 2.15
 import QtQuick.Layouts 1.15
 
+import QtRask.Launcher 1.0
+
 T.TextField {
     id: control
 
-    property color backgroundColor: "#af333333"
-    property color textColor: "#ffffff"
-    property color placeholderColor: Qt.rgba(control.textColor.r,
-                                             control.textColor.g,
-                                             control.textColor.b, 0.4)
+    property color backgroundColor: RaskTheme.inputBackground
 
     height: 50
 
@@ -21,25 +19,24 @@ T.TextField {
     rightPadding: 30
 
     selectionColor: Qt.lighter(control.backgroundColor)
-    selectedTextColor: control.placeholderColor
+    selectedTextColor: control.color
     verticalAlignment: TextInput.AlignVCenter
     selectByMouse: true
 
     inputMethodHints: Qt.ImhSensitiveData
-
-    color: control.textColor
 
     PlaceholderText {
         id: placeholder
 
         text: control.placeholderText
         font: control.font
-        color: control.placeholderColor
+        //color: control.placeholderColor
         anchors.centerIn: control
         visible: !control.length && !control.preeditText
                  && (!control.activeFocus
                      || control.horizontalAlignment !== Qt.AlignHCenter)
         elide: Text.ElideRight
+        opacity: 0.6
     }
 
     background: Rectangle {

@@ -9,16 +9,12 @@ OverlaySheet {
 
     edge: Qt.TopEdge
 
-    padding: 10
-    topPadding: 50
-
     ColumnLayout {
-        anchors.fill: parent
+        width: parent.width
+        height: parent.height
         spacing: 15
 
         Item {
-            z: 100
-
             Layout.fillWidth: true
             Layout.preferredHeight: inputSearch.height * 1.2
 
@@ -32,11 +28,12 @@ OverlaySheet {
         }
 
         AppGrid {
-            z: 1
 
             Layout.fillWidth: true
             Layout.fillHeight: true
+            clip: true
 
+            textNegative: RaskTheme.theme === RaskTheme.Light
             model: inputSearch.text.length === 0 ? [] : Applications.searchList.filter(
                                                        function (app) {
                                                            return app["name"].toLowerCase(

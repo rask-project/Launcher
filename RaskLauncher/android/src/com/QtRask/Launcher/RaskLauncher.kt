@@ -22,6 +22,7 @@ import android.os.VibrationEffect
 import android.util.Log
 import android.view.View
 import java.io.ByteArrayOutputStream
+import android.content.res.Configuration
 
 open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
     init {
@@ -50,6 +51,8 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         m_packageManager = instance!!.getPackageManager() as PackageManager
         m_vibratorService = instance!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         m_wallpaperManager = WallpaperManager.getInstance(this)
+
+        //identifySystemTheme();
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -65,6 +68,7 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         private var m_wallpaperManager: WallpaperManager? = null
         private var m_packageManager: PackageManager? = null
         private var m_vibratorService: Vibrator? = null
+        private var m_theme: Int? = null
 
         val dpi: Int
             get() {
@@ -289,12 +293,36 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         }
 
         @JvmStatic
+        fun identifySystemTheme() {
+            val theme: Int = getSystemDefaultTheme()
+            Log.d(TAG, "Identify system theme: " + theme)
+
+            if (theme != m_theme) {
+                m_theme = theme
+                systemTheme(theme)
+            }
+        }
+
+        @JvmStatic
+        fun getSystemDefaultTheme(): Int {
+            if (instance!!.getResources().getConfiguration().uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)
+                return 1
+           return 0
+        }
+
+        @JvmStatic
         private external fun newIntent()
+
+        @JvmStatic
+        private external fun activated()
 
         @JvmStatic
         external fun packageAdded(packageName: String)
 
         @JvmStatic
         external fun packageRemoved(packageName: String)
+
+        @JvmStatic
+        external fun systemTheme(theme: Int)
     }
 }

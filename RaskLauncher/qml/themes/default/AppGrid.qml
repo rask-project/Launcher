@@ -13,11 +13,14 @@ Flickable {
     property var onClicked: function (packageName) {}
     property var onPressAndHold: function (app) {}
     property AppActions actions
+    property string title
 
     property int widthAvailable: width - leftMargin - rightMargin
     property var model: []
-    property int iconSize: 45
-    property int iconSpacing: 25
+    property int iconSize: raskSettings.iconSize
+    property int iconSpacing: raskSettings.iconSpacing
+
+    property bool textNegative: false
 
     signal flickBeforeStart
     signal flickAfterEnd
@@ -26,6 +29,7 @@ Flickable {
         id: applicationFlow
 
         width: parent.width
+        topPadding: 15
         leftPadding: (scrollGrid.widthAvailable
                       % (scrollGrid.iconSize + scrollGrid.iconSpacing)) / 2
         rightPadding: leftPadding
@@ -39,6 +43,8 @@ Flickable {
                 id: appItem
 
                 width: scrollGrid.iconSize + scrollGrid.iconSpacing
+                iconSize: scrollGrid.iconSize
+                textNegative: scrollGrid.textNegative
 
                 applicationName: modelData.name
                 packageName: modelData.packageName

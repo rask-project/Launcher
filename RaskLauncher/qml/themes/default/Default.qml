@@ -8,9 +8,8 @@ import "./components"
 Page {
     id: page
 
-    padding: 50
-    leftPadding: 10
-    rightPadding: 10
+    topPadding: raskSettings.padding
+    bottomPadding: raskSettings.padding
 
     property alias applications: appGrid.model
     property alias applicationsHidden: appHidden.model
@@ -23,8 +22,10 @@ Page {
         width: parent.width
         height: parent.height
 
-        model: page.applications
+        leftMargin: raskSettings.leftPadding
+        rightMargin: raskSettings.rightPadding
 
+        //model: page.applications
         onClicked: function (packageName) {
             RaskLauncher.launchApplication(packageName)
             AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
@@ -35,35 +36,46 @@ Page {
                 id: flickableOptions
 
                 flickableItem: appGrid
-                contentTop: Button {
-                    anchors.centerIn: parent
-                    flat: true
+                contentTop: [
+                    ItemOptionFlickable {
+                        anchors.horizontalCenter: parent.horizontalCenter
 
-                    icon.name: "search"
-                    text: qsTr("Search Apps")
-                }
+                        icon.name: "search"
+                        text: qsTr("Search Apps")
 
-                contentBottom: Button {
-                    anchors.centerIn: parent
-                    flat: true
-
-                    icon.name: "visibility"
-                    text: qsTr("Hidden Apps")
-                }
-
-                onTriggerToTop: {
-                    if (appGrid.contentY <= flickableOptions.flickData.beforeHeight) {
-                        appGrid.flickBeforeStart()
-                        AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
+                        onTriggered: {
+                            appSearch.open()
+                            AndroidVibrate.vibrate(50,
+                                                   AndroidVibrate.EFFECT_TICK)
+                        }
                     }
-                }
+                ]
 
-                onTriggerToBottom: {
-                    if (appGrid.contentY >= flickableOptions.flickData.afterHeight) {
-                        appGrid.flickAfterEnd()
-                        AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
+                contentBottom: [
+                    ItemOptionFlickable {
+                        anchors.horizontalCenter: parent.horizontalCenter
+
+                        icon.name: "visibility"
+                        text: qsTr("Hidden Apps")
+
+                        onTriggered: {
+                            appHidden.open()
+                            AndroidVibrate.vibrate(50,
+                                                   AndroidVibrate.EFFECT_TICK)
+                        }
+                    },
+                    ItemOptionFlickable {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        icon.name: "settings"
+                        text: qsTr("Settings")
+
+                        onTriggered: {
+                            appSettings.open()
+                            AndroidVibrate.vibrate(50,
+                                                   AndroidVibrate.EFFECT_TICK)
+                        }
                     }
-                }
+                ]
             }
         ]
 
@@ -110,13 +122,6 @@ Page {
                 }
             }
         }
-
-        onFlickBeforeStart: appSearch.open()
-
-        onFlickAfterEnd: {
-            if (appHidden.model.length > 0)
-                appHidden.open()
-        }
     }
 
     AppSearch {
@@ -126,7 +131,11 @@ Page {
     AppHidden {
         id: appHidden
 
-        model: page.applications
+        //model: page.applications
+    }
+
+    AppSettings {
+        id: appSettings
     }
 
     //footer: AppDock {
@@ -137,7 +146,6 @@ Page {
     //    shadderSource: appGrid
     //    //model: page.applications.splice(10, 10)
     //}
-
     //background: Rectangle {
     //    Image {
     //        anchors.fill: parent

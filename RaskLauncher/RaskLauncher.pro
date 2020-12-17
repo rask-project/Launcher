@@ -11,6 +11,7 @@ SOURCES += \
         cpp/imageprovider.cpp \
         cpp/jsonabstractlistmodel.cpp \
         cpp/rasklauncher.cpp \
+        cpp/rasktheme.cpp \
         cpp/screenmanager.cpp
 
 RESOURCES += $$PWD/qml.qrc \
@@ -54,6 +55,7 @@ HEADERS += \
     cpp/imageprovider.h \
     cpp/jsonabstractlistmodel.h \
     cpp/rasklauncher.h \
+    cpp/rasktheme.h \
     cpp/screenmanager.h \
     cpp/singleton.h \
     cpp/utilsJni.h
@@ -61,7 +63,8 @@ HEADERS += \
 
 contains(ANDROID_TARGET_ARCH,) {
     ANDROID_ABIS = \
-        arm64-v8a
+        arm64-v8a \
+        x86_64
 }
 
-ANDROID_ABIS = arm64-v8a
+ANDROID_ABIS = arm64-v8a x86_64

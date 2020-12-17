@@ -4,6 +4,7 @@
 #include <QQmlEngine>
 #include <QQmlComponent>
 #include <QQmlContext>
+#include <QQuickStyle>
 #include <QIcon>
 
 #include "cpp/singleton.h"
@@ -12,6 +13,7 @@
 #include "cpp/androidvibrate.h"
 #include "cpp/screenmanager.h"
 #include "cpp/applications.h"
+#include "cpp/rasktheme.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,6 +26,8 @@ int main(int argc, char *argv[])
     QCoreApplication::setApplicationName(QStringLiteral("Rask Launcher"));
 
     QQmlApplicationEngine engine;
+    QQuickStyle::setStyle(QStringLiteral("Material"));
+
 
     qmlRegisterSingletonType<RaskLauncher>("QtRask.Launcher", 1, 0, "RaskLauncher", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
         return &Singleton<RaskLauncher>::getInstanceQML(engine, scriptEngine);
@@ -39,6 +43,10 @@ int main(int argc, char *argv[])
 
     qmlRegisterSingletonType<Applications>("QtRask.Launcher", 1, 0, "Applications", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
         return &Singleton<Applications>::getInstanceQML(engine, scriptEngine);
+    });
+
+    qmlRegisterSingletonType<RaskTheme>("QtRask.Launcher", 1, 0, "RaskTheme", [](QQmlEngine *engine, QJSEngine *scriptEngine) -> QObject * {
+        return &Singleton<RaskTheme>::getInstanceQML(engine, scriptEngine);
     });
 
     engine.addImageProvider(QStringLiteral("systemImage"), &Singleton<ImageProvider>::getInstance());
