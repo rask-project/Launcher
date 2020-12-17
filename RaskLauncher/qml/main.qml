@@ -46,7 +46,10 @@ ApplicationWindow {
         property int iconRadius: 15
 
         property int theme: Material.System
-        onThemeChanged: RaskTheme.theme = raskSettings.theme
+        onThemeChanged: {
+            RaskTheme.theme = raskSettings.theme
+            console.log("Merda do theme", theme, RaskTheme.theme)
+        }
     }
 
     StackView {
@@ -68,7 +71,6 @@ ApplicationWindow {
     }
 
     onActiveScreenChanged: {
-        console.log("Active Screen", activeScreen)
         if (activeScreen)
             RaskLauncher.getSystemResources()
     }

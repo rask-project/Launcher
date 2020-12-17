@@ -74,7 +74,7 @@ void RaskTheme::setSystemTheme(RaskTheme::Theme theme)
 {
     qDebug() << "Identified system theme" << theme;
     m_systemTheme = theme;
-    identifyThemeColor(Theme::System);
+    identifyThemeColor(m_useSystemTheme ? Theme::System : m_theme);
 }
 
 QColor RaskTheme::getColor(RaskTheme::Colors color, RaskTheme::Opacity opacity)
