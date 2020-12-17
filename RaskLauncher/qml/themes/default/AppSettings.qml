@@ -2,12 +2,15 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 import QtQuick.Layouts 1.15
 
+import QtRask.Launcher 1.0
 import "./components"
 
 OverlaySheet {
     id: control
 
     edge: Qt.BottomEdge
+
+    readonly property var applicationsExample: Applications.list.slice(0, 5)
 
     ColumnLayout {
         width: parent.width
@@ -75,7 +78,9 @@ OverlaySheet {
                             contentItem: AppItem {
                                 width: raskSettings.iconSize + raskSettings.iconSpacing
                                 iconSize: raskSettings.iconSize
-                                applicationName: "Rask Launcher"
+                                applicationName: control.applicationsExample[1].name
+                                packageName: control.applicationsExample[1].packageName
+                                icon: "image://systemImage/" + packageName
                             }
                         }
                     }
@@ -101,9 +106,11 @@ OverlaySheet {
                             visible: sliderIconSize.pressed
 
                             contentItem: AppItem {
-                                applicationName: "Rask Launcher"
                                 width: raskSettings.iconSize + raskSettings.iconSpacing
                                 iconSize: raskSettings.iconSize
+                                applicationName: control.applicationsExample[2].name
+                                packageName: control.applicationsExample[2].packageName
+                                icon: "image://systemImage/" + packageName
                             }
                         }
                     }
@@ -139,28 +146,16 @@ OverlaySheet {
                                                        + raskSettings.iconSpacing)) / 2
                                 rightPadding: leftPadding
 
-                                AppItem {
-                                    width: raskSettings.iconSize + raskSettings.iconSpacing
-                                    iconSize: raskSettings.iconSize
-                                    applicationName: "Rask Launcher"
-                                }
+                                Repeater {
+                                    model: control.applicationsExample
 
-                                AppItem {
-                                    width: raskSettings.iconSize + raskSettings.iconSpacing
-                                    iconSize: raskSettings.iconSize
-                                    applicationName: "Rask Launcher"
-                                }
-
-                                AppItem {
-                                    width: raskSettings.iconSize + raskSettings.iconSpacing
-                                    iconSize: raskSettings.iconSize
-                                    applicationName: "Rask Launcher"
-                                }
-
-                                AppItem {
-                                    width: raskSettings.iconSize + raskSettings.iconSpacing
-                                    iconSize: raskSettings.iconSize
-                                    applicationName: "Rask Launcher"
+                                    AppItem {
+                                        width: raskSettings.iconSize + raskSettings.iconSpacing
+                                        iconSize: raskSettings.iconSize
+                                        applicationName: modelData.name
+                                        packageName: modelData.packageName
+                                        icon: "image://systemImage/" + packageName
+                                    }
                                 }
                             }
                         }
