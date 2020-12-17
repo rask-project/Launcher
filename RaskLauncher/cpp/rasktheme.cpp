@@ -59,14 +59,7 @@ void RaskTheme::identifyThemeColor(Theme theme)
     if (theme == m_theme)
         return;
 
-    if (m_useSystemTheme) {
-        m_theme = m_systemTheme;
-        qDebug() << "Using theme system" << m_theme;
-    } else {
-        m_theme = theme;
-        qDebug() << "Using theme from user" << m_theme;
-    }
-
+    m_theme = m_useSystemTheme ? m_systemTheme : theme;
     emit themeChanged();
 }
 
@@ -86,7 +79,6 @@ QColor RaskTheme::getColor(RaskTheme::Colors color, RaskTheme::Opacity opacity)
 
 void RaskTheme::setTheme(RaskTheme::Theme theme)
 {
-    qDebug() << "Change theme" << theme;
     m_useSystemTheme = theme == Theme::System;
     identifyThemeColor(theme);
 }
