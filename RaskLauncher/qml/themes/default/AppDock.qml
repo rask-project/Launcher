@@ -12,20 +12,27 @@ Item {
     Rectangle {
         id: dockRectangle
 
-        width: parent.width * 0.9
-        height: parent.height * 0.8
+        readonly property int maxWidth: parent.width * 0.9
+        readonly property int implicitItemsWidth: listHorizontalApps.model.length
+                                                  * (raskSettings.iconSize
+                                                     + (raskSettings.iconSize * 1.4
+                                                        - raskSettings.iconSize))
+
+        width: dockRectangle.maxWidth > dockRectangle.implicitItemsWidth ? dockRectangle.implicitItemsWidth : dockRectangle.maxWidth
+        height: raskSettings.iconSize * 1.4
 
         anchors.horizontalCenter: parent.horizontalCenter
-        radius: 20
+        radius: raskSettings.iconRadius
 
-        color: "#333"
+        color: RaskTheme.dockBackground
 
         ListView {
             id: listHorizontalApps
+            z: 3
 
             anchors.fill: parent
             orientation: Qt.Horizontal
-            spacing: 5
+            spacing: 0
 
             model: dockItem.model
             delegate: Item {
@@ -35,15 +42,45 @@ Item {
                 AppItem {
                     id: appItem
 
-                    icon: icon
-                    //icon: "image://systemImage/" + packageName
+                    width: raskSettings.iconSize
+                    iconSize: raskSettings.iconSize
+
                     showAppName: false
+                    applicationName: modelData.name
+                    packageName: modelData.packageName
+                    adaptativeIcon: modelData.adaptativeIcon
+                    //icon: "file:///home/marssola/.local/share/icons/Os-Catalina-icons/128x128/apps/" + packageName + ".svg"
+                    icon: "image://systemImage/" + packageName
+
                     anchors.centerIn: parent
                     scaleForClick: 1.2
 
                     click.onClicked: {
                         RaskLauncher.launchApplication(packageName)
                         AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
+                    }
+
+                    click.onPressAndHold: {
+                        actions.visible = true
+                        AndroidVibrate.vibrate(
+                                    200, AndroidVibrate.EFFECT_HEAVY_CLICK)
+                    }
+
+                    AppActions {
+                        id: actions
+
+                        name: appItem.applicationName
+                        options: ListModel {
+                            ListElement {
+                                label: qsTr("Remove from Dock")
+                                iconName: "bookmark"
+
+                                property var func: function () {
+                                    Applications.removeFromDock(
+                                                appItem.packageName)
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -63,7 +100,7 @@ Item {
 
             anchors.fill: parent
             radius: 100
-            opacity: 0.3
+            z: 2
 
             source: ShaderEffectSource {
                 id: shader
@@ -71,8 +108,8 @@ Item {
                 anchors.fill: parent
                 sourceItem: dockItem.shadderSource
                 sourceRect: Qt.rect(
-                                dockItem.x + 10,
-                                dockItem.y - (dockItem.height - dockRectangle.height) - 10,
+                                dockItem.x + (dockItem.width - dockRectangle.width) / 2,
+                                dockItem.y - raskSettings.padding,
                                 dockRectangle.width, dockRectangle.height)
             }
         }

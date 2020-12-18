@@ -118,6 +118,46 @@ void Applications::showApplication(const QString &packageName)
     refreshApplicationsList();
 }
 
+void Applications::addToDock(const QString &packageName)
+{
+    qDebug() << "Add Application in dock" << packageName;
+    auto app = find(m_applicationsDock, packageName);
+    if (app != std::end(m_applicationsDock)) {
+        qDebug() << "Application has already been added to the dock" << packageName;
+        return;
+    }
+
+    app = find(m_applicationsHidden, packageName);
+    if (app == std::end(m_applicationsHidden)) {
+        app = find(m_applications, packageName);
+    }
+
+    m_applicationsDock << app->toMap();
+    m_modifiedList = true;
+    refreshApplicationsList();
+}
+
+void Applications::removeFromDock(const QString &packageName)
+{
+    qDebug() << "Remove Application from dock" << packageName;
+
+    auto app = find(m_applicationsDock, packageName);
+    if (app == std::end(m_applicationsDock)) {
+        qCritical() << "Application Not Found" << packageName;
+        return;
+    }
+
+    m_applicationsDock.erase(app);
+    m_modifiedList = true;
+    refreshApplicationsList();
+}
+
+bool Applications::isOnTheDock(const QString &packageName)
+{
+    qDebug() << "Application is on the dock" << packageName;
+    return find(m_applicationsDock, packageName) != std::end(m_applicationsDock);
+}
+
 void Applications::newApplication(const QVariantMap &application)
 {
     if (find(m_applicationsHidden, application[QStringLiteral("packageName")].toString()) != std::end(m_applicationsHidden)) {

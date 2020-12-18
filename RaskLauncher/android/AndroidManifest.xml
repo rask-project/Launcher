@@ -35,4 +35,5 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.REQUEST_DELETE_PACKAGES"/>
 <!-- %%INSERT_PERMISSIONS -->
+<uses-permission android:name="android.permission.REAL_GET_TASKS"/>
 </manifest>

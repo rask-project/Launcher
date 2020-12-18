@@ -7,6 +7,7 @@ class RaskTheme : public QObject
 {
     Q_PROPERTY(Theme theme READ theme WRITE setTheme NOTIFY themeChanged)
     Q_PROPERTY(QColor background READ background NOTIFY backgroundChanged)
+    Q_PROPERTY(QColor dockBackground READ dockBackground NOTIFY dockBackgroundChanged)
     Q_PROPERTY(QColor popupBackground READ popupBackground NOTIFY popupBackgroundChanged)
     Q_PROPERTY(QColor iconBackground READ iconBackground NOTIFY iconBackgroundChanged)
     Q_PROPERTY(QColor iconBorderColor READ iconBorderColor NOTIFY iconBorderColorChanged)
@@ -68,6 +69,7 @@ public:
     Q_ENUM(Opacity)
 
     QColor background() const;
+    QColor dockBackground() const;
     QColor iconBackground() const;
     QColor iconBorderColor() const;
     static QColor iconShadow();
@@ -97,6 +99,7 @@ signals:
     void iconPressedChanged();
     void inputBackgroundChanged();
     void popupBackgroundChanged();
+    void dockBackgroundChanged();
 
     void themeChanged();
 

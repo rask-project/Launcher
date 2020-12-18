@@ -30,7 +30,6 @@ ApplicationWindow {
     }
 
     property bool activeScreen: Qt.application.state === Qt.ApplicationActive
-    property bool isWindowActive: Qt.application.state === Qt.ApplicationActive
     property int dpi: Screen.pixelDensity * 25.4
 
     Settings {

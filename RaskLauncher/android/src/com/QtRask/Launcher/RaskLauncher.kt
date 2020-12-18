@@ -1,4 +1,4 @@
-package com.QtRask.Launcher
+    package com.QtRask.Launcher
 
 import android.app.ActivityManager
 import android.app.WallpaperManager
@@ -46,13 +46,11 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         super.onStart()
         instance = this
 
-        val activityManager = instance!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        m_iconDpi = activityManager.launcherLargeIconDensity
+        m_activityManager = instance!!.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        m_iconDpi = m_activityManager!!.launcherLargeIconDensity
         m_packageManager = instance!!.getPackageManager() as PackageManager
         m_vibratorService = instance!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         m_wallpaperManager = WallpaperManager.getInstance(this)
-
-        //identifySystemTheme();
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -69,6 +67,7 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         private var m_packageManager: PackageManager? = null
         private var m_vibratorService: Vibrator? = null
         private var m_theme: Int? = null
+        private var m_activityManager: ActivityManager? = null
 
         val dpi: Int
             get() {
@@ -308,6 +307,17 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
             if (instance!!.getResources().getConfiguration().uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES)
                 return 1
            return 0
+        }
+
+        @JvmStatic
+        fun getApplicationsRunning() {
+            Log.d(TAG, "Get Applications running")
+
+            val applicationsRunning = m_activityManager!!.getRunningAppProcesses()
+            Log.d(TAG, "Total applications running: " + applicationsRunning.indices)
+            for (i in applicationsRunning.indices) {
+                Log.d(TAG, "Application: " + applicationsRunning.get(i).processName)
+            }
         }
 
         @JvmStatic

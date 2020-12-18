@@ -37,6 +37,10 @@ public slots:
     void hideApplication(const QString &packageName);
     void showApplication(const QString &packageName);
 
+    void addToDock(const QString &packageName);
+    void removeFromDock(const QString &packageName);
+    bool isOnTheDock(const QString &packageName);
+
 signals:
     void listChanged();
     void hiddenChanged();

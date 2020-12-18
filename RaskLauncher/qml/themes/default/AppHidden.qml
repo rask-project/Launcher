@@ -63,6 +63,26 @@ OverlaySheet {
                 name: modelData ? modelData.name : ""
                 options: ListModel {
                     ListElement {
+                        property var labelFunc: function () {
+                            return !!actions.modelData
+                                    && Applications.isOnTheDock(
+                                        actions.modelData.packageName) ? qsTr("Remove from Dock") : qsTr("Add to Dock")
+                        }
+
+                        iconName: "bookmark"
+
+                        property var func: function () {
+                            if (Applications.isOnTheDock(
+                                        actions.modelData.packageName))
+                                Applications.removeFromDock(
+                                            actions.modelData.packageName)
+                            else
+                                Applications.addToDock(
+                                            actions.modelData.packageName)
+                        }
+                    }
+
+                    ListElement {
                         label: qsTr("Show App in grid")
                         iconName: "visibility"
 

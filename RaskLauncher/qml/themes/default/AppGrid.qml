@@ -22,9 +22,6 @@ Flickable {
 
     property bool textNegative: false
 
-    signal flickBeforeStart
-    signal flickAfterEnd
-
     Flow {
         id: applicationFlow
 

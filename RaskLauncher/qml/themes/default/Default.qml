@@ -1,4 +1,5 @@
 import QtQuick 2.15
+import QtQuick.Window 2.12
 import QtQuick.Controls 2.15
 import QtGraphicalEffects 1.0
 
@@ -83,12 +84,27 @@ Page {
             id: actions
 
             name: modelData ? modelData.name : ""
+
             options: ListModel {
                 ListElement {
-                    label: qsTr("Add to Dock")
+                    property var labelFunc: function () {
+                        return !!actions.modelData && Applications.isOnTheDock(
+                                    actions.modelData.packageName) ? qsTr(
+                                                                         "Remove from Dock") : qsTr(
+                                                                         "Add to Dock")
+                    }
+
                     iconName: "bookmark"
 
-                    property var func: function () {}
+                    property var func: function () {
+                        if (Applications.isOnTheDock(
+                                    actions.modelData.packageName))
+                            Applications.removeFromDock(
+                                        actions.modelData.packageName)
+                        else
+                            Applications.addToDock(
+                                        actions.modelData.packageName)
+                    }
                 }
 
                 ListElement {
@@ -138,14 +154,28 @@ Page {
         id: appSettings
     }
 
-    //footer: AppDock {
-    //    visible: model.length > 0
-    //    width: parent.width
-    //    height: 100
-    //    anchors.bottom: parent.bottom
-    //    shadderSource: appGrid
-    //    //model: page.applications.splice(10, 10)
-    //}
+    AppDock {
+        visible: model.length > 0
+
+        y: Window.height - (appGrid.atYEnd
+                            && !appGrid.atYBeginning ? 0 : height)
+
+        parent: page.parent
+        width: parent.width
+        height: raskSettings.iconSize * 1.6
+
+        shadderSource: appGrid
+
+        model: Applications.dock
+
+        Behavior on y {
+            NumberAnimation {
+                easing.type: Easing.InOutBounce
+                duration: 200
+            }
+        }
+    }
+
     //background: Rectangle {
     //    Image {
     //        anchors.fill: parent

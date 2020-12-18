@@ -80,6 +80,7 @@ OverlaySheet {
                                 iconSize: raskSettings.iconSize
                                 applicationName: control.applicationsExample[1].name
                                 packageName: control.applicationsExample[1].packageName
+                                adaptativeIcon: control.applicationsExample[1].adaptativeIcon
                                 icon: "image://systemImage/" + packageName
                             }
                         }
@@ -110,6 +111,7 @@ OverlaySheet {
                                 iconSize: raskSettings.iconSize
                                 applicationName: control.applicationsExample[2].name
                                 packageName: control.applicationsExample[2].packageName
+                                adaptativeIcon: control.applicationsExample[2].adaptativeIcon
                                 icon: "image://systemImage/" + packageName
                             }
                         }
@@ -154,6 +156,7 @@ OverlaySheet {
                                         iconSize: raskSettings.iconSize
                                         applicationName: modelData.name
                                         packageName: modelData.packageName
+                                        adaptativeIcon: modelData.adaptativeIcon
                                         icon: "image://systemImage/" + packageName
                                     }
                                 }

@@ -9,6 +9,7 @@ RaskTheme::RaskTheme(QObject *parent) :
 {
     connect(this, &RaskTheme::themeChanged, this, [=]() {
         emit backgroundChanged();
+        emit dockBackgroundChanged();
         emit iconBackgroundChanged();
         emit iconBorderColorChanged();
         emit iconShadowChanged();
@@ -21,6 +22,13 @@ RaskTheme::RaskTheme(QObject *parent) :
 QColor RaskTheme::background() const
 {
     return m_theme == Theme::Light ? QColor::fromRgba(Colors::LightGrey) : QColor::fromRgba(Colors::DarkerGrey);
+}
+
+QColor RaskTheme::dockBackground() const
+{
+    QColor color = m_theme == Theme::Light ? QColor::fromRgba(Colors::LightGrey) : QColor::fromRgba(Colors::DarkerGrey);
+    color.setAlpha(static_cast<int>(Opacity::Alpha90));
+    return color;
 }
 
 QColor RaskTheme::iconBackground() const

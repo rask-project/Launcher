@@ -52,9 +52,9 @@ Item {
     Item {
         id: itemBottom
 
-        y: (Window.height
-            > root.flickableItem.contentHeight ? Window.height : root.flickableItem.contentHeight
-                                                 + 60) - root.flickableItem.contentY
+        y: (Window.height > root.flickableItem.contentHeight
+            + 60 ? Window.height : root.flickableItem.contentHeight + 60)
+           - root.flickableItem.contentY
 
         onYChanged: {
             const contentY = root.flickableItem.contentY

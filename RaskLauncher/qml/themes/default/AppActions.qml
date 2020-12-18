@@ -46,7 +46,8 @@ Popup {
                 width: parent.width < 300 ? parent.width : 300
                 anchors.horizontalCenter: parent.horizontalCenter
 
-                text: label
+                text: typeof labelFunc === "function" ? labelFunc(
+                                                            ).toString() : label
                 icon.name: iconName
 
                 onClicked: {
