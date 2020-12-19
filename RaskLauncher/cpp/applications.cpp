@@ -9,24 +9,18 @@
 Applications::Applications(QObject *parent) :
     QObject(parent),
     jsonModel(QStringLiteral("applications")),
-    m_fields({ QStringLiteral("name"), QStringLiteral("packageName"), QStringLiteral("visible"), QStringLiteral("adaptativeIcon") }),
+    m_fields({ QStringLiteral("name"), QStringLiteral("packageName"), QStringLiteral("visible"), QStringLiteral("adaptativeIcon"), QStringLiteral("orderDock") }),
     m_modifiedList(false),
     m_fieldApplications(QStringLiteral("applications")),
-    m_fieldHidden(QStringLiteral("hidden")),
-    m_fieldDock(QStringLiteral("dock"))
+    m_fieldPackageName(QStringLiteral("packageName")),
+    m_fieldOrderDock(QStringLiteral("orderDock"))
 {
-    QVariantMap map = jsonModel.getJSONData().toMap();
-
-    m_applications << map[m_fieldApplications].toList();
-    m_applicationsHidden << map[m_fieldHidden].toList();
-    m_applicationsDock << map[m_fieldDock].toList();
-
+    m_applications << jsonModel.getJSONData().toMap()[m_fieldApplications].toList();
     connect(this, &Applications::listChanged, this, &Applications::searchListChanged);
 }
 
 void Applications::addApplications(QVariantList &list)
 {
-    findAndRemove(list, m_applicationsHidden);
     findAndRemove(list, m_applications);
 
     for (const auto &application : qAsConst(list)) {
@@ -44,9 +38,7 @@ void Applications::addApplication(const QVariantMap &application)
 
 void Applications::removeApplication(const QString &packageName)
 {
-    if (!findAndRemove(packageName, m_applicationsHidden))
-        findAndRemove(packageName, m_applications);
-
+    findAndRemove(packageName, m_applications);
     refreshApplicationsList();
 }
 
@@ -62,7 +54,17 @@ void Applications::sort(QVariantList &value, int column, Qt::SortOrder order)
 
 QVariantList Applications::getList() const
 {
-    return m_applications;
+    return m_applicationsList;
+}
+
+void Applications::setList()
+{
+    m_applicationsList.clear();
+    std::copy_if(m_applications.begin(), m_applications.end(), std::back_inserter(m_applicationsList), [](const QVariant &it)
+    {
+        return it.toMap()[QStringLiteral("visible")].toBool();
+    });
+    emit listChanged();
 }
 
 QVariantList Applications::getHidden() const
@@ -70,100 +72,122 @@ QVariantList Applications::getHidden() const
     return m_applicationsHidden;
 }
 
+void Applications::setHidden()
+{
+    m_applicationsHidden.clear();
+    std::copy_if(m_applications.begin(), m_applications.end(), std::back_inserter(m_applicationsHidden), [](const QVariant &it)
+    {
+        return !it.toMap()[QStringLiteral("visible")].toBool();
+    });
+
+    emit hiddenChanged();
+}
+
 QVariantList Applications::getDock() const
 {
     return m_applicationsDock;
 }
 
+void Applications::setDock()
+{
+    m_applicationsDock.clear();
+    std::copy_if(m_applications.begin(), m_applications.end(), std::back_inserter(m_applicationsDock), [=](const QVariant &it)
+    {
+        return it.toMap().contains(m_fieldOrderDock);
+    });
+
+    sort(m_applicationsDock, OrderDock);
+    emit dockChanged();
+}
+
 QVariantList Applications::getSearchList()
 {
-    QVariantList searchList = m_applications;
-    std::copy_n(m_applicationsHidden.begin(), m_applicationsHidden.size(), std::back_inserter(searchList));
-
-    sort(searchList, Name, Qt::AscendingOrder);
-    return searchList;
+    return m_applications;
 }
 
-void Applications::hideApplication(const QString &packageName)
+void Applications::changeVisibility(const QString &packageName)
 {
-    qDebug() << "Hide Application" << packageName;
+    changeValueBoolean(packageName, QStringLiteral("visible"));
+}
+
+void Applications::addToDock(const QString &packageName, int order)
+{
+    qDebug() << "Add Application to Dock" << packageName << order;
+
+    if (order >= 0) {
+        for (auto &itDock : m_applicationsDock) {
+            auto app = itDock.toMap();
+            auto fieldOrderDock = app[m_fieldOrderDock];
+            if (fieldOrderDock.isValid() && fieldOrderDock.toInt() >= order) {
+                auto pos = app[m_fieldOrderDock].toInt();
+                app[m_fieldOrderDock] = ++pos;
+
+                auto itApp = find(m_applications, app[m_fieldPackageName].toString());
+                itApp.i->t() = app;
+            }
+        }
+    }
 
     auto app = find(m_applications, packageName);
-    if (app == std::end(m_applications)) {
-        qCritical() << "Application Not Found" << packageName;
-        return;
-    }
+    auto it = app->toMap();
+    it[m_fieldOrderDock] = (order < 0) ? m_applicationsDock.size() : order;
+    app.i->t() = it;
 
-    m_applicationsHidden << app->toMap();
-    m_applications.erase(app);
-
-    m_modifiedList = true;
-    refreshApplicationsList();
-}
-
-void Applications::showApplication(const QString &packageName)
-{
-    qDebug() << "Show Application in grid" << packageName;
-
-    auto app = find(m_applicationsHidden, packageName);
-    if (app == std::end(m_applicationsHidden)) {
-        qCritical() << "Application Not Found" << packageName;
-        return;
-    }
-
-    m_applications << app->toMap();
-    m_applicationsHidden.erase(app);
-
-    m_modifiedList = true;
-    refreshApplicationsList();
-}
-
-void Applications::addToDock(const QString &packageName)
-{
-    qDebug() << "Add Application in dock" << packageName;
-    auto app = find(m_applicationsDock, packageName);
-    if (app != std::end(m_applicationsDock)) {
-        qDebug() << "Application has already been added to the dock" << packageName;
-        return;
-    }
-
-    app = find(m_applicationsHidden, packageName);
-    if (app == std::end(m_applicationsHidden)) {
-        app = find(m_applications, packageName);
-    }
-
-    m_applicationsDock << app->toMap();
     m_modifiedList = true;
     refreshApplicationsList();
 }
 
 void Applications::removeFromDock(const QString &packageName)
 {
-    qDebug() << "Remove Application from dock" << packageName;
+    qDebug() << "Remove App from Dock" << packageName;
 
-    auto app = find(m_applicationsDock, packageName);
-    if (app == std::end(m_applicationsDock)) {
-        qCritical() << "Application Not Found" << packageName;
-        return;
+    auto app = find(m_applications, packageName);
+    QVariantMap it = app->toMap();
+    auto orderDock = it[m_fieldOrderDock].toInt();
+    it.remove(m_fieldOrderDock);
+
+    app.i->t() = it;
+
+    for (auto &itDock : m_applicationsDock) {
+        auto app = itDock.toMap();
+
+        if (app[m_fieldPackageName].toString() == packageName)
+            app = it;
+
+        auto fieldOrderDock = app[m_fieldOrderDock];
+        if (fieldOrderDock.isValid() && fieldOrderDock.toInt() >= orderDock) {
+            auto pos = fieldOrderDock.toInt();
+            app[m_fieldOrderDock] = --pos;
+
+            auto itApp = find(m_applications, app[m_fieldPackageName].toString());
+            itApp.i->t() = app;
+        }
     }
 
-    m_applicationsDock.erase(app);
     m_modifiedList = true;
     refreshApplicationsList();
 }
 
-bool Applications::isOnTheDock(const QString &packageName)
+void Applications::toggleDock(const QString &packageName)
 {
-    qDebug() << "Application is on the dock" << packageName;
-    return find(m_applicationsDock, packageName) != std::end(m_applicationsDock);
+    changeValueBoolean(packageName, QStringLiteral("dock"));
+}
+
+void Applications::changeValueBoolean(const QString &packageName, const QString &key)
+{
+    auto app = find(m_applications, packageName);
+
+    QVariantMap it = app->toMap();
+    it[key] = !it[key].toBool();
+    m_applications.erase(app);
+    m_applications << it;
+
+    m_modifiedList = true;
+    refreshApplicationsList();
 }
 
 void Applications::newApplication(const QVariantMap &application)
 {
-    if (find(m_applicationsHidden, application[QStringLiteral("packageName")].toString()) != std::end(m_applicationsHidden)) {
-        return;
-    }
-
     if (find(m_applications, application[QStringLiteral("packageName")].toString()) != std::end(m_applications)) {
         return;
     }
@@ -178,17 +202,15 @@ void Applications::refreshApplicationsList()
     sort(m_applications, Name, Qt::AscendingOrder);
     sort(m_applicationsHidden, Name, Qt::AscendingOrder);
 
-    emit listChanged();
-    emit hiddenChanged();
-    emit dockChanged();
+    setList();
+    setHidden();
+    setDock();
 
     if (!m_modifiedList)
         return;
 
     QVariantMap applications = QVariantMap({
-                                               { m_fieldApplications, m_applications },
-                                               { m_fieldHidden, m_applicationsHidden },
-                                               { m_fieldDock, m_applicationsDock }
+                                               { m_fieldApplications, m_applications }
                                            });
 
     //qDebug().noquote() << QJsonDocument::fromVariant(m_applications).toJson(QJsonDocument::Indented);

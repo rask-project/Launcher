@@ -88,17 +88,15 @@ Page {
             options: ListModel {
                 ListElement {
                     property var labelFunc: function () {
-                        return !!actions.modelData && Applications.isOnTheDock(
-                                    actions.modelData.packageName) ? qsTr(
-                                                                         "Remove from Dock") : qsTr(
-                                                                         "Add to Dock")
+                        return !!actions.modelData
+                                && actions.modelData.orderDock ? qsTr("Remove from Dock") : qsTr(
+                                                                     "Add to Dock")
                     }
 
                     iconName: "bookmark"
 
                     property var func: function () {
-                        if (Applications.isOnTheDock(
-                                    actions.modelData.packageName))
+                        if (actions.modelData.orderDock)
                             Applications.removeFromDock(
                                         actions.modelData.packageName)
                         else
@@ -112,7 +110,7 @@ Page {
                     iconName: "visibility-off"
 
                     property var func: function () {
-                        Applications.hideApplication(
+                        Applications.changeVisibility(
                                     actions.modelData.packageName)
                     }
                 }

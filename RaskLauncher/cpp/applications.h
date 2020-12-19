@@ -19,7 +19,8 @@ public:
         Name = Qt::UserRole,
         Package,
         Visible,
-        AdaptativeIcon
+        AdaptativeIcon,
+        OrderDock
     };
 
     void addApplications(QVariantList &list);
@@ -29,17 +30,25 @@ public:
     void sort(QVariantList &value, int column, Qt::SortOrder order = Qt::AscendingOrder);
 
     QVariantList getList() const;
+    void setList();
+
     QVariantList getHidden() const;
+    void setHidden();
+
     QVariantList getDock() const;
+    void setDock();
+
     QVariantList getSearchList();
 
 public slots:
-    void hideApplication(const QString &packageName);
-    void showApplication(const QString &packageName);
-
-    void addToDock(const QString &packageName);
+    void changeVisibility(const QString &packageName);
+    void addToDock(const QString &packageName, int order = -1);
     void removeFromDock(const QString &packageName);
-    bool isOnTheDock(const QString &packageName);
+
+    void toggleDock(const QString &packageName);
+
+private slots:
+    void changeValueBoolean(const QString &packageName, const QString &key);
 
 signals:
     void listChanged();
@@ -53,12 +62,13 @@ private:
     bool m_modifiedList;
 
     QVariantList m_applications;
+    QVariantList m_applicationsList;
     QVariantList m_applicationsHidden;
     QVariantList m_applicationsDock;
 
     const QString m_fieldApplications;
-    const QString m_fieldHidden;
-    const QString m_fieldDock;
+    const QString m_fieldPackageName;
+    const QString m_fieldOrderDock;
 
     void newApplication(const QVariantMap &application);
     void refreshApplicationsList();

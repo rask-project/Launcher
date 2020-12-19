@@ -21,7 +21,7 @@ private:
     QFile m_fileData;
 
     const int fileType = 0x5261736b;
-    const int fileVersion = 101;
+    const int fileVersion = 103;
     const int compressionLevel = 9;
 };
 

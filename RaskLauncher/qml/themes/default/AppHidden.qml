@@ -65,15 +65,14 @@ OverlaySheet {
                     ListElement {
                         property var labelFunc: function () {
                             return !!actions.modelData
-                                    && Applications.isOnTheDock(
-                                        actions.modelData.packageName) ? qsTr("Remove from Dock") : qsTr("Add to Dock")
+                                    && actions.modelData.orderDock ? qsTr("Remove from Dock") : qsTr(
+                                                                    "Add to Dock")
                         }
 
                         iconName: "bookmark"
 
                         property var func: function () {
-                            if (Applications.isOnTheDock(
-                                        actions.modelData.packageName))
+                            if (actions.modelData.orderDock)
                                 Applications.removeFromDock(
                                             actions.modelData.packageName)
                             else
@@ -87,7 +86,7 @@ OverlaySheet {
                         iconName: "visibility"
 
                         property var func: function () {
-                            Applications.showApplication(
+                            Applications.changeVisibility(
                                         actions.modelData.packageName)
                         }
                     }
