@@ -45,6 +45,7 @@ public slots:
     void addToDock(const QString &packageName, int order = -1);
     void removeFromDock(const QString &packageName);
 
+    void reorganizeDock(const QVariantList &list);
     void toggleDock(const QString &packageName);
 
 private slots:

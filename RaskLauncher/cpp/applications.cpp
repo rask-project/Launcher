@@ -100,6 +100,22 @@ void Applications::setDock()
     emit dockChanged();
 }
 
+void Applications::reorganizeDock(const QVariantList &list)
+{
+    qDebug() << "Reorganize Items in dock";
+    int k = 0;
+
+    for (auto &it : list) {
+        auto app = it.toMap();
+        app[m_fieldOrderDock] = k++;
+        auto itApp = find(m_applications, app[m_fieldPackageName].toString());
+        itApp.i->t() = app;
+    }
+
+    m_modifiedList = true;
+    refreshApplicationsList();
+}
+
 QVariantList Applications::getSearchList()
 {
     return m_applications;

@@ -8,6 +8,7 @@ Item {
 
     property var shadderSource
     property var model: []
+    onModelChanged: listHorizontalApps.interactive = true
 
     Rectangle {
         id: dockRectangle
@@ -36,8 +37,20 @@ Item {
 
             model: dockItem.model
             delegate: Item {
+                id: item
+
                 width: height
                 height: listHorizontalApps.height
+                z: 1
+
+                property int positionStarted: 0
+                property int positionEnded: 0
+                property int positionsMoved: Math.floor(
+                                                 item.positionEnded
+                                                 - item.positionStarted) / item.width
+                property int newPosition: index + item.positionsMoved
+                property bool held: false
+                property bool moved: item.positionEnded !== item.positionStarted
 
                 AppItem {
                     id: appItem
@@ -55,15 +68,73 @@ Item {
                     anchors.centerIn: parent
                     scaleForClick: 1.2
 
+                    click.pressAndHoldInterval: 500
+
+                    click.drag.axis: Drag.XAxis
+
                     click.onClicked: {
                         RaskLauncher.launchApplication(packageName)
                         AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
                     }
 
-                    click.onPressAndHold: {
-                        actions.visible = true
-                        AndroidVibrate.vibrate(
-                                    200, AndroidVibrate.EFFECT_HEAVY_CLICK)
+                    click.onPressAndHold: function () {}
+
+                    click.onPositionChanged: item.positionEnded = item.x
+
+                    click.onReleased: {
+                        if (listHorizontalApps.interactive)
+                            return
+
+                        if (Math.abs(item.positionsMoved) < 1 && item.held) {
+                            item.x = item.positionStarted
+                        } else {
+                            if (item.held) {
+                                Applications.reorganizeDock(
+                                            move(dockItem.model, index,
+                                                 item.newPosition))
+                            }
+                        }
+
+                        item.z = 1
+                        item.opacity = 1
+                        appItem.click.drag.target = null
+                        item.held = false
+                    }
+
+                    Timer {
+                        id: longPressTimer
+
+                        interval: 500
+                        repeat: false
+                        running: appItem.click.pressed
+
+                        onTriggered: {
+                            item.positionEnded = item.x
+                            item.z = 3
+                            item.positionStarted = item.x
+
+                            listHorizontalApps.interactive = false
+                            appItem.click.drag.target = item
+                            item.opacity = 0.5
+                            item.held = true
+
+                            AndroidVibrate.vibrate(
+                                        50, AndroidVibrate.EFFECT_HEAVY_CLICK)
+                        }
+                    }
+
+                    Timer {
+                        id: longLongPressTimer
+
+                        interval: 1300
+                        repeat: false
+                        running: appItem.click.pressed && !item.moved
+
+                        onTriggered: {
+                            actions.visible = true
+                            AndroidVibrate.vibrate(
+                                        200, AndroidVibrate.EFFECT_HEAVY_CLICK)
+                        }
                     }
 
                     AppActions {
@@ -113,5 +184,22 @@ Item {
                                 dockRectangle.width, dockRectangle.height)
             }
         }
+    }
+
+    function move(arr, old_index, new_index) {
+        while (old_index < 0) {
+            old_index += arr.length
+        }
+        while (new_index < 0) {
+            new_index += arr.length
+        }
+        if (new_index >= arr.length) {
+            var k = new_index - arr.length
+            while ((k--) + 1) {
+                arr.push(undefined)
+            }
+        }
+        arr.splice(new_index, 0, arr.splice(old_index, 1)[0])
+        return arr
     }
 }
