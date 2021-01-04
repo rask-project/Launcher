@@ -10,6 +10,8 @@ Item {
     property var model: []
     onModelChanged: listHorizontalApps.interactive = true
 
+    height: dockRectangle.height
+
     Rectangle {
         id: dockRectangle
 

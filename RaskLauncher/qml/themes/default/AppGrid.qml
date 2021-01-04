@@ -8,7 +8,7 @@ import QtRask.Launcher 1.0
 Flickable {
     id: scrollGrid
 
-    contentHeight: applicationFlow.implicitHeight
+    contentHeight: applicationFlow.height
 
     property var onClicked: function (packageName) {}
     property var onPressAndHold: function (app) {}

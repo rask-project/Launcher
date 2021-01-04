@@ -9,8 +9,8 @@ import "./components"
 Page {
     id: page
 
-    topPadding: raskSettings.padding
-    bottomPadding: raskSettings.padding
+    topPadding: ScreenManager.statusBarHeight
+    bottomPadding: ScreenManager.navigationBarHeight
 
     property alias applications: appGrid.model
     property alias applicationsHidden: appHidden.model
@@ -155,13 +155,12 @@ Page {
     AppDock {
         visible: model.length > 0
 
-        y: Window.height - (appGrid.atYEnd
-                            && !appGrid.atYBeginning ? 0 : height)
+        y: Window.height
+           - (appGrid.atYEnd
+              && !appGrid.atYBeginning ? 0 : height + ScreenManager.navigationBarHeight)
 
         parent: page.parent
         width: parent.width
-        height: raskSettings.iconSize * 1.6
-
         shadderSource: appGrid
 
         model: Applications.dock

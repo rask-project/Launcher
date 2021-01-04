@@ -40,16 +40,6 @@ Item {
             border.width: 1
             radius: raskSettings.iconRadius
 
-            layer.enabled: true
-            layer.effect: DropShadow {
-                horizontalOffset: 0
-                verticalOffset: 0
-                radius: 3
-                samples: 7
-                color: RaskTheme.iconShadow
-                opacity: 0.2
-            }
-
             scale: areaClick.pressed ? root.scaleForClick : 1
             Behavior on scale {
                 NumberAnimation {
@@ -88,15 +78,6 @@ Item {
                     sourceSize.width: width
                     sourceSize.height: height
                     source: root.icon
-
-                    layer.enabled: true
-                    layer.effect: DropShadow {
-                        horizontalOffset: 0
-                        verticalOffset: 0
-                        radius: 4
-                        samples: 9
-                        color: RaskTheme.iconImageShadow
-                    }
                 }
             }
 

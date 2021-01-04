@@ -1,6 +1,6 @@
-import QtQuick 2.12
-import QtQuick.Window 2.12
-import QtQuick.Controls 2.12
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
 import QtQuick.Controls.Material 2.15
 import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
@@ -8,16 +8,20 @@ import Qt.labs.settings 1.0
 import QtRask.Launcher 1.0
 import "./themes/default"
 
-ApplicationWindow {
+Window {
     id: window
 
     width: 393
     height: 873
     visible: true
 
-    title: qsTr("Rask Launcher")
+    //title: qsTr("Rask Launcher")
 
-    background: Rectangle {
+    //background: Item {}
+    color: "transparent"
+
+
+    /*background: Rectangle {
         width: window.width
         height: window.height
 
@@ -27,10 +31,8 @@ ApplicationWindow {
             fillMode: Image.PreserveAspectCrop
             source: "image://systemImage/wallpaper"
         }
-    }
-
+    }*/
     property bool activeScreen: Qt.application.state === Qt.ApplicationActive
-    property int dpi: Screen.pixelDensity * 25.4
 
     Settings {
         id: raskSettings

@@ -8,14 +8,17 @@
 
 ScreenManager::ScreenManager(QObject *parent):
     QObject(parent),
+    m_density(0),
     m_statusBarHeight(0),
     m_navigationBarHeight(0),
     m_navigationBarHeightLandscape(0)
 {
+    setDensity(getDensity());
     setStatusBarHeight(getResourceSize(QStringLiteral("status_bar_height")));
     setNavigationBarHeight(getResourceSize(QStringLiteral("navigation_bar_height")));
     setNavigationBarHeightLandscape(getResourceSize(QStringLiteral("navigation_bar_height_landscape")));
 
+    qDebug() << "Screen Values" << m_statusBarHeight << m_navigationBarHeight << m_navigationBarHeightLandscape;
     updateScreenValues();
 }
 
@@ -45,13 +48,24 @@ void ScreenManager::updateScreenValues()
 #endif
 }
 
+float ScreenManager::getDensity() const
+{
+    return m_density;
+}
+
+void ScreenManager::setDensity(float density)
+{
+    m_density = density;
+}
+
 int ScreenManager::getNavigationBarHeightLandscape() const
 {
     return m_navigationBarHeightLandscape;
 }
 
-void ScreenManager::setNavigationBarHeightLandscape(int navigationBarHeightLandscape)
+void ScreenManager::setNavigationBarHeightLandscape(int value)
 {
+    int navigationBarHeightLandscape = static_cast<int>(std::floor(value / m_density));
     if (m_navigationBarHeightLandscape == navigationBarHeightLandscape)
         return;
 
@@ -64,8 +78,9 @@ int ScreenManager::getNavigationBarHeight() const
     return m_navigationBarHeight;
 }
 
-void ScreenManager::setNavigationBarHeight(int navigationBarHeight)
+void ScreenManager::setNavigationBarHeight(int value)
 {
+    int navigationBarHeight = static_cast<int>(std::floor(value / m_density));
     if (m_navigationBarHeight == navigationBarHeight)
         return;
 
@@ -78,8 +93,9 @@ int ScreenManager::getStatusBarHeight() const
     return m_statusBarHeight;
 }
 
-void ScreenManager::setStatusBarHeight(int statusBarHeight)
+void ScreenManager::setStatusBarHeight(int value)
 {
+    int statusBarHeight = static_cast<int>(std::floor(value / m_density));
     if (m_statusBarHeight == statusBarHeight)
         return;
 
@@ -93,7 +109,6 @@ int ScreenManager::getResourceSize(const QString &value)
     QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative",
                                                                            "activity",
                                                                            "()Landroid/app/Activity;");
-
     QAndroidJniObject resources = activity.callObjectMethod("getResources", "()Landroid/content/res/Resources;");
 
     QAndroidJniObject name = QAndroidJniObject::fromString(value);
@@ -106,8 +121,7 @@ int ScreenManager::getResourceSize(const QString &value)
                                                  defType.object<jstring>(),
                                                  defPackage.object<jstring>());
 
-    jint size = resources.callMethod<jint>("getDimensionPixelSize",
-                                           "(I)I", identifier);
+    jint size = resources.callMethod<jint>("getDimensionPixelSize", "(I)I", identifier);
 
     qDebug() << "Resource" << value << size;
     return size;
@@ -115,4 +129,19 @@ int ScreenManager::getResourceSize(const QString &value)
     Q_UNUSED(value)
     return 0;
 #endif
+}
+
+float ScreenManager::getDensity()
+{
+    float d = 0;
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative",
+                                                                           "activity",
+                                                                           "()Landroid/app/Activity;");
+    QAndroidJniObject resources = activity.callObjectMethod("getResources", "()Landroid/content/res/Resources;");
+    QAndroidJniObject displayMetrics = resources.callObjectMethod("getDisplayMetrics", "()Landroid/util/DisplayMetrics;");
+    jfloat density = displayMetrics.getField<jfloat>("density");
+    d = density;
+#endif
+    return d;
 }

@@ -1,6 +1,7 @@
 #include "rasklauncher.h"
 #include "rasktheme.h"
 #include "singleton.h"
+#include "screenmanager.h"
 
 #include <algorithm>
 #include <QDebug>
@@ -249,5 +250,6 @@ void RaskLauncher::getSystemResources()
     qDebug() << "Get system resources";
 #ifdef Q_OS_ANDROID
     QAndroidJniObject::callStaticMethod<void>("com/QtRask/Launcher/RaskLauncher", "identifySystemTheme", "()V");
+    Singleton<ScreenManager>::getInstanceQML().updateScreenValues();
 #endif
 }
