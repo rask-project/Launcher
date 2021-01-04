@@ -8,37 +8,25 @@ import Qt.labs.settings 1.0
 import QtRask.Launcher 1.0
 import "./themes/default"
 
-Window {
+ApplicationWindow {
     id: window
 
     width: 393
     height: 873
     visible: true
 
-    //title: qsTr("Rask Launcher")
+    title: qsTr("Rask Launcher")
 
-    //background: Item {}
+    background: Item {}
     color: "transparent"
 
-
-    /*background: Rectangle {
-        width: window.width
-        height: window.height
-
-        Image {
-            anchors.fill: parent
-
-            fillMode: Image.PreserveAspectCrop
-            source: "image://systemImage/wallpaper"
-        }
-    }*/
     property bool activeScreen: Qt.application.state === Qt.ApplicationActive
 
     Settings {
         id: raskSettings
 
         fileName: "rask"
-        property int padding: 50
+        property int padding: 20
         property int leftPadding: 10
         property int rightPadding: 10
 

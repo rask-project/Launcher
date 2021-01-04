@@ -11,7 +11,8 @@ ScreenManager::ScreenManager(QObject *parent):
     m_density(0),
     m_statusBarHeight(0),
     m_navigationBarHeight(0),
-    m_navigationBarHeightLandscape(0)
+    m_navigationBarHeightLandscape(0),
+    m_navigationBarVisible(true)
 {
     setDensity(getDensity());
     setStatusBarHeight(getResourceSize(QStringLiteral("status_bar_height")));
@@ -41,11 +42,25 @@ void ScreenManager::updateScreenValues()
     QAndroidJniObject rootView = view.callObjectMethod("getRootView", "()Landroid/view/View;");
     rootView.callMethod<void>("getWindowVisibleDisplayFrame", "(Landroid/graphics/Rect;)V", displayFrame.object());
 
-    int y = static_cast<int>(realSize.getField<jint>("y"));
-    int height = static_cast<int>(realSize.getField<jint>("height"));
+    int y = std::floor(static_cast<int>(realSize.getField<jint>("y")) / m_density);
+    int height = std::floor(static_cast<int>(displayFrame.callMethod<jint>("height")) / m_density);
 
-    qDebug() << "ScreenManager" << y << height << (y - height - m_statusBarHeight == 0);
+    if ((y - height - m_statusBarHeight) == 0)
+        setNavigationBarVisible(false);
+    else
+        setNavigationBarVisible(true);
 #endif
+}
+
+bool ScreenManager::getNavigationBarVisible() const
+{
+    return m_navigationBarVisible;
+}
+
+void ScreenManager::setNavigationBarVisible(bool navigationBarVisible)
+{
+    m_navigationBarVisible = navigationBarVisible;
+    emit navigationBarVisibleChanged();
 }
 
 float ScreenManager::getDensity() const

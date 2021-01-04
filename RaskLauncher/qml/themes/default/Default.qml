@@ -155,9 +155,8 @@ Page {
     AppDock {
         visible: model.length > 0
 
-        y: Window.height
-           - (appGrid.atYEnd
-              && !appGrid.atYBeginning ? 0 : height + ScreenManager.navigationBarHeight)
+        y: Window.height - (appGrid.atYEnd
+                            && !appGrid.atYBeginning ? 0 : height + (ScreenManager.navigationBarVisible ? ScreenManager.navigationBarHeight : raskSettings.padding))
 
         parent: page.parent
         width: parent.width

@@ -8,6 +8,7 @@ class ScreenManager : public QObject
     Q_PROPERTY(int statusBarHeight READ getStatusBarHeight WRITE setStatusBarHeight NOTIFY statusBarHeightChanged)
     Q_PROPERTY(int navigationBarHeight READ getNavigationBarHeight WRITE setNavigationBarHeight NOTIFY navigationBarHeightChanged)
     Q_PROPERTY(int navigationBarHeightLandscape READ getNavigationBarHeightLandscape WRITE setNavigationBarHeightLandscape NOTIFY navigationBarHeightLandscapeChanged)
+    Q_PROPERTY(bool navigationBarVisible READ getNavigationBarVisible WRITE setNavigationBarVisible NOTIFY navigationBarVisibleChanged)
 
     Q_OBJECT
 public:
@@ -25,6 +26,9 @@ public:
     int getNavigationBarHeightLandscape() const;
     void setNavigationBarHeightLandscape(int value);
 
+    bool getNavigationBarVisible() const;
+    void setNavigationBarVisible(bool navigationBarVisible);
+
 public slots:
     void updateScreenValues();
 
@@ -33,12 +37,14 @@ signals:
     void statusBarHeightChanged();
     void navigationBarHeightChanged();
     void navigationBarHeightLandscapeChanged();
+    void navigationBarVisibleChanged();
 
 private:
     float m_density;
     int m_statusBarHeight;
     int m_navigationBarHeight;
     int m_navigationBarHeightLandscape;
+    bool m_navigationBarVisible;
 
     int getResourceSize(const QString &value);
     float getDensity();
