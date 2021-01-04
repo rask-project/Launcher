@@ -5,6 +5,76 @@ import QtGraphicalEffects 1.0
 
 import QtRask.Launcher 1.0
 
+
+/*
+GridView {
+    id: scrollGrid
+
+    property var onClicked: function (packageName) {}
+    property var onPressAndHold: function (app) {}
+    property AppActions actions
+    property string title
+
+    property int iconSize: raskSettings.iconSize
+    property int iconSpacing: raskSettings.iconSpacing
+    property bool textNegative: false
+
+    cellWidth: iconSize + iconSpacing
+
+    delegate: Column {
+        width: GridView.view.cellWidth
+        height: width + 36
+        spacing: 5
+
+        Rectangle {
+            id: iconBackground
+
+            width: scrollGrid.iconSize
+            height: width
+
+            radius: raskSettings.iconRadius
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            Image {
+                width: parent.width * (modelData.adaptativeIcon ? 1.5 : 1)
+                height: width
+
+                source: "image://systemImage/" + modelData.packageName
+                asynchronous: true
+                anchors.centerIn: parent
+
+                sourceSize.width: width
+                sourceSize.height: height
+            }
+
+            layer.enabled: true
+            layer.effect: OpacityMask {
+                maskSource: Rectangle {
+                    x: iconBackground.x
+                    y: iconBackground.y
+                    width: iconBackground.width
+                    height: iconBackground.height
+                    radius: iconBackground.radius
+                }
+            }
+        }
+
+        Label {
+            width: parent.width
+            height: 36
+            text: modelData.name
+
+            elide: Label.ElideRight
+            wrapMode: Label.WordWrap
+            horizontalAlignment: Label.AlignHCenter
+            verticalAlignment: Label.AlignVCenter
+
+            font.pixelSize: 12
+            color: RaskTheme.getColor(RaskTheme.White)
+        }
+    }
+}
+*/
 Flickable {
     id: scrollGrid
 
@@ -61,6 +131,62 @@ Flickable {
                     }
                 }
             }
+
+
+            /*
+            Column {
+                width: scrollGrid.iconSize + scrollGrid.iconSpacing
+                height: width + 36
+                spacing: 5
+
+                Rectangle {
+                    id: iconBackground
+
+                    width: scrollGrid.iconSize
+                    height: width
+
+                    radius: raskSettings.iconRadius
+                    anchors.horizontalCenter: parent.horizontalCenter
+
+                    Image {
+                        width: parent.width * (modelData.adaptativeIcon ? 1.5 : 1)
+                        height: width
+
+                        source: "image://systemImage/" + modelData.packageName
+                        asynchronous: true
+                        anchors.centerIn: parent
+
+                        sourceSize.width: width
+                        sourceSize.height: height
+                    }
+
+                    layer.enabled: true
+                    layer.effect: OpacityMask {
+                        maskSource: Rectangle {
+                            x: iconBackground.x
+                            y: iconBackground.y
+                            width: iconBackground.width
+                            height: iconBackground.height
+                            radius: iconBackground.radius
+                        }
+                    }
+                }
+
+                Label {
+                    width: parent.width
+                    height: 36
+                    text: modelData.name
+
+                    elide: Label.ElideRight
+                    wrapMode: Label.WordWrap
+                    horizontalAlignment: Label.AlignHCenter
+                    verticalAlignment: Label.AlignVCenter
+
+                    font.pixelSize: 12
+                    color: RaskTheme.getColor(RaskTheme.White)
+                }
+            }
+            */
         }
 
         Item {

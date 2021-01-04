@@ -131,7 +131,7 @@ Item {
             anchors.rightMargin: 5
 
             text: root.applicationName
-            font.pixelSize: 12
+            font.pixelSize: 11
             color: RaskTheme.getColor(
                        root.textNegative ? RaskTheme.Black : RaskTheme.White)
 
@@ -142,10 +142,11 @@ Item {
 
             layer.enabled: !root.textNegative
             layer.effect: DropShadow {
-                verticalOffset: 0
-                color: RaskTheme.getColor(RaskTheme.Black)
-                radius: 10
-                samples: 32
+                verticalOffset: 1
+                horizontalOffset: 1
+                color: RaskTheme.getColor(RaskTheme.Black, RaskTheme.Alpha75)
+                radius: 1
+                samples: 3
             }
         }
     }
