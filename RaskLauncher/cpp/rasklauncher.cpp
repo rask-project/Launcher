@@ -42,14 +42,9 @@ RaskLauncher::RaskLauncher(QObject *parent) :
     applications(Singleton<Applications>::getInstanceQML())
 #ifdef Q_OS_ANDROID
     , m_activityLauncher(QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;"))
-    , m_intentFilter(QAndroidJniObject("android/content/IntentFilter"))
-    , m_activityBroadcastReceiver(QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative", "activity", "()Landroid/app/Activity;"))
-    , m_intentFilterBroadcastReceiver(QAndroidJniObject("android/content/IntentFilter"))
-    , m_broadcastReceiver(QAndroidJniObject("com/QtRask/Launcher/PackageBroadcast"))
 #endif
 {
     registerNativeMethods();
-    registerBroadcastMethods();
 }
 
 void RaskLauncher::retrievePackages()
@@ -222,26 +217,6 @@ void RaskLauncher::registerNativeMethods()
     env->DeleteLocalRef(objectClass);
     if (env->ExceptionCheck())
         env->ExceptionClear();
-#endif
-}
-
-void RaskLauncher::registerBroadcastMethods()
-{
-#ifdef Q_OS_ANDROID
-    qDebug() << "Register Broadcast methods";
-
-    QAndroidJniObject addActionString = QAndroidJniObject::fromString("android.intent.action.PACKAGE_ADDED");
-    QAndroidJniObject removeActionString = QAndroidJniObject::fromString("android.intent.action.PACKAGE_REMOVED");
-    QAndroidJniObject dataSchemeString = QAndroidJniObject::fromString("package");
-
-    m_intentFilterBroadcastReceiver.callMethod<void>("addAction", "(Ljava/lang/String;)V", addActionString.object<jstring>());
-    m_intentFilterBroadcastReceiver.callMethod<void>("addAction", "(Ljava/lang/String;)V", removeActionString.object<jstring>());
-    m_intentFilterBroadcastReceiver.callMethod<void>("addDataScheme", "(Ljava/lang/String;)V", dataSchemeString.object<jstring>());
-
-    m_activityBroadcastReceiver.callObjectMethod("registerReceiver",
-                                "(Landroid/content/BroadcastReceiver;Landroid/content/IntentFilter;)Landroid/content/Intent;",
-                                m_broadcastReceiver.object<jobject>(),
-                                m_intentFilterBroadcastReceiver.object<jobject>());
 #endif
 }
 

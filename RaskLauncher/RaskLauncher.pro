@@ -68,3 +68,6 @@ contains(ANDROID_TARGET_ARCH,) {
 }
 
 ANDROID_ABIS = arm64-v8a x86_64
+
+DISTFILES += \
+    android/src/com/QtRask/Launcher/NotificationBroadcast.kt

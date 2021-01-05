@@ -4,6 +4,7 @@ import android.app.ActivityManager
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
 import android.provider.Settings
 import android.graphics.Bitmap
@@ -29,6 +30,8 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         instance = this
     }
 
+    private val packageBroadcastReceiver = PackageBroadcast()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(TAG, "Kotlin onCreate")
 
@@ -50,6 +53,14 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         m_packageManager = instance!!.getPackageManager() as PackageManager
         m_vibratorService = instance!!.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
         m_wallpaperManager = WallpaperManager.getInstance(this)
+
+        getApplicationsRunning()
+
+        val filterPackage: IntentFilter = IntentFilter()
+        filterPackage.addAction(PackageBroadcast.intentActionAdded)
+        filterPackage.addAction(PackageBroadcast.intentActionRemoved)
+        filterPackage.addDataScheme(PackageBroadcast.intentActionPackage)
+        registerReceiver(packageBroadcastReceiver, filterPackage)
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -306,10 +317,10 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
         fun getApplicationsRunning() {
             Log.d(TAG, "Get Applications running")
 
-            val applicationsRunning = m_activityManager!!.getRunningAppProcesses()
+            val applicationsRunning = m_activityManager!!.getRunningTasks(1)
             Log.d(TAG, "Total applications running: " + applicationsRunning.indices)
             for (i in applicationsRunning.indices) {
-                Log.d(TAG, "Application: " + applicationsRunning.get(i).processName)
+                Log.d(TAG, "Application: " + applicationsRunning[i])
             }
         }
 

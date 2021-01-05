@@ -32,13 +32,8 @@ private:
 
 #ifdef Q_OS_ANDROID
     QAndroidJniObject m_activityLauncher;
-    QAndroidJniObject m_intentFilter;
-    QAndroidJniObject m_activityBroadcastReceiver;
-    QAndroidJniObject m_intentFilterBroadcastReceiver;
-    QAndroidJniObject m_broadcastReceiver;
 #endif
 
     void registerNativeMethods();
-    void registerBroadcastMethods();
 };
 

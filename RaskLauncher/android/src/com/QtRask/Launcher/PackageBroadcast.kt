@@ -24,6 +24,9 @@ class PackageBroadcast: BroadcastReceiver() {
     }
 
     companion object {
-        private val TAG = "BroadcastReceiver"
+        const val intentActionAdded: String = "android.intent.action.PACKAGE_ADDED"
+        const val intentActionRemoved: String = "android.intent.action.PACKAGE_REMOVED"
+        const val intentActionPackage: String = "package"
+        private const val TAG = "PackageBroadcast"
     }
 }
