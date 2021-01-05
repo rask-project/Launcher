@@ -80,12 +80,17 @@ int ScreenManager::getNavigationBarHeightLandscape() const
 
 void ScreenManager::setNavigationBarHeightLandscape(int value)
 {
+#ifdef Q_OS_ANDROID
     int navigationBarHeightLandscape = static_cast<int>(std::floor(value / m_density));
     if (m_navigationBarHeightLandscape == navigationBarHeightLandscape)
         return;
 
     m_navigationBarHeightLandscape = navigationBarHeightLandscape;
     emit navigationBarHeightLandscapeChanged();
+#else
+    m_navigationBarHeightLandscape = value;
+    emit navigationBarHeightLandscapeChanged();
+#endif
 }
 
 int ScreenManager::getNavigationBarHeight() const
@@ -95,12 +100,17 @@ int ScreenManager::getNavigationBarHeight() const
 
 void ScreenManager::setNavigationBarHeight(int value)
 {
+#ifdef Q_OS_ANDROID
     int navigationBarHeight = static_cast<int>(std::floor(value / m_density));
     if (m_navigationBarHeight == navigationBarHeight)
         return;
 
     m_navigationBarHeight = navigationBarHeight;
     emit navigationBarHeightChanged();
+#else
+    m_navigationBarHeight = value;
+    emit navigationBarHeightChanged();
+#endif
 }
 
 int ScreenManager::getStatusBarHeight() const
@@ -110,12 +120,17 @@ int ScreenManager::getStatusBarHeight() const
 
 void ScreenManager::setStatusBarHeight(int value)
 {
+#ifdef Q_OS_ANDROID
     int statusBarHeight = static_cast<int>(std::floor(value / m_density));
     if (m_statusBarHeight == statusBarHeight)
         return;
 
     m_statusBarHeight = statusBarHeight;
     emit statusBarHeightChanged();
+#else
+    m_statusBarHeight = value;
+    emit statusBarHeightChanged();
+#endif
 }
 
 int ScreenManager::getResourceSize(const QString &value)
