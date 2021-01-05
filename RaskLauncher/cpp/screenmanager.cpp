@@ -12,7 +12,7 @@ ScreenManager::ScreenManager(QObject *parent):
     m_statusBarHeight(0),
     m_navigationBarHeight(0),
     m_navigationBarHeightLandscape(0),
-    m_navigationBarVisible(true)
+    m_navigationBarVisible(false)
 {
     setDensity(getDensity());
     setStatusBarHeight(getResourceSize(QStringLiteral("status_bar_height")));

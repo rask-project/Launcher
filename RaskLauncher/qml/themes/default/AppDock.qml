@@ -6,6 +6,7 @@ import QtRask.Launcher 1.0
 Item {
     id: dockItem
 
+    property int differencePadding: 0
     property var shadderSource
     property var model: []
     onModelChanged: listHorizontalApps.interactive = true
@@ -182,7 +183,7 @@ Item {
                 sourceItem: dockItem.shadderSource
                 sourceRect: Qt.rect(
                                 dockItem.x + (dockItem.width - dockRectangle.width) / 2,
-                                dockItem.y - raskSettings.padding,
+                                dockItem.y - dockItem.differencePadding * 2,
                                 dockRectangle.width, dockRectangle.height)
             }
         }

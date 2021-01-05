@@ -1,7 +1,7 @@
 <resources>
     <style name="RaskTheme" parent="android:Theme.Material">
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
+        <!--<item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>-->
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowShowWallpaper">true</item>

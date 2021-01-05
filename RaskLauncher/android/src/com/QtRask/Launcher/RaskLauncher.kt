@@ -22,8 +22,10 @@ import android.os.Vibrator
 import android.os.VibrationEffect
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import java.io.ByteArrayOutputStream
 import android.content.res.Configuration
+import android.graphics.Color
 
 open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
     init {
@@ -37,10 +39,13 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
 
         getWindow().getDecorView().setSystemUiVisibility(
             View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION)
+                or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
 
         super.onCreate(savedInstanceState)
+        setStatusBarColor(false)
+        setNavBarColor(false)
     }
 
     override fun onStart() {
@@ -69,7 +74,9 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
     }
 
     companion object {
-        private val TAG = "RaskLauncher"
+        private const val TAG = "RaskLauncher"
+        private val colorStatusNavBar = Color.argb(0x40, 0xFF, 0xFF, 0xFF)
+
         var instance: RaskLauncher? = null
             private set
         private var m_iconDpi: Int = 0
@@ -321,6 +328,30 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
             Log.d(TAG, "Total applications running: " + applicationsRunning.indices)
             for (i in applicationsRunning.indices) {
                 Log.d(TAG, "Application: " + applicationsRunning[i])
+            }
+        }
+
+        @JvmStatic
+        fun setStatusBarColor(setColor: Boolean) {
+            instance!!.getWindow().apply {
+                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                statusBarColor = when (setColor) {
+                    true -> colorStatusNavBar
+                    else -> Color.TRANSPARENT
+                }
+            }
+        }
+
+        @JvmStatic
+        fun setNavBarColor(setColor: Boolean) {
+            instance!!.getWindow().apply {
+                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
+                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+                navigationBarColor = when (setColor) {
+                    true -> colorStatusNavBar
+                    else -> Color.TRANSPARENT
+                }
             }
         }
 

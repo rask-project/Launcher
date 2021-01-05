@@ -1,6 +1,6 @@
-import QtQuick 2.15
+import QtQuick 2.12
 import QtQuick.Window 2.12
-import QtQuick.Controls 2.15
+import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
 
 import QtRask.Launcher 1.0
@@ -16,7 +16,6 @@ Page {
     property alias applicationsHidden: appHidden.model
 
     background: Item {}
-
     AppGrid {
         id: appGrid
 
@@ -155,8 +154,9 @@ Page {
     AppDock {
         visible: model.length > 0
 
+        differencePadding: (ScreenManager.navigationBarVisible ? ScreenManager.navigationBarHeight : raskSettings.padding)
         y: Window.height - (appGrid.atYEnd
-                            && !appGrid.atYBeginning ? 0 : height + (ScreenManager.navigationBarVisible ? ScreenManager.navigationBarHeight : raskSettings.padding))
+                            && !appGrid.atYBeginning ? 0 : height + differencePadding)
 
         parent: page.parent
         width: parent.width

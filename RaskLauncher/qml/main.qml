@@ -1,7 +1,7 @@
-import QtQuick 2.15
-import QtQuick.Window 2.15
-import QtQuick.Controls 2.15
-import QtQuick.Controls.Material 2.15
+import QtQuick 2.12
+import QtQuick.Window 2.12
+import QtQuick.Controls 2.12
+import QtQuick.Controls.Material 2.12
 import QtGraphicalEffects 1.0
 import Qt.labs.settings 1.0
 
@@ -25,7 +25,6 @@ ApplicationWindow {
     Settings {
         id: raskSettings
 
-        fileName: "rask"
         property int padding: 20
         property int leftPadding: 10
         property int rightPadding: 10
@@ -54,6 +53,9 @@ ApplicationWindow {
 
     Component.onCompleted: {
         RaskLauncher.retrievePackages()
+        raskSettings.padding = 20
+        raskSettings.leftPadding = 10
+        raskSettings.rightPadding = 10
     }
 
     onActiveScreenChanged: {

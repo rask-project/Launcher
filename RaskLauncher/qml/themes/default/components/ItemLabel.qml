@@ -1,5 +1,5 @@
-import QtQuick 2.15
-import QtQuick.Controls 2.15
+import QtQuick 2.12
+import QtQuick.Controls 2.12
 
 Row {
     id: control
@@ -19,6 +19,8 @@ Row {
             height: parent.height
 
             text: control.label
+            font.bold: true
+
             verticalAlignment: Label.AlignVCenter
             wrapMode: Label.WordWrap
             elide: Label.ElideRight

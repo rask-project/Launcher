@@ -1,4 +1,4 @@
-import QtQuick 2.15
+import QtQuick 2.12
 import QtQuick.Layouts 1.15
 
 import QtRask.Launcher 1.0
