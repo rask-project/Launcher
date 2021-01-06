@@ -16,6 +16,7 @@ Page {
     property alias applicationsHidden: appHidden.model
 
     background: Item {}
+
     AppGrid {
         id: appGrid
 
@@ -37,6 +38,7 @@ Page {
 
                 flickableItem: appGrid
                 contentTop: [
+
                     ItemOptionFlickable {
                         anchors.horizontalCenter: parent.horizontalCenter
 
