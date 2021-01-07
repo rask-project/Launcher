@@ -1,4 +1,6 @@
 #include "screenmanager.h"
+#include "rasktheme.h"
+#include "singleton.h"
 
 #ifdef Q_OS_ANDROID
 #include <QtAndroid>
@@ -97,7 +99,6 @@ void ScreenManager::navBarColor(bool value)
 #ifdef Q_OS_ANDROID
 QAndroidJniObject ScreenManager::getAndroidWindow()
 {
-    qDebug() << "Get Android Window";
     QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
     window.callMethod<void>("addFlags", "(I)V", FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
     window.callMethod<void>("clearFlags", "(I)V", FLAG_TRANSLUCENT_STATUS);
@@ -105,10 +106,10 @@ QAndroidJniObject ScreenManager::getAndroidWindow()
     QtAndroid::runOnAndroidThread([=]() {
         QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
         int visibility = view.callMethod<int>("getSystemUiVisibility", "()I");
-//        if (theme == Light)
-        visibility |= SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-//        else
-//            visibility &= ~SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        if (Singleton<RaskTheme>::getInstanceQML().theme() == RaskTheme::Theme::Light)
+            visibility |= SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        else
+            visibility &= ~SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
         view.callMethod<void>("setSystemUiVisibility", "(I)V", visibility);
     });
 
