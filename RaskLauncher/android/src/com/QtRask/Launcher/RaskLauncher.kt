@@ -74,7 +74,6 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
 
     companion object {
         private const val TAG = "RaskLauncher"
-        private val colorStatusNavBar = Color.argb(0x40, 0xFF, 0xFF, 0xFF)
 
         var instance: RaskLauncher? = null
             private set

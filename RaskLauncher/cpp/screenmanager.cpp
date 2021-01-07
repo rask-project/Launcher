@@ -10,9 +10,9 @@
 
 constexpr auto FLAG_TRANSLUCENT_STATUS = 0x04000000;
 constexpr auto FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS = 0x80000000;
-//constexpr auto SYSTEM_UI_FLAG_LIGHT_STATUS_BAR = 0x00002000;
+constexpr auto SYSTEM_UI_FLAG_LIGHT_STATUS_BAR = 0x00002000;
 
-const auto colorBar = QColor::fromRgbF(0xFF, 0xFF, 0xFF, 0.3).rgba();
+const auto colorBar = QColor::fromRgbF(0xFF, 0xFF, 0xFF, 0.80).rgba();
 const auto transparentColorBar = QColor::fromRgbF(0xFF, 0xFF, 0xFF, 0x0).rgba();
 
 ScreenManager::ScreenManager(QObject *parent):
@@ -101,6 +101,17 @@ QAndroidJniObject ScreenManager::getAndroidWindow()
     QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
     window.callMethod<void>("addFlags", "(I)V", FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
     window.callMethod<void>("clearFlags", "(I)V", FLAG_TRANSLUCENT_STATUS);
+
+    QtAndroid::runOnAndroidThread([=]() {
+        QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
+        int visibility = view.callMethod<int>("getSystemUiVisibility", "()I");
+//        if (theme == Light)
+        visibility |= SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+//        else
+//            visibility &= ~SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+        view.callMethod<void>("setSystemUiVisibility", "(I)V", visibility);
+    });
+
     return window;
 }
 #endif

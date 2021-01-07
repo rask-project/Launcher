@@ -83,7 +83,7 @@ Flickable {
         Item {
             width: applicationFlow.width - applicationFlow.leftPadding
                    - applicationFlow.rightPadding
-            height: scrollGrid.iconSize + scrollGrid.iconSpacing
+            height: scrollGrid.iconSize
         }
     }
 }
