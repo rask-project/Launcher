@@ -1,6 +1,9 @@
 #pragma once
 
 #include <QObject>
+#ifdef Q_OS_ANDROID
+#include <QAndroidJniObject>
+#endif
 
 class ScreenManager : public QObject
 {
@@ -31,6 +34,8 @@ public:
 
 public slots:
     void updateScreenValues();
+    void statusBarColor(bool value);
+    void navBarColor(bool value);
 
 signals:
     void densityChanged();
@@ -45,6 +50,10 @@ private:
     int m_navigationBarHeight;
     int m_navigationBarHeightLandscape;
     bool m_navigationBarVisible;
+
+#ifdef Q_OS_ANDROID
+    QAndroidJniObject getAndroidWindow();
+#endif
 
     int getResourceSize(const QString &value);
     float getDensity();

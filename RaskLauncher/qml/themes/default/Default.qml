@@ -15,8 +15,6 @@ Page {
     property alias applications: appGrid.model
     property alias applicationsHidden: appHidden.model
 
-    background: Item {}
-
     AppGrid {
         id: appGrid
 
@@ -26,9 +24,16 @@ Page {
         leftMargin: raskSettings.leftPadding
         rightMargin: raskSettings.rightPadding
 
+        onAtYBeginningChanged: ScreenManager.statusBarColor(!atYBeginning)
+
         //model: page.applications
-        onClicked: function (packageName) {
+        onClicked: {
             RaskLauncher.launchApplication(packageName)
+            AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
+        }
+
+        onFlickablePressAndHold: {
+            appSettings.open()
             AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
         }
 
@@ -37,47 +42,29 @@ Page {
                 id: flickableOptions
 
                 flickableItem: appGrid
-                contentTop: [
+                contentTop: ItemOptionFlickable {
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                    ItemOptionFlickable {
-                        anchors.horizontalCenter: parent.horizontalCenter
+                    icon.name: "search"
+                    text: qsTr("Search Apps")
 
-                        icon.name: "search"
-                        text: qsTr("Search Apps")
-
-                        onTriggered: {
-                            appSearch.open()
-                            AndroidVibrate.vibrate(50,
-                                                   AndroidVibrate.EFFECT_TICK)
-                        }
+                    onTriggered: {
+                        appSearch.open()
+                        AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
                     }
-                ]
+                }
 
-                contentBottom: [
-                    ItemOptionFlickable {
-                        anchors.horizontalCenter: parent.horizontalCenter
+                contentBottom: ItemOptionFlickable {
+                    anchors.horizontalCenter: parent.horizontalCenter
 
-                        icon.name: "visibility"
-                        text: qsTr("Hidden Apps")
+                    icon.name: "visibility"
+                    text: qsTr("Hidden Apps")
 
-                        onTriggered: {
-                            appHidden.open()
-                            AndroidVibrate.vibrate(50,
-                                                   AndroidVibrate.EFFECT_TICK)
-                        }
-                    },
-                    ItemOptionFlickable {
-                        anchors.horizontalCenter: parent.horizontalCenter
-                        icon.name: "settings"
-                        text: qsTr("Settings")
-
-                        onTriggered: {
-                            appSettings.open()
-                            AndroidVibrate.vibrate(50,
-                                                   AndroidVibrate.EFFECT_TICK)
-                        }
+                    onTriggered: {
+                        appHidden.open()
+                        AndroidVibrate.vibrate(50, AndroidVibrate.EFFECT_TICK)
                     }
-                ]
+                }
             }
         ]
 
@@ -156,9 +143,8 @@ Page {
     AppDock {
         visible: model.length > 0
 
-        differencePadding: (ScreenManager.navigationBarVisible ? ScreenManager.navigationBarHeight : raskSettings.padding)
         y: Window.height - (appGrid.atYEnd
-                            && !appGrid.atYBeginning ? 0 : height + differencePadding)
+                            && !appGrid.atYBeginning ? 0 : height + (ScreenManager.navigationBarVisible ? ScreenManager.navigationBarHeight + (raskSettings.padding / 2) : raskSettings.padding))
 
         parent: page.parent
         width: parent.width
@@ -174,13 +160,13 @@ Page {
         }
     }
 
-    //background: Rectangle {
-    //    Image {
-    //        anchors.fill: parent
-    //        source: "file:///home/marssola/Pictures/P00613-120151.jpg"
-    //        fillMode: Image.PreserveAspectCrop
-    //    }
-    //}
+    background: Item {//Image {
+        //    anchors.fill: parent
+        //    source: "file:///home/marssola/Pictures/P00613-120151.jpg"
+        //    fillMode: Image.PreserveAspectCrop
+        //}
+    }
+
     property var applications: [{
             "adaptativeIcon": false,
             "name": "0ad",

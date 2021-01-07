@@ -9,8 +9,6 @@ import QtRask.Launcher 1.0
 Control {
     id: control
 
-    width: parent.width
-
     implicitWidth: Math.max(implicitBackgroundWidth + leftInset + rightInset,
                             implicitContentWidth + leftPadding + rightPadding)
     implicitHeight: Math.max(implicitBackgroundHeight + topInset + bottomInset,
@@ -52,9 +50,7 @@ Control {
         implicitHeight: control.Material.buttonHeight
         radius: 2
 
-        color: RaskTheme.getColor(
-                   RaskTheme.theme === RaskTheme.Light ? RaskTheme.LightGrey : RaskTheme.DarkGrey,
-                   RaskTheme.Alpha20)
+        color: "transparent"
 
         Ripple {
             clipRadius: 2

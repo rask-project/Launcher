@@ -1,10 +1,19 @@
 #include "screenmanager.h"
 
 #ifdef Q_OS_ANDROID
+#include <QtAndroid>
 #include <QAndroidJniEnvironment>
 #include <QAndroidJniObject>
 #endif
+#include <QColor>
 #include <QDebug>
+
+constexpr auto FLAG_TRANSLUCENT_STATUS = 0x04000000;
+constexpr auto FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS = 0x80000000;
+//constexpr auto SYSTEM_UI_FLAG_LIGHT_STATUS_BAR = 0x00002000;
+
+const auto colorBar = QColor::fromRgbF(0xFF, 0xFF, 0xFF, 0.3).rgba();
+const auto transparentColorBar = QColor::fromRgbF(0xFF, 0xFF, 0xFF, 0x0).rgba();
 
 ScreenManager::ScreenManager(QObject *parent):
     QObject(parent),
@@ -21,6 +30,9 @@ ScreenManager::ScreenManager(QObject *parent):
 
     qDebug() << "Screen Values" << m_statusBarHeight << m_navigationBarHeight << m_navigationBarHeightLandscape;
     updateScreenValues();
+
+    statusBarColor(false);
+    navBarColor(true);
 }
 
 void ScreenManager::updateScreenValues()
@@ -29,6 +41,7 @@ void ScreenManager::updateScreenValues()
     QAndroidJniObject activity = QAndroidJniObject::callStaticObjectMethod("org/qtproject/qt5/android/QtNative",
                                                                            "activity",
                                                                            "()Landroid/app/Activity;");
+    QAndroidJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
 
     QAndroidJniObject windowManager = activity.callObjectMethod("getWindowManager", "()Landroid/view/WindowManager;");
     QAndroidJniObject display = windowManager.callObjectMethod("getDefaultDisplay", "()Landroid/view/Display;");
@@ -37,7 +50,6 @@ void ScreenManager::updateScreenValues()
     display.callMethod<void>("getRealSize", "(Landroid/graphics/Point;)V", realSize.object());
 
     QAndroidJniObject displayFrame = QAndroidJniObject("android/graphics/Rect");
-    QAndroidJniObject window = activity.callObjectMethod("getWindow", "()Landroid/view/Window;");
     QAndroidJniObject view = window.callObjectMethod("getDecorView", "()Landroid/view/View;");
     QAndroidJniObject rootView = view.callObjectMethod("getRootView", "()Landroid/view/View;");
     rootView.callMethod<void>("getWindowVisibleDisplayFrame", "(Landroid/graphics/Rect;)V", displayFrame.object());
@@ -51,6 +63,47 @@ void ScreenManager::updateScreenValues()
         setNavigationBarVisible(true);
 #endif
 }
+
+void ScreenManager::statusBarColor(bool value)
+{
+#ifdef Q_OS_ANDROID
+    if (QtAndroid::androidSdkVersion() < 21)
+        return;
+
+    QtAndroid::runOnAndroidThread([=]() {
+        const auto window = getAndroidWindow();
+        window.callMethod<void>("setStatusBarColor", "(I)V", value ? colorBar : transparentColorBar);
+    });
+#else
+#endif
+    Q_UNUSED(value)
+}
+
+void ScreenManager::navBarColor(bool value)
+{
+#ifdef Q_OS_ANDROID
+    if (QtAndroid::androidSdkVersion() < 21)
+        return;
+
+    QtAndroid::runOnAndroidThread([=]() {
+        const auto window = getAndroidWindow();
+        window.callMethod<void>("setNavigationBarColor", "(I)V", value ? colorBar : transparentColorBar);
+    });
+#else
+#endif
+    Q_UNUSED(value)
+}
+
+#ifdef Q_OS_ANDROID
+QAndroidJniObject ScreenManager::getAndroidWindow()
+{
+    qDebug() << "Get Android Window";
+    QAndroidJniObject window = QtAndroid::androidActivity().callObjectMethod("getWindow", "()Landroid/view/Window;");
+    window.callMethod<void>("addFlags", "(I)V", FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+    window.callMethod<void>("clearFlags", "(I)V", FLAG_TRANSLUCENT_STATUS);
+    return window;
+}
+#endif
 
 bool ScreenManager::getNavigationBarVisible() const
 {

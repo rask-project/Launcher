@@ -1,6 +1,7 @@
 package com.QtRask.Launcher
 
 import android.app.ActivityManager
+import 	android.view.Window
 import android.app.WallpaperManager
 import android.content.Context
 import android.content.Intent
@@ -44,8 +45,6 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
                 or View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
 
         super.onCreate(savedInstanceState)
-        setStatusBarColor(false)
-        setNavBarColor(false)
     }
 
     override fun onStart() {
@@ -79,6 +78,7 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
 
         var instance: RaskLauncher? = null
             private set
+
         private var m_iconDpi: Int = 0
         private var m_wallpaperManager: WallpaperManager? = null
         private var m_packageManager: PackageManager? = null
@@ -328,30 +328,6 @@ open class RaskLauncher : org.qtproject.qt5.android.bindings.QtActivity() {
             Log.d(TAG, "Total applications running: " + applicationsRunning.indices)
             for (i in applicationsRunning.indices) {
                 Log.d(TAG, "Application: " + applicationsRunning[i])
-            }
-        }
-
-        @JvmStatic
-        fun setStatusBarColor(setColor: Boolean) {
-            instance!!.getWindow().apply {
-                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                statusBarColor = when (setColor) {
-                    true -> colorStatusNavBar
-                    else -> Color.TRANSPARENT
-                }
-            }
-        }
-
-        @JvmStatic
-        fun setNavBarColor(setColor: Boolean) {
-            instance!!.getWindow().apply {
-                clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)
-                addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
-                navigationBarColor = when (setColor) {
-                    true -> colorStatusNavBar
-                    else -> Color.TRANSPARENT
-                }
             }
         }
 

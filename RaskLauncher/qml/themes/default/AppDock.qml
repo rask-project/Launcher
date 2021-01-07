@@ -183,7 +183,7 @@ Item {
                 sourceItem: dockItem.shadderSource
                 sourceRect: Qt.rect(
                                 dockItem.x + (dockItem.width - dockRectangle.width) / 2,
-                                dockItem.y - dockItem.differencePadding * 2,
+                                dockItem.y - ScreenManager.statusBarHeight,
                                 dockRectangle.width, dockRectangle.height)
             }
         }

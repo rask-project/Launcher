@@ -11,8 +11,9 @@ Flickable {
     contentHeight: applicationFlow.height
     maximumFlickVelocity: height * 5
 
-    property var onClicked: function (packageName) {}
-    property var onPressAndHold: function (app) {}
+    signal clicked(string packageName)
+    signal flickablePressAndHold
+
     property AppActions actions
     property string title
 
@@ -31,6 +32,12 @@ Flickable {
         }
     }
 
+    MouseArea {
+        anchors.fill: parent
+
+        onPressAndHold: scrollGrid.flickablePressAndHold()
+    }
+
     Flow {
         id: applicationFlow
 
@@ -39,6 +46,7 @@ Flickable {
         leftPadding: (scrollGrid.widthAvailable
                       % (scrollGrid.iconSize + scrollGrid.iconSpacing)) / 2
         rightPadding: leftPadding
+        z: 2
 
         Repeater {
             id: repeater
@@ -58,7 +66,7 @@ Flickable {
                 icon: "image://systemImage/" + packageName
                 adaptativeIcon: modelData.adaptativeIcon
 
-                click.onClicked: scrollGrid.onClicked(packageName)
+                click.onClicked: scrollGrid.clicked(packageName)
                 click.onPressAndHold: {
                     if (scrollGrid.actions) {
                         scrollGrid.actions.parent = appItem
@@ -75,7 +83,7 @@ Flickable {
         Item {
             width: applicationFlow.width - applicationFlow.leftPadding
                    - applicationFlow.rightPadding
-            height: scrollGrid.iconSpacing
+            height: scrollGrid.iconSize + scrollGrid.iconSpacing
         }
     }
 }

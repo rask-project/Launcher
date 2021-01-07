@@ -6,11 +6,13 @@ Item {
     id: root
 
     property Flickable flickableItem
-    property list<ItemOptionFlickable> contentTop
-    property list<ItemOptionFlickable> contentBottom
+    property ItemOptionFlickable contentTop
+    property ItemOptionFlickable contentBottom
 
     signal triggerToTop
     signal triggerToBottom
+
+    readonly property int limitTrigger: 100
 
     Item {
         id: itemTop
@@ -21,20 +23,15 @@ Item {
         property ItemOptionFlickable selectedOption
 
         onYChanged: {
+            if (!root.flickableItem.atYBeginning)
+                return
+
             const pos = y + columnTop.height
-            const itemHeight = columnTop.height / columnTop.data.length
-            const posItem = parseInt(pos / itemHeight)
-            const totalItems = columnTop.data.length
-
-            for (var i = 0; i < totalItems; ++i)
-                columnTop.data[i].focus = false
-
-            if (posItem >= 0 && posItem <= totalItems - 1) {
-                const k = totalItems - posItem - 1
-                if (pos >= 0 && pos <= (itemHeight * posItem) + itemHeight) {
-                    columnTop.data[k].focus = true
-                }
+            if (pos >= root.limitTrigger) {
+                root.contentTop.focus = true
+                return
             }
+            root.contentTop.focus = false
         }
 
         parent: root.parent
@@ -57,31 +54,22 @@ Item {
            - root.flickableItem.contentY
 
         onYChanged: {
-            const contentY = root.flickableItem.contentY
-            const contentHeight = root.flickableItem.contentHeight
-            const itemHeight = columnBottom.height / columnBottom.data.length
-            const totalItems = columnBottom.data.length
-
-            let pos
-            let posItem
-
-            if (contentHeight > Window.height) {
-                pos = (contentHeight + 120) - Window.height
-                posItem = parseInt((contentY - pos - itemHeight) / itemHeight)
-            } else {
-                pos = contentY - itemHeight + (contentHeight === Window.height ? -60 : 0)
-                posItem = parseInt(pos / itemHeight) - 1
-            }
-
-            for (var i = 0; i < totalItems; ++i)
-                columnBottom.data[i].focus = false
-
-            if (contentY < pos || posItem < 0)
+            if (!root.flickableItem.atYEnd)
                 return
 
-            if (posItem >= 0 && posItem <= totalItems - 1) {
-                columnBottom.data[posItem].focus = true
+            const contentHeight = root.flickableItem.contentHeight
+            let pos
+            if (contentHeight > Window.height) {
+                pos = contentHeight - root.contentBottom.height - y
+            } else {
+                pos = (Window.height - y)
             }
+
+            if (pos >= root.limitTrigger) {
+                root.contentBottom.focus = true
+                return
+            }
+            root.contentBottom.focus = false
         }
 
         parent: root.parent

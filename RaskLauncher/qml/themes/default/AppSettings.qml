@@ -17,11 +17,11 @@ OverlaySheet {
         height: parent.height
 
         anchors.fill: parent
-        anchors.margins: 10
+        anchors.margins: raskSettings.padding
 
         Label {
             Layout.fillWidth: true
-            padding: 10
+            padding: raskSettings.padding
 
             text: qsTr("Settings")
             horizontalAlignment: Label.AlignHCenter
@@ -41,7 +41,7 @@ OverlaySheet {
                 id: column
 
                 width: parent.width
-                spacing: 20
+                spacing: raskSettings.padding
 
                 ItemLabel {
                     label: qsTr("Theme")
